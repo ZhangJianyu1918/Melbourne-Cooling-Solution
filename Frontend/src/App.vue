@@ -1,36 +1,39 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import NavigationBar from './components/NavigationBar.vue';
+import Footer from './components/Footer.vue';
+
 </script>
 
 <template>
+  <div id="app">
+    <div class="common-layout">
+      <el-container>
+        <el-header>
+          <NavigationBar />
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+        <el-footer>
+          <Footer />
+        </el-footer>
+      </el-container>
+    </div>
+  </div>
+
+
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.common-layout {
+  height: 100vh; /* 占满整个视口高度 */
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.el-container {
+  height: 100%; /* 继承父容器高度 */
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.el-main {
+  padding: 20px; /* 可选：为主内容区域添加内边距 */
 }
 </style>
