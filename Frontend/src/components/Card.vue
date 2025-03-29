@@ -28,12 +28,8 @@ const getImageUrl = (imagePath) => {
 .card-container {
     display: flex;
     justify-content: center;
-    /* 水平居中 */
     align-items: center;
-    /* 垂直居中（可选） */
-    height: 100vh;
     border-radius: 30px;
-    /* 让它在整个视口内居中，可根据需求调整 */
 }
 
 .card-link {
@@ -44,7 +40,7 @@ const getImageUrl = (imagePath) => {
 
 .card {
   width: auto; /* 调整宽度，原本18rem，现在变窄 */
-  min-height: 35rem; /* 增加最小高度，让它更高 */
+  min-height: 20rem; /* 增加最小高度，让它更高 */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 让内容均匀分布 */

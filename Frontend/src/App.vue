@@ -14,12 +14,14 @@ const isHome = computed(() => route.meta.isHome || false);
       <el-container>
         <el-header v-if="!isHome">
           <NavigationBar />
+          
         </el-header>
         <el-main>
           <transition name="fade" mode="out-in">
             <router-view></router-view>
           </transition>
         </el-main>
+        <div style="height: 50px;"></div>
         <el-footer>
           <Footer />
         </el-footer>

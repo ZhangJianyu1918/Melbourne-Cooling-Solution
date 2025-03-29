@@ -32,24 +32,27 @@
             </div>
         </header>
 
-        <div class="content">
+        <div class="container content">
+            <div style="height: 30px;"></div>
             <el-row :gutter="24">
-                <el-col :offset="3" :span="21">
-                    <h2>Our Service</h2>
+                <el-col :span="21">
+                    <h2 class="service-title">Our Service</h2>
                 </el-col>
             </el-row>
-
+            <div style="height: 30px;"></div>
             <el-row :gutter="24" justify="space-evenly">
                 <el-col v-for="(service, index) in services" :key="index" :span="6" :xs="24" :sm="12" :md="8">
                     <Card :title="service.title" :image="service.image" :description="service.description"
                         :to="service.to" />
                 </el-col>
             </el-row>
+            <div style="height: 50px;"></div>
             <el-row>
-                <el-col :offset="3" :span="21">
+                <el-col :span="21">
                     <h2>Need Immediate Support</h2>
                 </el-col>
             </el-row>
+            <div style="height: 30px;"></div>
             <el-row class="support">
                 <el-col :span="16" class="support-content">
                     <p>This is the body
@@ -225,6 +228,7 @@ h2 {
     font-size: 3rem;
     font-weight: bold;
     font-family: 'Abril Fatface';
+    text-align: left;
 }
 
 p {
@@ -257,16 +261,10 @@ p {
     justify-content: center;
 }
 
-.service {
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-}
 
 .content {
-    padding-left: 100px;
-    padding-right: 100px;
-    background-color: rgba(229, 242, 255);
+    /* padding-left: 10px;
+    padding-right: 10px; */
 }
 
 .support {

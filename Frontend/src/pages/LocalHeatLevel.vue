@@ -1,7 +1,9 @@
 <template>
   <div class="container">
+    <div style="height: 50px;"></div>
     <h2>This is local heat level page</h2>
-    <p>
+    <div style="height: 20px;"></div>
+    <p style="font-size: 22px;">
       Explore real-time heat in City of Melbourne local areas and find the nearest shaded, cooling spaces and public centres.
       Type your area name into the search bar and click on the icon on the map for more information.
     </p>
@@ -17,6 +19,7 @@
           Search
         </el-button>
       </div>
+      <div style="height: 20px;"></div>
       <!-- 地图容器 -->
       <div class="google-map" ref="map"></div>
     </div>
