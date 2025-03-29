@@ -16,7 +16,9 @@ const isHome = computed(() => route.meta.isHome || false);
           <NavigationBar />
         </el-header>
         <el-main>
-          <router-view></router-view>
+          <transition name="fade" mode="out-in">
+            <router-view></router-view>
+          </transition>
         </el-main>
         <el-footer>
           <Footer />
@@ -56,5 +58,11 @@ const isHome = computed(() => route.meta.isHome || false);
   padding: 20px;
   text-align: center;
 }
-
+/* 定义淡入淡出过渡动画 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>

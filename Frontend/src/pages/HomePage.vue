@@ -42,7 +42,7 @@
             <el-row :gutter="24" justify="space-evenly">
                 <el-col v-for="(service, index) in services" :key="index" :span="6" :xs="24" :sm="12" :md="8">
                     <Card :title="service.title" :image="service.image" :description="service.description"
-                        :icon="service.icon" />
+                        :to="service.to" />
                 </el-col>
             </el-row>
             <el-row>
@@ -96,17 +96,24 @@ const services = [
     {
         image: "local-heat-level.png",
         title: "📍 Local Heat Level",
-        description: "Explore real-time heat in City of Melbourne local areas and find the nearest shaded, cooling spaces and public centres"
+        description: "Explore real-time heat in City of Melbourne local" + 
+        " areas and find the nearest shaded, cooling spaces and public centres",
+        to: "local-heat-level"
+        
     },
     {
         image: "personal-cooling-guide.png",
         title: "🏡 Personal Cooling Guide",
-        description: "Get tailored advices based on your personal needs to beat the heat, elevate your health and make your living space cooler"
+        description: "Get tailored advices based on your personal needs" + 
+        " to beat the heat, elevate your health and make your living space cooler",
+        to: "/personal-cooling-guide"
     },
     {
         image: "community-support.png",
         title: "🤝 Community Support",
-        description: "Learn how to help yourself and others to deal with UHI by accessing quick-response guides and local support services"
+        description: "Learn how to help yourself and others to deal with" + 
+        " UHI by accessing quick-response guides and local support services",
+        to: "/community-support"
     }
 ];
 </script>
