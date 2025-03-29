@@ -25,19 +25,21 @@ const communities = [
     title: "🚑 Emergency Contacts",
     description: "This is the body text for this section description, " +
       "which stands here as a placeholder for later real ideas and contents",
-    to: "/emergency-contacts"
+    to: "/community-support/emergency-contacts"
   },
   {
     image: "uhi-first-aid.png",
     title: "⛑️ UHI First Aid",
     description: "This is the body text for this section description, " +
-      "which stands here as a placeholder for later real ideas and contents"
+      "which stands here as a placeholder for later real ideas and contents",
+    to: "/community-support/uhi-first-aid"
   },
   {
     image: "recovery-and-aftercare.png",
     title: "🤕 Recovery and Aftercare",
     description: "This is the body text for this section description, " +
-      "which stands here as a placeholder for later real ideas and contents"
+      "which stands here as a placeholder for later real ideas and contents",
+    to: "/community-support/recovery-and-aftercare"
   }
 ];
 </script>

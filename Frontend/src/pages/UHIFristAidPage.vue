@@ -1,5 +1,6 @@
 <template>
     <div class="container mx-auto p-6">
+        <h2><router-link to="/community-support">Go back</router-link></h2>
         <h1 class="text-2xl font-bold text-red-600 flex items-center">
             🏥 Melbourne UHI First Aid
         </h1>
