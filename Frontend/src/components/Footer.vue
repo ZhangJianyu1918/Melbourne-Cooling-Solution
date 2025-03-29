@@ -4,20 +4,26 @@
       <el-col :span="9">
         <div>
           <h3>Our Social Media</h3>
-          <div class="flex space-x-4">
-            <a href="#" class="text-white hover:text-gray-300">
-              <i class="fab fa-instagram text-2xl"></i>
+          <el-row :gutter="0" justify="center">
+            <el-col :span="3">
+              <a href="#" class="text-white hover:text-gray-300">
+                <i class="fab fa-instagram fa-3x"></i>
+              </a>
+            </el-col>
+            <el-col :span="3"><a href="#" class="text-white hover:text-gray-300">
+                <i class="fab fa-facebook-f fa-3x"></i>
+              </a></el-col>
+            <el-col :span="3">
+              <a href="#" class="text-white hover:text-gray-300">
+              <i class="fab fa-twitter fa-3x"></i>
             </a>
-            <a href="#" class="text-white hover:text-gray-300">
-              <i class="fab fa-facebook-f text-2xl"></i>
+            </el-col>
+            <el-col :span="3">
+              <a href="#" class="text-white hover:text-gray-300">
+              <i class="fab fa-linkedin-in fa-3x"></i>
             </a>
-            <a href="#" class="text-white hover:text-gray-300">
-              <i class="fab fa-twitter text-2xl"></i>
-            </a>
-            <a href="#" class="text-white hover:text-gray-300">
-              <i class="fab fa-linkedin-in text-2xl"></i>
-            </a>
-          </div>
+            </el-col>
+          </el-row>
         </div>
       </el-col>
       <el-col :span="5">
@@ -82,6 +88,7 @@
 <style scoped>
 /* Tailwind is used in the template, but here's the equivalent CSS for reference */
 .footer {
+  padding-top: 50px;
   background-color: #19619E;
   color: white;
 }
