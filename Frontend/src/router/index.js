@@ -3,6 +3,7 @@ import HomePage from "@/pages/HomePage.vue";
 import PersonalCoolingGuide from "@/pages/PersonalCoolingGuide.vue";
 import LocalHeatLevel from "@/pages/LocalHeatLevel.vue";
 import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
+import EmergencyContactsPage from "@/pages/EmergencyContactsPage.vue";
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: "/community-support",
     name: "CommunitySupport",
     component: CommunitySupportPage
+  },
+  {
+    path: "/emergency-contacts",
+    name: "EmergencyContacts",
+    component: EmergencyContactsPage
   },
 ];
 
