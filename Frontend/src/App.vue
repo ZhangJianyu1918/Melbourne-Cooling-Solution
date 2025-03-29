@@ -39,8 +39,12 @@ const isHome = computed(() => route.meta.isHome || false);
   display: flex;
   flex-direction: column;
   flex: 1; /* 让容器填充整个父容器 */
-}
+  background-color: #E5F2FF;
 
+}
+.el-header {
+  --el-header-padding: none;
+}
 .el-main {
   flex: 1; /* 让 `el-main` 自动撑开，占据所有剩余空间 */
   --el-main-padding: none;
