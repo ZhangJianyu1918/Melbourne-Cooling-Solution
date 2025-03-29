@@ -124,13 +124,49 @@ const services = [
     background-image: url("../assets/home.png");
     background-size: cover;
     background-position: center;
-    /* text-align: center; */
     padding: 4rem 2rem;
     position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+/* Add this gradient overlay */
+.header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%; /* You can adjust this height */
+    background: linear-gradient(to top, 
+                rgba(0, 0, 0, 0.7) 0%, 
+                rgba(0, 0, 0, 0.4) 30%, 
+                rgba(0, 0, 0, 0) 100%);
+    pointer-events: none; /* Makes sure clicks pass through to elements below */
+    z-index: 1; /* Above the background but below the content */
+}
+
+/* Update header content to ensure it's above the gradient */
+.header-content {
+    margin-left: 100px;
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 30%;
+    padding: 10px;
+    z-index: 2; /* Ensure content is above the gradient */
+}
+
+/* Also update nav to ensure it's above the gradient */
+.home-nav {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2; /* Same z-index as content */
 }
 
 /* 首页专属导航栏 */
