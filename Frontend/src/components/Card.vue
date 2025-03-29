@@ -1,7 +1,7 @@
 <template>
     <div class="card-container">
         <router-link :to="to" class="card-link">
-            <div class="card shadow-sm rounded">
+            <div class="card shadow-sm">
                 <img :src="getImageUrl(image)" alt="Service Image" class="card-img-top" />
                 <div class="card-body">
                     <h5 class="card-title">{{ title }}</h5>
@@ -44,7 +44,7 @@ const getImageUrl = (imagePath) => {
 }
 
 .card {
-  width: 30rem; /* 调整宽度，原本18rem，现在变窄 */
+  width: auto; /* 调整宽度，原本18rem，现在变窄 */
   min-height: 35rem; /* 增加最小高度，让它更高 */
   display: flex;
   flex-direction: column;
@@ -63,10 +63,12 @@ const getImageUrl = (imagePath) => {
 }
 .card-title {
   font-size: 1.2rem; /* 调整标题大小 */
+  text-align: center;
 }
 
 .card-text {
   font-size: 0.9rem;
+  text-align: center;
   line-height: 1.4; /* 行距稍微缩小 */
 }
 

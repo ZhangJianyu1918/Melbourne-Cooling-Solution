@@ -24,7 +24,7 @@
       <router-link to="/personal-cooling-guide">Personal Cooling Guide</router-link>
     </el-menu-item>
     <el-menu-item index="4">
-      <router-link to="/community-guide">Community Guide</router-link>
+      <router-link to="/community-support">Community Support</router-link>
     </el-menu-item>
   </el-menu>
 </template>

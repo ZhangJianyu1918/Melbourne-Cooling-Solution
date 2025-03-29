@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/pages/HomePage.vue";
 import PersonalCoolingGuide from "@/pages/PersonalCoolingGuide.vue";
-import CommunityGuidePage from "@/pages/CommunityGuidePage.vue";
 import LocalHeatLevel from "@/pages/LocalHeatLevel.vue";
+import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
 
 const routes = [
   {
@@ -22,9 +22,9 @@ const routes = [
     component: PersonalCoolingGuide
   },
   {
-    path: "/community-guide",
-    name: "CommunityGuide",
-    component: CommunityGuidePage
+    path: "/community-support",
+    name: "CommunitySupport",
+    component: CommunitySupportPage
   },
 ];
 
