@@ -8,7 +8,13 @@ import cesium from 'vite-plugin-cesium';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag === 'place-autocomplete-element',
+        },
+      },
+    }),
     vueDevTools(),
     cesium()
   ],
