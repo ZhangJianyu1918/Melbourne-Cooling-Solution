@@ -102,11 +102,11 @@ export default {
       weatherDiv.innerHTML = `
         <div class="weather-content" style="background-color: rgb(255, 255, 255); display: flex;
           flex-direction: column; gap: 5px;   border-radius: 15px;
-  padding: 15px;
-  margin: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  width: 200px;">
+          padding: 15px;
+          margin: 10px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          font-family: Arial, sans-serif;
+          width: 200px;">
           <h3 class="place-name" style="  font-size: 18px;font-weight: bold;color: #19619e;margin: 0;">${placeName}</h3>
           <p class="date" style="  font-size: 14px; color: #333; margin: 0;">${currentDate}</p>
           <div class="temp">${this.weather.temp}°C</div>
@@ -157,6 +157,7 @@ export default {
         this.directionsRenderer.setMap(this.map);
 
         this.loadMelbourneBoundary()
+        this.loadDrinkingFountains()
       } catch (error) {
         console.error('Failed to load Google Maps API:', error);
       }
@@ -169,7 +170,7 @@ export default {
         const data = await response.json();
 
         if (!data.results || data.results.length === 0) {
-          console.error('没有找到墨尔本边界数据');
+          console.error('The data is empty.');
           return;
         }
 
@@ -194,92 +195,136 @@ export default {
         });
 
       } catch (error) {
-        console.error('获取墨尔本边界数据失败:', error);
+        console.error('Error Message:', error);
       }
     },
-    searchPlace() {
-    const input = this.$refs.searchInput?.value;
-    if (!input) {
-      alert('Please enter a search term');
-      return;
-    }
+    async loadDrinkingFountains() {
+      try {
+        const response = await fetch(
+          'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/drinking-fountains/records?limit=50'
+        );
+        const data = await response.json();
 
-    const service = new this.google.maps.places.PlacesService(this.map);
-    service.textSearch(
-      {
-        query: input,
-        bounds: this.map.getBounds(),
-      },
-      (results, status) => {
-        if (status === this.google.maps.places.PlacesServiceStatus.OK && results[0]) {
-          this.updateMap(results[0]);
-        } else {
-          alert('No results found');
+        if (!data.results || data.results.length === 0) {
+          console.error('No drinking fountain data found');
+          return;
         }
-      }
-    );
-  },
-  updateMap(place) {
-    const location = place.geometry.location;
-    this.fetchWeatherData(location.lat(), location.lng())
-    this.map.setCenter(location);
-    this.map.setZoom(15);
 
-    if (this.marker) {
-      this.marker.setMap(null);
-    }
+        data.results.forEach((fountain) => {
+          if (fountain) {
+            const position = {
+              lat: fountain.lat,
+              lng: fountain.lon,
+              description: fountain.description
+            };
 
-    this.marker = new this.google.maps.Marker({
-      position: location,
-      map: this.map,
-      title: place.name,
-    });
-    // 添加导航按钮
-    const navButton = document.createElement("button");
-    navButton.innerText = "Navigate Here";
-    navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
-    navButton.onclick = () => this.calculateRoute(location);
+            const marker = new this.google.maps.Marker({
+              position,
+              map: this.map,
+              title: 'Drinking Fountain',
+              icon: {
+                url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
+                scaledSize: new this.google.maps.Size(30, 30),
+              },
+            });
 
-    const infoWindow = new this.google.maps.InfoWindow({
-      content: navButton
-    });
+            const infoWindow = new this.google.maps.InfoWindow({
+              content: `<p><strong>${position.description}</strong></p>`,
+            });
 
-    this.marker.addListener("click", () => {
-      infoWindow.open(this.map, this.marker);
-    });
-  },
-  calculateRoute(destination) {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const origin = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-
-        const request = {
-          origin: origin,
-          destination: destination,
-          travelMode: this.google.maps.TravelMode.DRIVING
-        };
-
-        this.directionsService.route(request, (result, status) => {
-          if (status === this.google.maps.DirectionsStatus.OK) {
-            this.directionsRenderer.setDirections(result);
-          } else {
-            alert("Directions request failed due to " + status);
+            marker.addListener('click', () => {
+              infoWindow.open(this.map, marker);
+            });
           }
         });
-      },
-      () => {
-        alert("Unable to retrieve your location.");
+      } catch (error) {
+        console.error('Error fetching drinking fountain data:', error);
       }
-    );
-  }
+    },
+
+    searchPlace() {
+      const input = this.$refs.searchInput?.value;
+      if (!input) {
+        alert('Please enter a search term');
+        return;
+      }
+
+      const service = new this.google.maps.places.PlacesService(this.map);
+      service.textSearch(
+        {
+          query: input,
+          bounds: this.map.getBounds(),
+        },
+        (results, status) => {
+          if (status === this.google.maps.places.PlacesServiceStatus.OK && results[0]) {
+            this.updateMap(results[0]);
+          } else {
+            alert('No results found');
+          }
+        }
+      );
+    },
+    updateMap(place) {
+      const location = place.geometry.location;
+      this.fetchWeatherData(location.lat(), location.lng())
+      this.map.setCenter(location);
+      this.map.setZoom(15);
+
+      if (this.marker) {
+        this.marker.setMap(null);
+      }
+
+      this.marker = new this.google.maps.Marker({
+        position: location,
+        map: this.map,
+        title: place.name,
+      });
+      // 添加导航按钮
+      const navButton = document.createElement("button");
+      navButton.innerText = "Navigate Here";
+      navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
+      navButton.onclick = () => this.calculateRoute(location);
+
+      const infoWindow = new this.google.maps.InfoWindow({
+        content: navButton
+      });
+
+      this.marker.addListener("click", () => {
+        infoWindow.open(this.map, this.marker);
+      });
+    },
+    calculateRoute(destination) {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const origin = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          const request = {
+            origin: origin,
+            destination: destination,
+            travelMode: this.google.maps.TravelMode.DRIVING
+          };
+
+          this.directionsService.route(request, (result, status) => {
+            if (status === this.google.maps.DirectionsStatus.OK) {
+              this.directionsRenderer.setDirections(result);
+            } else {
+              alert("Directions request failed due to " + status);
+            }
+          });
+        },
+        () => {
+          alert("Unable to retrieve your location.");
+        }
+      );
+    }
   },
 
 };
