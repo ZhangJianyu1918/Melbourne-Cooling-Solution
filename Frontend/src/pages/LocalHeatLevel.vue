@@ -155,94 +155,133 @@ export default {
         this.directionsService = new this.google.maps.DirectionsService();
         this.directionsRenderer = new this.google.maps.DirectionsRenderer();
         this.directionsRenderer.setMap(this.map);
+
+        this.loadMelbourneBoundary()
       } catch (error) {
         console.error('Failed to load Google Maps API:', error);
       }
     },
+    async loadMelbourneBoundary() {
+      try {
+        const response = await fetch(
+          'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/municipal-boundary/records?limit=20'
+        );
+        const data = await response.json();
+
+        if (!data.results || data.results.length === 0) {
+          console.error('没有找到墨尔本边界数据');
+          return;
+        }
+
+        // 提取 GeoJSON 坐标
+        const geoJsonData = {
+          type: "FeatureCollection",
+          features: data.results.map(item => ({
+            type: "Feature",
+            geometry: item.geo_shape.geometry,
+            properties: item.geo_shape.properties || {}
+          }))
+        };
+
+        // Add GeoJSON data to the map
+        this.map.data.addGeoJson(geoJsonData);
+
+        // Optionally, you can set styling for the polygons here
+        this.map.data.setStyle({
+          fillColor: '#FF0000',
+          fillOpacity: 0.3,
+          strokeWeight: 2
+        });
+
+      } catch (error) {
+        console.error('获取墨尔本边界数据失败:', error);
+      }
+    },
     searchPlace() {
-      const input = this.$refs.searchInput?.value;
-      if (!input) {
-        alert('Please enter a search term');
-        return;
-      }
-
-      const service = new this.google.maps.places.PlacesService(this.map);
-      service.textSearch(
-        {
-          query: input,
-          bounds: this.map.getBounds(),
-        },
-        (results, status) => {
-          if (status === this.google.maps.places.PlacesServiceStatus.OK && results[0]) {
-            this.updateMap(results[0]);
-          } else {
-            alert('No results found');
-          }
-        }
-      );
-    },
-    updateMap(place) {
-      const location = place.geometry.location;
-      this.fetchWeatherData(location.lat(), location.lng())
-      this.map.setCenter(location);
-      this.map.setZoom(15);
-
-      if (this.marker) {
-        this.marker.setMap(null);
-      }
-
-      this.marker = new this.google.maps.Marker({
-        position: location,
-        map: this.map,
-        title: place.name,
-      });
-      // 添加导航按钮
-      const navButton = document.createElement("button");
-      navButton.innerText = "Navigate Here";
-      navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
-      navButton.onclick = () => this.calculateRoute(location);
-
-      const infoWindow = new this.google.maps.InfoWindow({
-        content: navButton
-      });
-
-      this.marker.addListener("click", () => {
-        infoWindow.open(this.map, this.marker);
-      });
-    },
-    calculateRoute(destination) {
-      if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser.");
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const origin = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-
-          const request = {
-            origin: origin,
-            destination: destination,
-            travelMode: this.google.maps.TravelMode.DRIVING
-          };
-
-          this.directionsService.route(request, (result, status) => {
-            if (status === this.google.maps.DirectionsStatus.OK) {
-              this.directionsRenderer.setDirections(result);
-            } else {
-              alert("Directions request failed due to " + status);
-            }
-          });
-        },
-        () => {
-          alert("Unable to retrieve your location.");
-        }
-      );
+    const input = this.$refs.searchInput?.value;
+    if (!input) {
+      alert('Please enter a search term');
+      return;
     }
+
+    const service = new this.google.maps.places.PlacesService(this.map);
+    service.textSearch(
+      {
+        query: input,
+        bounds: this.map.getBounds(),
+      },
+      (results, status) => {
+        if (status === this.google.maps.places.PlacesServiceStatus.OK && results[0]) {
+          this.updateMap(results[0]);
+        } else {
+          alert('No results found');
+        }
+      }
+    );
   },
+  updateMap(place) {
+    const location = place.geometry.location;
+    this.fetchWeatherData(location.lat(), location.lng())
+    this.map.setCenter(location);
+    this.map.setZoom(15);
+
+    if (this.marker) {
+      this.marker.setMap(null);
+    }
+
+    this.marker = new this.google.maps.Marker({
+      position: location,
+      map: this.map,
+      title: place.name,
+    });
+    // 添加导航按钮
+    const navButton = document.createElement("button");
+    navButton.innerText = "Navigate Here";
+    navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
+    navButton.onclick = () => this.calculateRoute(location);
+
+    const infoWindow = new this.google.maps.InfoWindow({
+      content: navButton
+    });
+
+    this.marker.addListener("click", () => {
+      infoWindow.open(this.map, this.marker);
+    });
+  },
+  calculateRoute(destination) {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const origin = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        const request = {
+          origin: origin,
+          destination: destination,
+          travelMode: this.google.maps.TravelMode.DRIVING
+        };
+
+        this.directionsService.route(request, (result, status) => {
+          if (status === this.google.maps.DirectionsStatus.OK) {
+            this.directionsRenderer.setDirections(result);
+          } else {
+            alert("Directions request failed due to " + status);
+          }
+        });
+      },
+      () => {
+        alert("Unable to retrieve your location.");
+      }
+    );
+  }
+  },
+
 };
 </script>
 
