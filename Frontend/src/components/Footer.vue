@@ -64,11 +64,11 @@
 
       <el-col :span="5" :offset="9">
         <!-- Copyright Section -->
-        <div class="text-center mt-8">
-          <p>Monash 2025 | Copyright and disclaimer</p>
+        <div class="copyright">
+          <p style="font: bold;">Monash 2025 | Copyright and disclaimer</p>
         </div>
       </el-col>
-      <el-col :span="5" :offset="5">
+      <el-col :span="5" :offset="2">
         <!-- Contact Us -->
         <div class="contact-us">
           <h3>Contact Us</h3>
@@ -96,13 +96,29 @@
 .footer-section {
   text-align: left;
 }
+.copyright {
+  display: flex;
+  text-align: left;
+  flex-direction: column; /* Align children vertically */
+  justify-content: flex-end; /* Position text at the bottom */
+  height: 200px; /* Define a height for the container */
+}
 .contact-us {
   color: white;
   text-decoration: none;
+  text-align: left;
+  display: flex;
+  flex-direction: column; /* Align children vertically */
+  justify-content: flex-end; /* Position text at the bottom */
+  height: 200px; /* Define a height for the container */
+}
+a {
+  text-decoration: none;   /* Removes underline */
+  color: inherit;  
 }
 ul {
-  list-style: none; /* 移除列表前的点 */
-  padding: 0; /* 可选：去除默认内边距 */
-  margin: 0; /* 可选：去除默认外边距 */
+  list-style: none;
+  padding: 0; 
+  margin: 0; 
 }
 </style>
