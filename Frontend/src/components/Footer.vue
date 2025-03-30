@@ -93,9 +93,16 @@
   color: white;
 }
 
-.footer-section a,
+.footer-section {
+  text-align: left;
+}
 .contact-us {
   color: white;
   text-decoration: none;
+}
+ul {
+  list-style: none; /* 移除列表前的点 */
+  padding: 0; /* 可选：去除默认内边距 */
+  margin: 0; /* 可选：去除默认外边距 */
 }
 </style>

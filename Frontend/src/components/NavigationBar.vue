@@ -5,7 +5,7 @@
     mode="horizontal"
     :ellipsis="false"
     @select="handleSelect"
-    :class="{'navigation-bar-home': isHome, 'navigation-bar-default': !isHome}"
+    style="background-color: rgba(25, 97, 158, 0.9);"
   >
     <el-menu-item index="0">
       <template #title>
@@ -48,29 +48,5 @@ console.log(key, keyPath)
 }
 a {
   text-decoration: none;
-}
-
-/* 主页时导航栏完全透明 */
-.navigation-bar-home {
-  background-color: transparent !important;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  border-bottom: none !important;
-}
-
-/* 默认导航栏样式（其他页面） */
-.navigation-bar-default {
-  background-color: rgba(25, 97, 158, 0.9);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease-in-out;
-}
-
-/* 主页滚动时，逐渐显示背景色 */
-.navigation-bar-home.scrolled {
-  background-color: rgba(25, 97, 158, 0.9);
-  transition: background-color 0.3s ease-in-out;
 }
 </style>
