@@ -7,24 +7,18 @@
     @select="handleSelect"
     style="background-color: rgba(25, 97, 158, 0.9);"
   >
-    <el-menu-item index="0">
-      <template #title>
-        <router-link to="/">
-          <img src="../assets/logo.png" style="width: 50px;" alt="Logo" class="logo" />
-        </router-link>
-      </template>
-    </el-menu-item>
+    <el-menu-item index="0"></el-menu-item>
     <el-menu-item index="1">
-      <router-link to="/" active-class="active-link">Home</router-link>
+      <router-link to="/" active-class="active-link">HOME</router-link>
     </el-menu-item>
     <el-menu-item index="2">
-      <router-link to="/local-heat-level" active-class="active-link">Local Heat Level</router-link>
+      <router-link to="/local-heat-level" active-class="active-link">LOCAL HEAT LEVEL</router-link>
     </el-menu-item>
     <el-menu-item index="3">
-      <router-link to="/personal-cooling-guide" active-class="active-link">Personal Cooling Guide</router-link>
+      <router-link to="/personal-cooling-guide" active-class="active-link">PERSONAL COOLING GUIDE</router-link>
     </el-menu-item>
     <el-menu-item index="4">
-      <router-link to="/community-support" active-class="active-link">Community Support</router-link>
+      <router-link to="/community-support" active-class="active-link">COMMUNITY SUPPORT</router-link>
     </el-menu-item>
   </el-menu>
 </template>
@@ -54,15 +48,30 @@ watch(
 );
 
 const handleSelect = (key: string, keyPath: string[]) => {
+  activeIndex.value = key;
   console.log(key, keyPath);
 };
 </script>
 
 <style scoped>
+.el-menu--horizontal {
+  width: 100%;  
+  height: 60px;
+  background-color: rgba(25, 97, 158, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly; 
+}
+
 .el-menu--horizontal > .el-menu-item:nth-child(1) {
   margin-right: auto;
 }
 .el-menu--horizontal .el-menu-item {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: color 0.2s;
   transition: background-color 0.3s ease;
 }
 
@@ -76,5 +85,18 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 a {
   text-decoration: none;
+}
+
+.el-menu-item.is-active {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: #ffffff !important;
+  font-weight: bold;
+  border-bottom: 3px solid #ffffff;
+}
+
+
+a.router-link-active {
+  color: #ffcc00 !important;
+  font-weight: bold;
 }
 </style>

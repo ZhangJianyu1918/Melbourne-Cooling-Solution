@@ -1,6 +1,10 @@
 <template>
     <div>
         <header class="header">
+            <video autoplay loop muted class="background-video">
+                <source src="../assets/home-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
             <!-- 首页专属导航栏 -->
             <nav v-if="isHome" class="home-nav">
                 <ul>
@@ -124,15 +128,22 @@ const services = [
 <style scoped>
 /* 头部区域 */
 .header {
-    background-image: url("../assets/home.png");
-    background-size: cover;
-    background-position: center;
     padding: 4rem 2rem;
     position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
+}
+.background-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    transform: translate(-50%, -50%); 
 }
 
 /* Add this gradient overlay */
@@ -143,10 +154,10 @@ const services = [
     left: 0;
     width: 100%;
     height: 70%; /* You can adjust this height */
-    background: linear-gradient(to top, 
+    /* background: linear-gradient(to top, 
                 rgba(0, 0, 0, 0.7) 0%, 
                 rgba(0, 0, 0, 0.4) 30%, 
-                rgba(0, 0, 0, 0) 100%);
+                rgba(0, 0, 0, 0) 100%); */
     pointer-events: none; /* Makes sure clicks pass through to elements below */
     z-index: 1; /* Above the background but below the content */
 }
@@ -172,16 +183,6 @@ const services = [
     z-index: 2; /* Same z-index as content */
 }
 
-/* 首页专属导航栏 */
-.home-nav {
-    background-color: transparent;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-}
-
 .home-nav ul {
     list-style: none;
     display: flex;
@@ -205,16 +206,6 @@ const services = [
 .home-nav a:hover {
     color: #60a5fa;
     /* 悬停时变色 */
-}
-
-/* 头部内容 */
-.header-content {
-    margin-left: 100px;
-    color: white;
-    position: absolute;
-    left: 0;
-    top: 30%;
-    padding: 10px;
 }
 
 h1 {
