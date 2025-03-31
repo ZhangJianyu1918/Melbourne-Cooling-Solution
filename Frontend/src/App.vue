@@ -59,6 +59,7 @@ const isHome = computed(() => route.meta.isHome || false);
   color: white;
   padding: 20px;
   text-align: center;
+  --el-footer-height: none;
 }
 /* 定义淡入淡出过渡动画 */
 .fade-enter-active, .fade-leave-active {
