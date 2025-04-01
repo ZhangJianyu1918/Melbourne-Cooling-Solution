@@ -28,6 +28,7 @@
 <script>
 import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
+import frostIcon from '@/assets/frost.png'
 
 export default {
   name: 'GoogleMap',
@@ -159,6 +160,7 @@ export default {
 
         this.loadMelbourneBoundary()
         this.loadDrinkingFountains()
+        this.loadCoolingPlaces()
       } catch (error) {
         console.error('Failed to load Google Maps API:', error);
       }
@@ -249,7 +251,7 @@ export default {
               const position = {
                 lat: Number(fountain.lat),
                 lng: Number(fountain.lon),
-                description: fountain.description
+                description: fountain.Description
               };
               const marker = new this.google.maps.Marker({
                 position,
@@ -273,6 +275,87 @@ export default {
       }
     },
 
+    async loadCoolingPlaces() {
+      try {
+        const response = await fetch('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        const data = await response.json();
+        const places = JSON.parse(data.body);
+
+        if (!places || !Array.isArray(places)) {
+          console.error('Parsed data is not an array:', places);
+          return [];
+        }
+        if (!data) {
+          console.error('Invalid response data');
+          return [];
+        }
+        const image = new Image();
+        image.src = frostIcon; // Assuming waterBottleIcon is the image URL or import
+
+        image.onload = () => {
+          const radius = 15; // Half of the 30x30 size
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+
+          canvas.width = radius * 2 + 4; // Add space for border
+          canvas.height = radius * 2 + 4; // Add space for border
+
+          // Create white circle boundary
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius + 2, 0, 2 * Math.PI); // Adjusted to create space for the border
+          context.fillStyle = 'white';
+          context.fill();
+
+          // Create circular clipping path
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius, 0, 2 * Math.PI);
+          context.clip();
+
+          // Draw the image onto the canvas
+          context.drawImage(image, 0, 0, image.width, image.height, 2, 2, canvas.width - 4, canvas.height - 4);
+
+          const markerIcon = {
+            url: canvas.toDataURL(), // Convert canvas to image data URL
+            scaledSize: new this.google.maps.Size(30, 30), // Ensure the size remains 30x30
+            anchor: new this.google.maps.Point(radius, radius), // Center the image
+          };
+
+
+          places.map((place) => {
+            if (place) {
+              const position = {
+                lat: Number(place.Latitude),
+                lng: Number(place.Longitude),
+                description: place["Place Name"]
+              };
+              
+              const marker = new this.google.maps.Marker({
+                position,
+                map: this.map,
+                title: 'Cooling Place',
+                icon: markerIcon
+              });
+
+              const infoWindow = new this.google.maps.InfoWindow({
+                content: `<p><strong>${position.description}</strong></p>`,
+              });
+
+              marker.addListener('click', () => {
+                infoWindow.open(this.map, marker);
+              });
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error parsing API data:', error);
+        return [];
+      }
+    },
     searchPlace() {
       const input = this.$refs.searchInput?.value;
       if (!input) {
