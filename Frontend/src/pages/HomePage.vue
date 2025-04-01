@@ -143,7 +143,7 @@ const services = [
     width: 100%;
     height: 100%;
     object-fit: cover; 
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
 }
 
 /* Add this gradient overlay */
@@ -154,10 +154,10 @@ const services = [
     left: 0;
     width: 100%;
     height: 70%; /* You can adjust this height */
-    /* background: linear-gradient(to top, 
-                rgba(0, 0, 0, 0.7) 0%, 
-                rgba(0, 0, 0, 0.4) 30%, 
-                rgba(0, 0, 0, 0) 100%); */
+    background: linear-gradient(to top, 
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.4) 70%, 
+                rgba(0, 0, 0, 0) 100%);
     pointer-events: none; /* Makes sure clicks pass through to elements below */
     z-index: 1; /* Above the background but below the content */
 }

@@ -27,6 +27,7 @@
 
 <script>
 import { Loader } from '@googlemaps/js-api-loader';
+import waterBottleIcon from '@/assets/water-bottle.png';
 
 export default {
   name: 'GoogleMap',
@@ -165,25 +166,42 @@ export default {
     async loadMelbourneBoundary() {
       try {
         const response = await fetch(
-          'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/municipal-boundary/records?limit=20'
+          'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_melbourne_boundary'
         );
+        // const response = await fetch(
+        //   'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/municipal-boundary/records?limit=20'
+        // );
         const data = await response.json();
+        console.log(data[0]['Geo Shape'])
 
-        if (!data.results || data.results.length === 0) {
+        if (!data || data.length === 0) {
           console.error('The data is empty.');
           return;
         }
+        const geoShape = JSON.parse(data[0]['Geo Shape']);
 
         // 提取 GeoJSON 坐标
-        const geoJsonData = {
-          type: "FeatureCollection",
-          features: data.results.map(item => ({
-            type: "Feature",
-            geometry: item.geo_shape.geometry,
-            properties: item.geo_shape.properties || {}
-          }))
-        };
+        // const geoJsonData = {
+        //   type: "FeatureCollection",
+        //   features: data[0]['Geo Shape'].forEach(item => ({
+        //     type: "Feature",
+        //     geometry: item.geo_shape.geometry,
+        //     properties: item.geo_shape.properties || {}
+        //   }))
+        // };
 
+        // Prepare the GeoJSON data
+        const geoJsonData = {
+  type: "FeatureCollection",
+  features: [{
+    type: "Feature",
+    geometry: {
+      type: "Polygon", // Assuming the coordinates represent a Polygon
+      coordinates: geoShape.coordinates // Directly use the coordinates
+    },
+    properties: data[0] // Include additional properties if needed
+  }]
+};
         // Add GeoJSON data to the map
         this.map.data.addGeoJson(geoJsonData);
 
@@ -210,33 +228,63 @@ export default {
           return;
         }
 
-        data.results.forEach((fountain) => {
-          if (fountain) {
-            const position = {
-              lat: fountain.lat,
-              lng: fountain.lon,
-              description: fountain.description
-            };
+        const image = new Image();
+        image.src = waterBottleIcon; // Assuming waterBottleIcon is the image URL or import
 
-            const marker = new this.google.maps.Marker({
-              position,
-              map: this.map,
-              title: 'Drinking Fountain',
-              icon: {
-                url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
-                scaledSize: new this.google.maps.Size(30, 30),
-              },
-            });
+        image.onload = () => {
+          const radius = 15; // Half of the 30x30 size
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
 
-            const infoWindow = new this.google.maps.InfoWindow({
-              content: `<p><strong>${position.description}</strong></p>`,
-            });
+          canvas.width = radius * 2 + 4; // Add space for border
+          canvas.height = radius * 2 + 4; // Add space for border
 
-            marker.addListener('click', () => {
-              infoWindow.open(this.map, marker);
-            });
-          }
-        });
+          // Create white circle boundary
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius + 2, 0, 2 * Math.PI); // Adjusted to create space for the border
+          context.fillStyle = 'white';
+          context.fill();
+
+          // Create circular clipping path
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius, 0, 2 * Math.PI);
+          context.clip();
+
+          // Draw the image onto the canvas
+          context.drawImage(image, 0, 0, image.width, image.height, 2, 2, canvas.width - 4, canvas.height - 4);
+
+          const markerIcon = {
+            url: canvas.toDataURL(), // Convert canvas to image data URL
+            scaledSize: new this.google.maps.Size(30, 30), // Ensure the size remains 30x30
+            anchor: new this.google.maps.Point(radius, radius), // Center the image
+          };
+
+
+          data.results.forEach((fountain) => {
+            if (fountain) {
+              const position = {
+                lat: fountain.lat,
+                lng: fountain.lon,
+                description: fountain.description
+              };
+
+              const marker = new this.google.maps.Marker({
+                position,
+                map: this.map,
+                title: 'Drinking Fountain',
+                icon: markerIcon
+              });
+
+              const infoWindow = new this.google.maps.InfoWindow({
+                content: `<p><strong>${position.description}</strong></p>`,
+              });
+
+              marker.addListener('click', () => {
+                infoWindow.open(this.map, marker);
+              });
+            }
+          });
+        }
       } catch (error) {
         console.error('Error fetching drinking fountain data:', error);
       }
@@ -309,7 +357,8 @@ export default {
           const request = {
             origin: origin,
             destination: destination,
-            travelMode: this.google.maps.TravelMode.DRIVING
+            travelMode: this.google.maps.TravelMode.DRIVING,
+            provideRouteAlternatives: true,
           };
 
           this.directionsService.route(request, (result, status) => {
