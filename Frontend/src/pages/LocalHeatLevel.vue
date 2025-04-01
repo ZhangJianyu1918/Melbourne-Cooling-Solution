@@ -163,45 +163,29 @@ export default {
         console.error('Failed to load Google Maps API:', error);
       }
     },
+
     async loadMelbourneBoundary() {
       try {
         const response = await fetch(
-          'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_melbourne_boundary'
+          'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/municipal-boundary/records?limit=20'
         );
-        // const response = await fetch(
-        //   'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/municipal-boundary/records?limit=20'
-        // );
         const data = await response.json();
-        console.log(data[0]['Geo Shape'])
 
-        if (!data || data.length === 0) {
+        if (!data.results || data.results.length === 0) {
           console.error('The data is empty.');
           return;
         }
-        const geoShape = JSON.parse(data[0]['Geo Shape']);
 
         // 提取 GeoJSON 坐标
-        // const geoJsonData = {
-        //   type: "FeatureCollection",
-        //   features: data[0]['Geo Shape'].forEach(item => ({
-        //     type: "Feature",
-        //     geometry: item.geo_shape.geometry,
-        //     properties: item.geo_shape.properties || {}
-        //   }))
-        // };
-
-        // Prepare the GeoJSON data
         const geoJsonData = {
-  type: "FeatureCollection",
-  features: [{
-    type: "Feature",
-    geometry: {
-      type: "Polygon", // Assuming the coordinates represent a Polygon
-      coordinates: geoShape.coordinates // Directly use the coordinates
-    },
-    properties: data[0] // Include additional properties if needed
-  }]
-};
+          type: "FeatureCollection",
+          features: data.results.map(item => ({
+            type: "Feature",
+            geometry: item.geo_shape.geometry,
+            properties: item.geo_shape.properties || {}
+          }))
+        };
+
         // Add GeoJSON data to the map
         this.map.data.addGeoJson(geoJsonData);
 
@@ -219,11 +203,11 @@ export default {
     async loadDrinkingFountains() {
       try {
         const response = await fetch(
-          'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/drinking-fountains/records?limit=50'
+          'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
         );
         const data = await response.json();
 
-        if (!data.results || data.results.length === 0) {
+        if (!data || data.length === 0) {
           console.error('No drinking fountain data found');
           return;
         }
@@ -260,14 +244,13 @@ export default {
           };
 
 
-          data.results.forEach((fountain) => {
+          data.forEach((fountain) => {
             if (fountain) {
               const position = {
-                lat: fountain.lat,
-                lng: fountain.lon,
+                lat: Number(fountain.lat),
+                lng: Number(fountain.lon),
                 description: fountain.description
               };
-
               const marker = new this.google.maps.Marker({
                 position,
                 map: this.map,
