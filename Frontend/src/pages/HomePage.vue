@@ -32,7 +32,8 @@
                     real-time heat mappings, and actionable steps to stay cool,
                     while fostering sustainable community change.
                 </p>
-                <el-button type="primary" round class="find-out" size="extra-large">FIND OUT MORE</el-button>
+                <div style="height: 50px;"></div>
+                <el-button type="primary" class="find-out" round  size="extra-large">FIND OUT MORE</el-button>
             </div>
         </header>
 
@@ -143,7 +144,7 @@ const services = [
     width: 100%;
     height: 100%;
     object-fit: cover; 
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
 }
 
 /* Add this gradient overlay */
@@ -154,10 +155,10 @@ const services = [
     left: 0;
     width: 100%;
     height: 70%; /* You can adjust this height */
-    /* background: linear-gradient(to top, 
-                rgba(0, 0, 0, 0.7) 0%, 
-                rgba(0, 0, 0, 0.4) 30%, 
-                rgba(0, 0, 0, 0) 100%); */
+    background: linear-gradient(to top, 
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.4) 70%, 
+                rgba(0, 0, 0, 0) 100%);
     pointer-events: none; /* Makes sure clicks pass through to elements below */
     z-index: 1; /* Above the background but below the content */
 }
@@ -229,13 +230,16 @@ p {
     margin: 1rem 0;
     text-align: left;
 }
-
+.el-button, .el-button.is-round {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 50px;
+}
 .find-out {
     font-size: 25px;
-
     text-align: left;
-    margin-top: 50px;
-    /* margin-left: 50px; */
 }
 
 .cta-button:hover {

@@ -27,6 +27,8 @@
 
 <script>
 import { Loader } from '@googlemaps/js-api-loader';
+import waterBottleIcon from '@/assets/water-bottle.png';
+import frostIcon from '@/assets/frost.png'
 
 export default {
   name: 'GoogleMap',
@@ -37,7 +39,7 @@ export default {
       marker: null,
       autocomplete: null,
       directionsService: null,
-      directionsRenderer: null,
+      directionsRenderer: [],
       weather: {
         temp: null,
         humidity: null,
@@ -45,6 +47,9 @@ export default {
         icon: null,
         loading: false
       },
+      routePolylines: [],
+      routeInfoWindow: null,
+      markers: []
     };
   },
   async mounted() {
@@ -127,8 +132,8 @@ export default {
     async initMap() {
       const loader = new Loader({
         apiKey: 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y',
-        version: 'weekly',
-        libraries: ['places'],
+        version: 'quarterly',
+        libraries: ['places', 'geometry'],
       });
 
       try {
@@ -153,15 +158,17 @@ export default {
           }
         });
         this.directionsService = new this.google.maps.DirectionsService();
-        this.directionsRenderer = new this.google.maps.DirectionsRenderer();
-        this.directionsRenderer.setMap(this.map);
+        // this.directionsRenderer = new this.google.maps.DirectionsRenderer();
+        // this.directionsRenderer.setMap(this.map);
 
         this.loadMelbourneBoundary()
         this.loadDrinkingFountains()
+        this.loadCoolingPlaces()
       } catch (error) {
         console.error('Failed to load Google Maps API:', error);
       }
     },
+
     async loadMelbourneBoundary() {
       try {
         const response = await fetch(
@@ -201,47 +208,161 @@ export default {
     async loadDrinkingFountains() {
       try {
         const response = await fetch(
-          'https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/drinking-fountains/records?limit=50'
+          'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
         );
         const data = await response.json();
 
-        if (!data.results || data.results.length === 0) {
+        if (!data || data.length === 0) {
           console.error('No drinking fountain data found');
           return;
         }
 
-        data.results.forEach((fountain) => {
-          if (fountain) {
-            const position = {
-              lat: fountain.lat,
-              lng: fountain.lon,
-              description: fountain.description
-            };
+        const image = new Image();
+        image.src = waterBottleIcon; // Assuming waterBottleIcon is the image URL or import
 
-            const marker = new this.google.maps.Marker({
-              position,
-              map: this.map,
-              title: 'Drinking Fountain',
-              icon: {
-                url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
-                scaledSize: new this.google.maps.Size(30, 30),
-              },
-            });
+        image.onload = () => {
+          const radius = 15; // Half of the 30x30 size
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
 
-            const infoWindow = new this.google.maps.InfoWindow({
-              content: `<p><strong>${position.description}</strong></p>`,
-            });
+          canvas.width = radius * 2 + 4; // Add space for border
+          canvas.height = radius * 2 + 4; // Add space for border
 
-            marker.addListener('click', () => {
-              infoWindow.open(this.map, marker);
-            });
-          }
-        });
+          // Create white circle boundary
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius + 2, 0, 2 * Math.PI); // Adjusted to create space for the border
+          context.fillStyle = 'white';
+          context.fill();
+
+          // Create circular clipping path
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius, 0, 2 * Math.PI);
+          context.clip();
+
+          // Draw the image onto the canvas
+          context.drawImage(image, 0, 0, image.width, image.height, 2, 2, canvas.width - 4, canvas.height - 4);
+
+          const markerIcon = {
+            url: canvas.toDataURL(), // Convert canvas to image data URL
+            scaledSize: new this.google.maps.Size(30, 30), // Ensure the size remains 30x30
+            anchor: new this.google.maps.Point(radius, radius), // Center the image
+          };
+
+
+          data.forEach((fountain) => {
+            if (fountain) {
+              const position = {
+                lat: Number(fountain.lat),
+                lng: Number(fountain.lon),
+                description: fountain.Description
+              };
+              const marker = new this.google.maps.Marker({
+                position,
+                map: this.map,
+                title: 'Drinking Fountain',
+                icon: markerIcon
+              });
+
+              const infoWindow = new this.google.maps.InfoWindow({
+                content: `<p><strong>${position.description}</strong></p>`,
+              });
+
+              marker.addListener('click', () => {
+                infoWindow.open(this.map, marker);
+              });
+
+              this.markers.push(marker);
+            }
+          });
+        }
       } catch (error) {
         console.error('Error fetching drinking fountain data:', error);
       }
     },
 
+    async loadCoolingPlaces() {
+      try {
+        const response = await fetch('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        const data = await response.json();
+        const places = JSON.parse(data.body);
+
+        if (!places || !Array.isArray(places)) {
+          console.error('Parsed data is not an array:', places);
+          return [];
+        }
+        if (!data) {
+          console.error('Invalid response data');
+          return [];
+        }
+        const image = new Image();
+        image.src = frostIcon; // Assuming waterBottleIcon is the image URL or import
+
+        image.onload = () => {
+          const radius = 15; // Half of the 30x30 size
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+
+          canvas.width = radius * 2 + 4; // Add space for border
+          canvas.height = radius * 2 + 4; // Add space for border
+
+          // Create white circle boundary
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius + 2, 0, 2 * Math.PI); // Adjusted to create space for the border
+          context.fillStyle = 'white';
+          context.fill();
+
+          // Create circular clipping path
+          context.beginPath();
+          context.arc(radius + 2, radius + 2, radius, 0, 2 * Math.PI);
+          context.clip();
+
+          // Draw the image onto the canvas
+          context.drawImage(image, 0, 0, image.width, image.height, 2, 2, canvas.width - 4, canvas.height - 4);
+
+          const markerIcon = {
+            url: canvas.toDataURL(), // Convert canvas to image data URL
+            scaledSize: new this.google.maps.Size(30, 30), // Ensure the size remains 30x30
+            anchor: new this.google.maps.Point(radius, radius), // Center the image
+          };
+
+
+          places.map((place) => {
+            if (place) {
+              const position = {
+                lat: Number(place.Latitude),
+                lng: Number(place.Longitude),
+                description: place["Place Name"]
+              };
+
+              const marker = new this.google.maps.Marker({
+                position,
+                map: this.map,
+                title: 'Cooling Place',
+                icon: markerIcon
+              });
+
+              const infoWindow = new this.google.maps.InfoWindow({
+                content: `<p><strong>${position.description}</strong></p>`,
+              });
+
+              marker.addListener('click', () => {
+                infoWindow.open(this.map, marker);
+              });
+
+              this.markers.push(marker);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error parsing API data:', error);
+        return [];
+      }
+    },
     searchPlace() {
       const input = this.$refs.searchInput?.value;
       if (!input) {
@@ -279,7 +400,8 @@ export default {
         map: this.map,
         title: place.name,
       });
-      // 添加导航按钮
+      
+
       const navButton = document.createElement("button");
       navButton.innerText = "Navigate Here";
       navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
@@ -299,31 +421,129 @@ export default {
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const origin = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
+      navigator.geolocation.getCurrentPosition((position) => {
+        const origin = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
 
-          const request = {
-            origin: origin,
-            destination: destination,
-            travelMode: this.google.maps.TravelMode.DRIVING
-          };
+        const request = {
+          origin: origin,
+          destination: destination,
+          travelMode: this.google.maps.TravelMode.DRIVING,
+          provideRouteAlternatives: true,
+        };
 
-          this.directionsService.route(request, (result, status) => {
-            if (status === this.google.maps.DirectionsStatus.OK) {
-              this.directionsRenderer.setDirections(result);
-            } else {
-              alert("Directions request failed due to " + status);
-            }
-          });
-        },
+        this.directionsService.route(request, (result, status) => {
+          if (status === this.google.maps.DirectionsStatus.OK) {
+            this.clearPreviousRoutes();
+            this.markerCount = 0;
+            result.routes.forEach((route, index) => {
+              const currentColor = this.getRandomColor()
+
+              const render = new google.maps.DirectionsRenderer({
+                map: this.map,
+                directions: result,
+                routeIndex: index,
+                polylineOptions: {
+                  strokeColor: currentColor,
+                  strokeWeight: 4,
+                },
+                suppressMarkers: false,
+                directions: result
+              });
+              
+              
+              this.directionsRenderer.push(render);
+
+              const polyline = new google.maps.Polyline({
+                path: route.overview_path,
+                strokeColor: currentColor,
+                strokeWeight: 8,
+                map: this.map,
+              });
+              
+              const count = this.countMarkersOnRoute(polyline.getPath());
+
+              polyline.addListener("click", (event) => {
+                this.showRouteInfoWindow(event, route, count);
+              });
+              render.addListener("click", (event) => {
+                this.showRouteInfoWindow(event, route, count);
+              });
+
+            });
+          } else {
+            alert("Directions request failed due to " + status);
+          }
+        });
+      },
         () => {
           alert("Unable to retrieve your location.");
         }
       );
+    },
+    countMarkersOnRoute(routePath) {
+      let count = 0;
+
+      // Iterate over existing markers
+      this.markers.forEach((marker) => {
+        const markerPosition = marker.getPosition();
+
+        // Check if marker is within the route polyline
+        routePath.forEach((pathPoint) => {
+          // Check if the marker is near the route (within a certain tolerance)
+          const distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition, pathPoint);
+          // console.log(`Distance from marker to path point: ${distance} meters`);
+          if (distance < 100) { // You can adjust the tolerance distance
+            count++;
+          }
+        });
+      });
+
+      console.log(`Number of markers near the route: ${count}`);
+      return count;
+    },
+    clearPreviousRoutes() {
+      this.directionsRenderer.forEach(render => render.setMap(null));
+      this.directionsRenderer = [];
+
+      this.routePolylines.forEach(polyline => polyline.setMap(null));
+      this.routePolylines = [];
+
+      if (this.routeInfoWindow) {
+        this.routeInfoWindow.close();
+      }
+    },
+
+    getRandomColor() {
+      const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFA500", "#800080"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    },
+
+    showRouteInfoWindow(event, route, count) {
+      if (this.routeInfoWindow != null) {
+        this.routeInfoWindow.close();
+      }
+      const leg = route.legs[0]; // 只取第一段路线
+      const distance = leg.distance.text;
+      const duration = leg.duration.text;
+      const startAddress = leg.start_address;
+      const endAddress = leg.end_address;
+
+      this.routeInfoWindow = new google.maps.InfoWindow({
+        content: `<div>
+                <strong>Route Detail</strong><br>
+                <strong>From:</strong> ${startAddress} <br>
+                <strong>To:</strong> ${endAddress} <br>
+                <strong>Distance:</strong>: ${distance} <br>
+                <strong>Duration:</strong>: ${duration} <br>
+                <strong>The Number of the Drinking Foundtains and Cooling Places:</strong>: ${count}
+              </div>`,
+        position: event.latLng,
+      });
+
+      this.routeInfoWindow.open(this.map);
     }
   },
 
