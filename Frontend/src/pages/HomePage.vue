@@ -32,7 +32,8 @@
                     real-time heat mappings, and actionable steps to stay cool,
                     while fostering sustainable community change.
                 </p>
-                <el-button type="primary" round class="find-out" size="extra-large">FIND OUT MORE</el-button>
+                <div style="height: 50px;"></div>
+                <el-button type="primary" class="find-out" round  size="extra-large">FIND OUT MORE</el-button>
             </div>
         </header>
 
@@ -229,13 +230,16 @@ p {
     margin: 1rem 0;
     text-align: left;
 }
-
+.el-button, .el-button.is-round {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 50px;
+}
 .find-out {
     font-size: 25px;
-
     text-align: left;
-    margin-top: 50px;
-    /* margin-left: 50px; */
 }
 
 .cta-button:hover {
