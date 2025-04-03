@@ -29,6 +29,7 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
 import frostIcon from '@/assets/frost.png'
+import { render } from 'vue';
 
 export default {
   name: 'GoogleMap',
@@ -39,7 +40,7 @@ export default {
       marker: null,
       autocomplete: null,
       directionsService: null,
-      directionsRenderer: null,
+      directionsRenderer: [],
       weather: {
         temp: null,
         humidity: null,
@@ -129,7 +130,7 @@ export default {
     async initMap() {
       const loader = new Loader({
         apiKey: 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y',
-        version: 'weekly',
+        version: 'quarterly',
         libraries: ['places'],
       });
 
@@ -155,8 +156,8 @@ export default {
           }
         });
         this.directionsService = new this.google.maps.DirectionsService();
-        this.directionsRenderer = new this.google.maps.DirectionsRenderer();
-        this.directionsRenderer.setMap(this.map);
+        // this.directionsRenderer = new this.google.maps.DirectionsRenderer();
+        // this.directionsRenderer.setMap(this.map);
 
         this.loadMelbourneBoundary()
         this.loadDrinkingFountains()
@@ -333,7 +334,7 @@ export default {
                 lng: Number(place.Longitude),
                 description: place["Place Name"]
               };
-              
+
               const marker = new this.google.maps.Marker({
                 position,
                 map: this.map,
@@ -429,7 +430,19 @@ export default {
 
           this.directionsService.route(request, (result, status) => {
             if (status === this.google.maps.DirectionsStatus.OK) {
-              this.directionsRenderer.setDirections(result);
+              this.clearPreviousRoutes();
+              result.routes.forEach((route, index) => {
+                const render = new google.maps.DirectionsRenderer({
+                  map: this.map,
+                  directions: result,
+                  routeIndex: index, // 指定渲染哪条路线
+                  polylineOptions: {
+                    strokeColor: this.getRandomColor(), // 设置不同颜色
+                    strokeWeight: 4,
+                  },
+                });
+                this.directionsRenderer.push(render);
+              });
             } else {
               alert("Directions request failed due to " + status);
             }
@@ -439,6 +452,14 @@ export default {
           alert("Unable to retrieve your location.");
         }
       );
+    },
+    clearPreviousRoutes() {
+      this.directionsRenderer.forEach(render => render.setMap(null));
+      this.directionsRenderer = [];
+    },
+    getRandomColor() {
+      const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFA500", "#800080"];
+      return colors[Math.floor(Math.random() * colors.length)];
     }
   },
 
