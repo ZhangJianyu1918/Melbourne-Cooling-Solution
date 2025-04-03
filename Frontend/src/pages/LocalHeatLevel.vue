@@ -48,6 +48,8 @@ export default {
         icon: null,
         loading: false
       },
+      routePolylines: [],
+      routeInfoWindow: null
     };
   },
   async mounted() {
@@ -414,52 +416,103 @@ export default {
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const origin = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
+      navigator.geolocation.getCurrentPosition((position) => {
+        const origin = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
 
-          const request = {
-            origin: origin,
-            destination: destination,
-            travelMode: this.google.maps.TravelMode.DRIVING,
-            provideRouteAlternatives: true,
-          };
+        const request = {
+          origin: origin,
+          destination: destination,
+          travelMode: this.google.maps.TravelMode.DRIVING,
+          provideRouteAlternatives: true,
+        };
 
-          this.directionsService.route(request, (result, status) => {
-            if (status === this.google.maps.DirectionsStatus.OK) {
-              this.clearPreviousRoutes();
-              result.routes.forEach((route, index) => {
-                const render = new google.maps.DirectionsRenderer({
-                  map: this.map,
-                  directions: result,
-                  routeIndex: index, // 指定渲染哪条路线
-                  polylineOptions: {
-                    strokeColor: this.getRandomColor(), // 设置不同颜色
-                    strokeWeight: 4,
-                  },
-                });
-                this.directionsRenderer.push(render);
+        this.directionsService.route(request, (result, status) => {
+          if (status === this.google.maps.DirectionsStatus.OK) {
+            this.clearPreviousRoutes();
+            result.routes.forEach((route, index) => {
+              const currentColor = this.getRandomColor()
+
+              const render = new google.maps.DirectionsRenderer({
+                map: this.map,
+                directions: result,
+                routeIndex: index,
+                polylineOptions: {
+                  strokeColor: currentColor,
+                  strokeWeight: 4,
+                },
+                suppressMarkers: false,
+                directions: result
               });
-            } else {
-              alert("Directions request failed due to " + status);
-            }
+              render.addListener("click", (event) => {
+            this.showRouteInfoWindow(event, route);
           });
-        },
+              this.directionsRenderer.push(render);
+
+              const polyline = new google.maps.Polyline({
+                path: route.overview_path,
+                strokeColor: currentColor,
+                strokeWeight: 6,
+                map: this.map,
+              });
+              polyline.addListener("click", (event) => {
+                this.showRouteInfoWindow(event, route);
+              });
+
+              this.routePolylines.push(polyline);
+            });
+          } else {
+            alert("Directions request failed due to " + status);
+          }
+        });
+      },
         () => {
           alert("Unable to retrieve your location.");
         }
       );
     },
+
     clearPreviousRoutes() {
       this.directionsRenderer.forEach(render => render.setMap(null));
       this.directionsRenderer = [];
+
+      this.routePolylines.forEach(polyline => polyline.setMap(null));
+      this.routePolylines = [];
+
+      if (this.routeInfoWindow) {
+        this.routeInfoWindow.close();
+      }
     },
+
     getRandomColor() {
       const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFA500", "#800080"];
       return colors[Math.floor(Math.random() * colors.length)];
+    },
+
+    showRouteInfoWindow(event, route) {
+      if (this.routeInfoWindow != null) {
+        this.routeInfoWindow.close();
+      }
+      const leg = route.legs[0]; // 只取第一段路线
+      const distance = leg.distance.text;
+      const duration = leg.duration.text;
+      const startAddress = leg.start_address;
+      const endAddress = leg.end_address;
+
+      this.routeInfoWindow = new google.maps.InfoWindow({
+        content: `<div>
+                <strong>Route Detail</strong><br>
+                <strong>From:</strong> ${startAddress} <br>
+                <strong>To:</strong> ${endAddress} <br>
+                <strong>Distance:</strong>: ${distance} <br>
+                <strong>Duration:</strong>: ${duration}
+              </div>`,
+        position: event.latLng,
+      });
+
+      this.routeInfoWindow.open(this.map);
     }
   },
 
