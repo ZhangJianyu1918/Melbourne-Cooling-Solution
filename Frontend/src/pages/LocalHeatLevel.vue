@@ -29,7 +29,6 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
 import frostIcon from '@/assets/frost.png'
-import { render } from 'vue';
 
 export default {
   name: 'GoogleMap',
@@ -49,7 +48,8 @@ export default {
         loading: false
       },
       routePolylines: [],
-      routeInfoWindow: null
+      routeInfoWindow: null,
+      markers: []
     };
   },
   async mounted() {
@@ -133,7 +133,7 @@ export default {
       const loader = new Loader({
         apiKey: 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y',
         version: 'quarterly',
-        libraries: ['places'],
+        libraries: ['places', 'geometry'],
       });
 
       try {
@@ -270,6 +270,8 @@ export default {
               marker.addListener('click', () => {
                 infoWindow.open(this.map, marker);
               });
+
+              this.markers.push(marker);
             }
           });
         }
@@ -351,6 +353,8 @@ export default {
               marker.addListener('click', () => {
                 infoWindow.open(this.map, marker);
               });
+
+              this.markers.push(marker);
             }
           });
         }
@@ -396,7 +400,8 @@ export default {
         map: this.map,
         title: place.name,
       });
-      // 添加导航按钮
+      
+
       const navButton = document.createElement("button");
       navButton.innerText = "Navigate Here";
       navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
@@ -432,6 +437,7 @@ export default {
         this.directionsService.route(request, (result, status) => {
           if (status === this.google.maps.DirectionsStatus.OK) {
             this.clearPreviousRoutes();
+            this.markerCount = 0;
             result.routes.forEach((route, index) => {
               const currentColor = this.getRandomColor()
 
@@ -446,22 +452,26 @@ export default {
                 suppressMarkers: false,
                 directions: result
               });
-              render.addListener("click", (event) => {
-            this.showRouteInfoWindow(event, route);
-          });
+              
+              
               this.directionsRenderer.push(render);
 
               const polyline = new google.maps.Polyline({
                 path: route.overview_path,
                 strokeColor: currentColor,
-                strokeWeight: 6,
+                strokeWeight: 8,
                 map: this.map,
               });
+              
+              const count = this.countMarkersOnRoute(polyline.getPath());
+
               polyline.addListener("click", (event) => {
-                this.showRouteInfoWindow(event, route);
+                this.showRouteInfoWindow(event, route, count);
+              });
+              render.addListener("click", (event) => {
+                this.showRouteInfoWindow(event, route, count);
               });
 
-              this.routePolylines.push(polyline);
             });
           } else {
             alert("Directions request failed due to " + status);
@@ -473,7 +483,27 @@ export default {
         }
       );
     },
+    countMarkersOnRoute(routePath) {
+      let count = 0;
 
+      // Iterate over existing markers
+      this.markers.forEach((marker) => {
+        const markerPosition = marker.getPosition();
+
+        // Check if marker is within the route polyline
+        routePath.forEach((pathPoint) => {
+          // Check if the marker is near the route (within a certain tolerance)
+          const distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition, pathPoint);
+          // console.log(`Distance from marker to path point: ${distance} meters`);
+          if (distance < 100) { // You can adjust the tolerance distance
+            count++;
+          }
+        });
+      });
+
+      console.log(`Number of markers near the route: ${count}`);
+      return count;
+    },
     clearPreviousRoutes() {
       this.directionsRenderer.forEach(render => render.setMap(null));
       this.directionsRenderer = [];
@@ -491,7 +521,7 @@ export default {
       return colors[Math.floor(Math.random() * colors.length)];
     },
 
-    showRouteInfoWindow(event, route) {
+    showRouteInfoWindow(event, route, count) {
       if (this.routeInfoWindow != null) {
         this.routeInfoWindow.close();
       }
@@ -507,7 +537,8 @@ export default {
                 <strong>From:</strong> ${startAddress} <br>
                 <strong>To:</strong> ${endAddress} <br>
                 <strong>Distance:</strong>: ${distance} <br>
-                <strong>Duration:</strong>: ${duration}
+                <strong>Duration:</strong>: ${duration} <br>
+                <strong>The Number of the Drinking Foundtains and Cooling Places:</strong>: ${count}
               </div>`,
         position: event.latLng,
       });
