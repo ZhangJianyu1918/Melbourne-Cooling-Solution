@@ -2,11 +2,11 @@
     <div class="container mx-auto p-6">
         <!-- Header Section -->
         <div class="mb-8">
-            <el-button type="text" icon="el-icon-arrow-left" @click="$router.push('/community-support')">
+            <el-button type="text" @click="$router.push('/community-support')" style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-left /></el-icon>
                 Go back to Community Support
             </el-button>
             <h1 class="text-2xl md:text-3xl font-bold text-red-600 mt-4 flex items-center">
-                <el-avatar icon="el-icon-first-aid-kit" size="small" class="mr-2 bg-red-100" />
                 Melbourne UHI First Aid
             </h1>
             <el-card class="mt-4 intro-card" shadow="hover">
@@ -133,6 +133,7 @@
 <script setup>
 import SearchVideo from '../components/SearchVideo.vue';
 import { ref } from 'vue'
+import { ArrowLeft } from '@element-plus/icons-vue'
 
 const active = ref(0)
 

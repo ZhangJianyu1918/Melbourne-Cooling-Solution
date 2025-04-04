@@ -161,12 +161,57 @@ export default {
         // this.directionsRenderer = new this.google.maps.DirectionsRenderer();
         // this.directionsRenderer.setMap(this.map);
 
-        this.loadMelbourneBoundary()
-        this.loadDrinkingFountains()
-        this.loadCoolingPlaces()
+        // this.loadMelbourneBoundary()
+        // this.loadDrinkingFountains()
+        // this.loadCoolingPlaces()
+        this.map.addListener("click", (event) => this.handleMapClick(event));
       } catch (error) {
         console.error('Failed to load Google Maps API:', error);
       }
+    },
+    async handleMapClick(event) {
+      if (!event || !event.latLng) {
+        console.error('Event or event.latLng is undefined');
+        return;
+      }
+      const clickedLocation = event.latLng;
+      const lat = clickedLocation.lat();
+      const lng = clickedLocation.lng();
+
+      // 清除之前的 marker 和圆
+      this.clearMarkersAndCircle();
+
+      // 画一个 300 米的圆形
+      this.circle = new google.maps.Circle({
+        strokeColor: "#00BFFF",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#87CEFA",
+        fillOpacity: 0.35,
+        map: this.map,
+        center: clickedLocation,
+        radius: 300 // 半径 300 米
+      });
+
+      // 获取附近的地点
+      this.fetchNearbyPlaces(lat, lng);
+    },
+    clearMarkersAndCircle() {
+      if (this.circle) {
+        this.circle.setMap(null);
+        this.circle = null;
+      }
+
+      // 清除所有 markers
+      this.markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      this.markers = [];
+    },
+
+    async fetchNearbyPlaces(latitude, longitude) {
+      this.loadDrinkingFountains(latitude, longitude)
+      this.loadCoolingPlaces(latitude, longitude)
     },
 
     async loadMelbourneBoundary() {
@@ -194,18 +239,20 @@ export default {
         // Add GeoJSON data to the map
         this.map.data.addGeoJson(geoJsonData);
 
-        // Optionally, you can set styling for the polygons here
+        // Set styling to display only borders (no fill)
         this.map.data.setStyle({
-          fillColor: '#FF0000',
-          fillOpacity: 0.3,
-          strokeWeight: 2
+          // fillColor: '#transparent',  
+          fillOpacity: 0,            // Hide the fill by setting opacity to 0
+          strokeColor: '#FF0000',    // Border color
+          strokeOpacity: 1,          // Border opacity
+          strokeWeight: 3            // Border thickness
         });
 
       } catch (error) {
         console.error('Error Message:', error);
       }
     },
-    async loadDrinkingFountains() {
+    async loadDrinkingFountains(latitude, longitude) {
       try {
         const response = await fetch(
           'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
@@ -248,8 +295,16 @@ export default {
             anchor: new this.google.maps.Point(radius, radius), // Center the image
           };
 
-
-          data.forEach((fountain) => {
+          for (let i = 0; i < data.length; i++) {
+            const fountain = data[i]
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(
+              new google.maps.LatLng(latitude, longitude),
+              new google.maps.LatLng(fountain.lat, fountain.lon)
+            );
+            console.log(distance)
+            if (distance > 300) {
+              continue;
+            }
             if (fountain) {
               const position = {
                 lat: Number(fountain.lat),
@@ -273,14 +328,14 @@ export default {
 
               this.markers.push(marker);
             }
-          });
+          };
         }
       } catch (error) {
         console.error('Error fetching drinking fountain data:', error);
       }
     },
 
-    async loadCoolingPlaces() {
+    async loadCoolingPlaces(latitude, longitude) {
       try {
         const response = await fetch('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
           method: 'GET',
@@ -331,8 +386,16 @@ export default {
           };
 
 
-          places.map((place) => {
+          for (let i = 0; i < places.length; i++) {
+            const place = places[i];
             if (place) {
+              const distance = google.maps.geometry.spherical.computeDistanceBetween(
+                new google.maps.LatLng(latitude, longitude),
+                new google.maps.LatLng(place.Latitude, place.Longitude)
+              );
+              if (distance > 300) {
+                continue;
+              }
               const position = {
                 lat: Number(place.Latitude),
                 lng: Number(place.Longitude),
@@ -356,7 +419,7 @@ export default {
 
               this.markers.push(marker);
             }
-          });
+          };
         }
       } catch (error) {
         console.error('Error parsing API data:', error);
@@ -400,7 +463,7 @@ export default {
         map: this.map,
         title: place.name,
       });
-      
+
 
       const navButton = document.createElement("button");
       navButton.innerText = "Navigate Here";
@@ -455,8 +518,8 @@ export default {
                 suppressMarkers: false,
                 directions: result
               });
-              
-              
+
+
               this.directionsRenderer.push(render);
 
               const polyline = new google.maps.Polyline({
@@ -465,7 +528,7 @@ export default {
                 strokeWeight: 8,
                 map: this.map,
               });
-              
+
               const count = this.countMarkersOnRoute(polyline.getPath());
 
               polyline.addListener("click", (event) => {

@@ -2,11 +2,11 @@
     <div class="container mx-auto p-6">
         <!-- Back button and header group -->
         <div class="mb-8">
-            <el-button type="text" icon="el-icon-arrow-left" @click="$router.push('/community-support')">
-                Back to Community Support
+            <el-button type="text" @click="$router.push('/community-support')" style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-left /></el-icon>
+                Go back to Community Support
             </el-button>
             <h1 class="text-2xl font-bold text-red-600 mt-4 flex items-center">
-                <el-avatar icon="el-icon-first-aid-kit" size="small" class="mr-2 bg-red-100" />
                 Melbourne Recovery and Aftercare
             </h1>
             <el-divider />
@@ -125,7 +125,7 @@
 <script setup>
 import { ref } from 'vue';
 import SearchVideo from '../components/SearchVideo.vue';
-
+import { ArrowLeft } from '@element-plus/icons-vue'
 const active = ref(0)
 
 const next = () => {
