@@ -4,8 +4,8 @@
             <div class="card shadow-sm">
                 <img :src="getImageUrl(image)" alt="Service Image" class="card-img-top" />
                 <div class="card-body">
-                    <h5 class="card-title">{{ title }}</h5>
-                    <p class="card-text">{{ description }}</p>
+                    <h5 class="card-title">{{ t(title) }}</h5>
+                    <p class="card-text">{{ t(description) }}</p>
                 </div>
             </div>
         </router-link>
@@ -13,12 +13,16 @@
 </template>
 
 <script setup>
+import { useI18n } from "vue-i18n";
+
+
 defineProps({
     image: String,
     title: String,
     description: String,
     to: String
 });
+const { t } = useI18n()
 const getImageUrl = (imagePath) => {
     return new URL(`../assets/${imagePath}`, import.meta.url).href;
 };
