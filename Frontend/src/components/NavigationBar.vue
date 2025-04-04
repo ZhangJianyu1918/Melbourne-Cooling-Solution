@@ -9,23 +9,28 @@
   >
     <el-menu-item index="0"></el-menu-item>
     <el-menu-item index="1">
-      <router-link to="/" active-class="active-link">HOME</router-link>
+      <router-link to="/" active-class="active-link">{{ $t('navigation-home') }}</router-link>
     </el-menu-item>
     <el-menu-item index="2">
-      <router-link to="/local-heat-level" active-class="active-link">LOCAL HEAT LEVEL</router-link>
+      <router-link to="/local-heat-level" active-class="active-link">{{ $t('navigation-local-heat-level') }}</router-link>
     </el-menu-item>
     <el-menu-item index="3">
-      <router-link to="/personal-cooling-guide" active-class="active-link">PERSONAL COOLING GUIDE</router-link>
+      <router-link to="/personal-cooling-guide" active-class="active-link">{{ $t('navigation-personal-cooling-guide') }}</router-link>
     </el-menu-item>
     <el-menu-item index="4">
-      <router-link to="/community-support" active-class="active-link">COMMUNITY SUPPORT</router-link>
+      <router-link to="/community-support" active-class="active-link">{{ $t('navigation-community-support') }}</router-link>
+    </el-menu-item>
+    <el-menu-item index="5">
+      <LanguageSwitcher />
     </el-menu-item>
   </el-menu>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+
 
 const route = useRoute();
 
@@ -47,7 +52,7 @@ watch(
   { immediate: true }
 );
 
-const handleSelect = (key: string, keyPath: string[]) => {
+const handleSelect = (key, keyPath) => {
   activeIndex.value = key;
   console.log(key, keyPath);
 };
