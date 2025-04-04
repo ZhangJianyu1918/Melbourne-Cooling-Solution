@@ -1,8 +1,17 @@
 {
-    "navigation-home": "TRANG CHỦ",
-    "navigation-local-heat-level": "MỨC NHIỆT ĐỊA PHƯƠNG",
-    "navigation-personal-cooling-guide": "HƯỚNG DẪN LÀM MÁT CÁ NHÂN",
-    "navigation-community-support": "HỖ TRỢ CỘNG ĐỒNG",
-    "navigation-switch-language": "Chuyển ngôn ngữ"
-  }
-  
+  "navigation-home": "TRANG CHỦ",
+  "navigation-local-heat-level": "MỨC NHIỆT ĐỊA PHƯƠNG",
+  "navigation-personal-cooling-guide": "HƯỚNG DẪN LÀM MÁT CÁ NHÂN",
+  "navigation-community-support": "HỖ TRỢ CỘNG ĐỒNG",
+  "navigation-switch-language": "Chuyển ngôn ngữ",
+  "home-title": "Giải pháp làm mát Melbourne",
+  "home-content": "Với hiệu ứng Đảo nhiệt đô thị (UHI) tác động không cân xứng đến các khu vực địa phương tại Thành phố Melbourne, công cụ này cung cấp thông tin chi tiết được cá nhân hóa, bản đồ nhiệt theo thời gian thực và các bước hành động để giữ mát, đồng thời thúc đẩy sự thay đổi bền vững trong cộng đồng.",
+  "home-button": "TÌM HIỂU THÊM",
+  "home-service-title": "Dịch vụ của chúng tôi",
+  "service-card-local-heat-level-title": "📍 Mức nhiệt cục bộ",
+  "service-card-local-heat-level-description": "Khám phá nhiệt độ theo thời gian thực tại các khu vực địa phương của Thành phố Melbourne và tìm những không gian mát mẻ, râm mát và trung tâm công cộng gần nhất",
+  "service-card-personal-cooling-guide-title": "🏡 Hướng dẫn làm mát cá nhân",
+  "service-card-personal-cooling-guide-description": "Nhận lời khuyên phù hợp dựa trên nhu cầu cá nhân của bạn để chống chọi với cái nóng, nâng cao sức khỏe và làm cho không gian sống của bạn mát mẻ hơn",
+  "service-card-communtity-support-title": "🤝 Hỗ trợ cộng đồng",
+  "service-card-communtity-support-description": "Tìm hiểu cách giúp bản thân và những người khác đối phó với UHI bằng cách truy cập các hướng dẫn phản hồi nhanh và các dịch vụ hỗ trợ tại địa phương"
+}

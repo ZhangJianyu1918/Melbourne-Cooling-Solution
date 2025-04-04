@@ -1,9 +1,17 @@
 {
-    "navigation-home": "主页",
-    "navigation-local-heat-level": "当地热力等级",
-    "navigation-personal-cooling-guide": "个人防暑指南",
-    "navigation-community-support": "社区支持",
-    "navigation-switch-language": "切换语言"
-
+  "navigation-home": "主页",
+  "navigation-local-heat-level": "当地热力等级",
+  "navigation-personal-cooling-guide": "个人防暑指南",
+  "navigation-community-support": "社区支持",
+  "navigation-switch-language": "切换语言",
+  "home-title": "墨尔本防暑方法",
+  "home-content": "由于城市热岛（UHI）效应对墨尔本市的当地地区影响尤为严重,该工具提供了个性化的见解、实时热图和可操作的步骤以保持凉爽,同时促进可持续的社区变革。",
+  "home-button": "发现更多",
+  "home-service-title": "我们的服务",
+  "service-card-local-heat-level-title": "📍 当地热度等级",
+  "service-card-local-heat-level-description": "探索墨尔本市当地区域的实时热度,并找到最近的阴凉、降温空间和公共中心",
+  "service-card-personal-cooling-guide-title": "🏡 个人降温指南",
+  "service-card-personal-cooling-guide-description": "根据您的个人需求获取量身定制的建议,以抵御炎热、改善健康并让您的生活空间更凉爽",
+  "service-card-communtity-support-title": "🤝 社区支持",
+  "service-card-communtity-support-description": "通过访问快速响应指南和本地支持服务,了解如何帮助自己和他人应对城市热岛效应"
 }
-  

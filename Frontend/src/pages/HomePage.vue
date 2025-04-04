@@ -28,15 +28,12 @@
 
             <!-- 头部内容 -->
             <div class="header-content">
-                <h1>Melbourne Cooling Solution</h1>
+                <h1>{{ $t('home-title') }}</h1>
                 <p>
-                    With Urban Heat Island (UHI) effect disproportionately impacting local
-                    areas in City of Melbourne, this tool provides personalized insights,
-                    real-time heat mappings, and actionable steps to stay cool,
-                    while fostering sustainable community change.
+                   {{ $t('home-content') }}
                 </p>
                 <div style="height: 50px;"></div>
-                <el-button type="primary" class="find-out" round  size="extra-large">FIND OUT MORE</el-button>
+                <el-button type="primary" class="find-out" round  size="extra-large">{{ $t('home-button') }}</el-button>
             </div>
         </header>
 
@@ -107,24 +104,20 @@ const isHome = route.path === '/';
 const services = [
     {
         image: "local-heat-level.png",
-        title: "📍 Local Heat Level",
-        description: "Explore real-time heat in City of Melbourne local" + 
-        " areas and find the nearest shaded, cooling spaces and public centres",
-        to: "local-heat-level"
-        
+        title: "service-card-local-heat-level-title",
+        description: "service-card-local-heat-level-description",
+        to: "/local-heat-level"
     },
     {
         image: "personal-cooling-guide.png",
-        title: "🏡 Personal Cooling Guide",
-        description: "Get tailored advices based on your personal needs" + 
-        " to beat the heat, elevate your health and make your living space cooler",
+        title: "service-card-personal-cooling-guide-title",
+        description: "service-card-personal-cooling-guide-description",
         to: "/personal-cooling-guide"
     },
     {
         image: "community-support.png",
-        title: "🤝 Community Support",
-        description: "Learn how to help yourself and others to deal with" + 
-        " UHI by accessing quick-response guides and local support services",
+        title: "service-card-communtity-support-title",
+        description: "service-card-communtity-support-description",
         to: "/community-support"
     }
 ];
@@ -228,9 +221,9 @@ h2 {
 }
 
 p {
-    padding-top: 50px;
-    font-size: 1.5rem;
-    max-width: 1000px;
+    padding-top: 20px;
+    font-size: 1rem;
+    max-width: 800px;
     margin: 1rem 0;
     text-align: left;
 }

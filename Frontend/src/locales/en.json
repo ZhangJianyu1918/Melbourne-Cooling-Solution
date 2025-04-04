@@ -3,6 +3,17 @@
     "navigation-local-heat-level": "LOCAL HEAT LEVEL",
     "navigation-personal-cooling-guide": "PERSONAL COOLING GUIDE",
     "navigation-community-support": "COMMUNITY SUPPORT",
-    "navigation-switch-language": "Switch Language"
+    "navigation-switch-language": "Switch Language",
+    "home-title": "Melbourne Cooling Solution",
+    "home-content": "With Urban Heat Island (UHI) effect disproportionately impacting local areas in City of Melbourne, this tool provides personalized insights, real-time heat mappings, and actionable steps to stay cool, while fostering sustainable community change.",
+    "home-button": "FIND OUT MORE",
+    "home-service-title": "Our Service",
+    "service-card-local-heat-level-title": "📍 Local Heat Level",
+    "service-card-local-heat-level-description": "Explore real-time heat in City of Melbourne local areas and find the nearest shaded, cooling spaces and public centres",
+    "service-card-personal-cooling-guide-title": "🏡 Personal Cooling Guide",
+    "service-card-personal-cooling-guide-description": "Get tailored advices based on your personal needs to beat the heat, elevate your health and make your living space cooler",
+    "service-card-communtity-support-title": "🤝 Community Support",
+    "service-card-communtity-support-description": "Learn how to help yourself and others to deal with UHI by accessing quick-response guides and local support services"
+
 }
   
