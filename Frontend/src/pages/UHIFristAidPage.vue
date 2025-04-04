@@ -37,16 +37,17 @@
             information.</p>
         <p><strong>Royal Melbourne Hospital:</strong> Call <strong>+61 (3) 9342 7000</strong> for medical assistance
             related to heat illnesses.</p>
+        <search-video></search-video>
     </div>
 </template>
 
 <script setup>
-
+import SearchVideo from '../components/SearchVideo.vue'
 </script>
 
 <style scoped>
 .container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: auto;
 }
 </style>

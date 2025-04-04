@@ -36,16 +36,17 @@
         <p><strong>Lifeline Australia:</strong> Call <strong>13 11 14</strong> for mental health and crisis support.</p>
         <p><strong>VicEmergency Hotline:</strong> Call <strong>1800 226 226</strong> for general health recovery
             guidance.</p>
+        <search-video></search-video>
     </div>
 </template>
 
 <script setup>
-
+import SearchVideo from '../components/SearchVideo.vue'
 </script>
 
 <style scoped>
 .container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: auto;
 }
 </style>
