@@ -1,10 +1,6 @@
 <template>
     <div>
         <header class="header">
-            <video autoplay loop muted class="background-video">
-                <source src="../assets/home-video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
             <!-- 首页专属导航栏 -->
             <nav v-if="isHome" class="home-nav">
                 <ul>
@@ -41,7 +37,7 @@
             <div style="height: 30px;"></div>
             <el-row :gutter="24">
                 <el-col :span="21">
-                    <h2 class="service-title">Our Service</h2>
+                    <h2 class="service-title">{{ $t('home-service-title') }}</h2>
                 </el-col>
             </el-row>
             <div style="height: 30px;"></div>
@@ -126,22 +122,15 @@ const services = [
 <style scoped>
 /* 头部区域 */
 .header {
+    background-image: url('../assets/home.jpg');
     padding: 4rem 2rem;
     position: relative;
+    background-size: cover;
+    background-position: center;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden;
-}
-.background-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    transform: translate(-50%, -50%);
 }
 
 /* Add this gradient overlay */
