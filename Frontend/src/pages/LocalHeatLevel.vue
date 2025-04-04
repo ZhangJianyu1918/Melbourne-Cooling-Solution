@@ -406,7 +406,9 @@ export default {
       navButton.innerText = "Navigate Here";
       navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
       navButton.onclick = () => this.calculateRoute(location);
-
+      if (this.directionsRenderer.length > 0) {
+        this.clearPreviousRoutes();
+      }
       const infoWindow = new this.google.maps.InfoWindow({
         content: navButton
       });
@@ -415,6 +417,7 @@ export default {
         infoWindow.open(this.map, this.marker);
       });
     },
+
     calculateRoute(destination) {
       if (!navigator.geolocation) {
         alert("Geolocation is not supported by your browser.");

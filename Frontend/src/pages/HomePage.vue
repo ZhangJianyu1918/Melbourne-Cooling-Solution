@@ -9,16 +9,19 @@
             <nav v-if="isHome" class="home-nav">
                 <ul>
                     <li>
-                        <router-link to="/">HOME</router-link>
+                        <router-link to="/">{{ $t('navigation-home') }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/local-heat-level">LOCAL HEAT LEVEL</router-link>
+                        <router-link to="/local-heat-level">{{ $t('navigation-local-heat-level') }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/personal-cooling-guide">PERSONAL COOLING GUIDE</router-link>
+                        <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide') }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/community-support">COMMUNITY SUPPORT</router-link>
+                        <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>
+                    </li>
+                    <li>
+                        <LanguageSwitcher />
                     </li>
                 </ul>
             </nav>
@@ -95,6 +98,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import Card from '@/components/Card.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 // 获取当前路由，判断是否为首页
 const route = useRoute();
