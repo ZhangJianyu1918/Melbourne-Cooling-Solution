@@ -18,7 +18,7 @@ const isHome = computed(() => route.meta.isHome || false);
         </el-header>
         <el-main>
           <transition name="fade" mode="out-in">
-            <router-view></router-view>
+            <router-view :key="$route.fullPath"></router-view>
           </transition>
         </el-main>
         <div style="height: 50px;"></div>
@@ -36,7 +36,7 @@ const isHome = computed(() => route.meta.isHome || false);
 .common-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* 让整个布局至少占满视口高度 */
+   /* 让整个布局至少占满视口高度 */
 }
 
 .el-container {
@@ -50,6 +50,7 @@ const isHome = computed(() => route.meta.isHome || false);
   --el-header-padding: none;
 }
 .el-main {
+  min-height: 100vh;
   flex: 1; /* 让 `el-main` 自动撑开，占据所有剩余空间 */
   --el-main-padding: none;
 }
@@ -61,11 +62,19 @@ const isHome = computed(() => route.meta.isHome || false);
   text-align: center;
   --el-footer-height: none;
 }
-/* 定义淡入淡出过渡动画 */
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 1s;
+
+:deep(.fade-enter-active), :deep(.fade-leave-active) {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
 }
-.fade-enter, .fade-leave-to {
+
+:deep(.fade-enter-from), :deep(.fade-leave-to) {
   opacity: 0;
+  transform: translateY(10px); /* 微小下滑 */
 }
+
+:deep(.fade-enter-to), :deep(.fade-leave-from) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 </style>
