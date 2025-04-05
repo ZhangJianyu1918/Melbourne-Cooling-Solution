@@ -2,7 +2,8 @@
     <div class="container mx-auto p-6">
         <!-- Back button and header group -->
         <div class="mb-8">
-            <el-button type="text" @click="$router.push('/community-support')" style="font: 1.2em sans-serif; padding-top: 30px;">
+            <el-button type="text" @click="$router.push('/community-support')"
+                style="font: 1.2em sans-serif; padding-top: 30px;">
                 <el-icon class="mr-1"><arrow-left /></el-icon>
                 Go back to Community Support
             </el-button>
@@ -115,10 +116,15 @@
         </el-collapse>
 
         <!-- Search video component -->
-        <div class="mt-8">
-            <el-divider>Video Resources</el-divider>
+        <el-card shadow="hover">
+            <template #header>
+                <div class="section-title">
+                    <i class="el-icon-video-camera"></i>
+                    <span class="text-xl font-semibold text-gray-800">Video Resources</span>
+                </div>
+            </template>
             <search-video></search-video>
-        </div>
+        </el-card>
     </div>
 </template>
 
@@ -157,7 +163,7 @@ const next = () => {
 
 /* Custom collapse panel styles */
 .custom-collapse :deep(.el-collapse-item__header) {
-    background-color: #f8fafc;
+    background-color: white;
     padding: 10px;
     border-radius: 6px;
     margin-bottom: 10px;

@@ -11,14 +11,15 @@
                         <router-link to="/local-heat-level">{{ $t('navigation-local-heat-level') }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide') }}</router-link>
+                        <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide')
+                            }}</router-link>
                     </li>
                     <li>
                         <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>
                     </li>
-                    <li>
+                    <!-- <li>
                         <LanguageSwitcher />
-                    </li>
+                    </li> -->
                 </ul>
             </nav>
 
@@ -26,10 +27,11 @@
             <div class="header-content">
                 <h1>{{ $t('home-title') }}</h1>
                 <p>
-                   {{ $t('home-content') }}
+                    {{ $t('home-content') }}
                 </p>
                 <div style="height: 50px;"></div>
-                <el-button type="primary" class="find-out" round  size="extra-large">{{ $t('home-button') }}</el-button>
+                <el-button type="primary" class="find-out" round size="extra-large" @click="scrollDown">{{
+                    $t('home-button') }}</el-button>
             </div>
         </header>
 
@@ -91,9 +93,9 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import Card from '@/components/Card.vue';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+// import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
-// 获取当前路由，判断是否为首页
+
 const route = useRoute();
 const isHome = route.path === '/';
 
@@ -117,6 +119,13 @@ const services = [
         to: "/community-support"
     }
 ];
+
+const scrollDown = () => {
+    window.scrollBy({
+        top: window.innerHeight,
+        behavior: 'smooth' 
+    });
+}
 </script>
 
 <style scoped>
@@ -140,13 +149,16 @@ const services = [
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 70%; /* You can adjust this height */
-    background: linear-gradient(to top, 
-                rgba(0, 0, 0, 0.7) 0%,
-                rgba(0, 0, 0, 0.4) 70%, 
-                rgba(0, 0, 0, 0) 100%);
-    pointer-events: none; /* Makes sure clicks pass through to elements below */
-    z-index: 1; /* Above the background but below the content */
+    height: 70%;
+    /* You can adjust this height */
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.4) 70%,
+            rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    /* Makes sure clicks pass through to elements below */
+    z-index: 1;
+    /* Above the background but below the content */
 }
 
 /* Update header content to ensure it's above the gradient */
@@ -157,7 +169,8 @@ const services = [
     left: 0;
     top: 30%;
     padding: 10px;
-    z-index: 2; /* Ensure content is above the gradient */
+    z-index: 2;
+    /* Ensure content is above the gradient */
 }
 
 /* Also update nav to ensure it's above the gradient */
@@ -167,7 +180,8 @@ const services = [
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 2; /* Same z-index as content */
+    z-index: 2;
+    /* Same z-index as content */
 }
 
 .home-nav ul {
@@ -216,13 +230,16 @@ p {
     margin: 1rem 0;
     text-align: left;
 }
-.el-button, .el-button.is-round {
+
+.el-button,
+.el-button.is-round {
     padding-left: 50px;
     padding-right: 50px;
     padding-top: 30px;
     padding-bottom: 30px;
     border-radius: 50px;
 }
+
 .find-out {
     font-size: 25px;
     text-align: left;
