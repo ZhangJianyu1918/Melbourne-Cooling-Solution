@@ -2,7 +2,8 @@
     <div class="container mx-auto p-6">
         <!-- Header Section -->
         <div class="mb-8">
-            <el-button type="text" @click="$router.push('/community-support')" style="font: 1.2em sans-serif; padding-top: 30px;">
+            <el-button type="text" @click="$router.push('/community-support')"
+                style="font: 1.2em sans-serif; padding-top: 30px;">
                 <el-icon class="mr-1"><arrow-left /></el-icon>
                 Go back to Community Support
             </el-button>
@@ -72,50 +73,51 @@
                     </div>
                 </template>
                 <el-card shadow="never" class="info-card">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <el-tag effect="light" type="success" class="prevention-item">
+                    <el-descriptions direction="vertical" :column="1" border>
+                        <el-descriptions-item label="Prevention Tips">
                             Stay hydrated by drinking plenty of water.
-                        </el-tag>
-                        <el-tag effect="light" type="success" class="prevention-item">
+                        </el-descriptions-item>
+                        <el-descriptions-item>
                             Avoid direct sun exposure during peak hours (10 AM - 4 PM).
-                        </el-tag>
-                        <el-tag effect="light" type="success" class="prevention-item">
+                        </el-descriptions-item>
+                        <el-descriptions-item>
                             Wear light-colored, loose-fitting clothing.
-                        </el-tag>
-                        <el-tag effect="light" type="success" class="prevention-item">
+                        </el-descriptions-item>
+                        <el-descriptions-item>
                             Use sunscreen and wear a hat when outdoors.
-                        </el-tag>
-                        <el-tag effect="light" type="success" class="prevention-item md:col-span-2">
+                        </el-descriptions-item>
+                        <el-descriptions-item>
                             Check on vulnerable individuals, such as the elderly and young children.
-                        </el-tag>
+                        </el-descriptions-item>
+                    </el-descriptions>
+                </el-card>
+            </el-collapse-item>
+            <el-collapse-item name="4">
+                <template #title>
+                    <div class="section-title">
+                        <i class="el-icon-phone"></i>
+                        <span class="text-xl font-semibold">Additional Resources</span>
                     </div>
+                </template>
+                <el-card class="info-card" shadow="never">
+                    <el-descriptions border>
+                        <el-descriptions-item label="VicEmergency Hotline">
+                            <el-button type="primary" size="small" plain icon="el-icon-phone"
+                                @click="callNumber('+61 (3) 9342 7000')">
+                                1800 226 226
+                            </el-button>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="Royal Melbourne Hospital">
+                            <el-button type="success" size="small" plain icon="el-icon-phone"
+                                @click="callNumber('13 11 14')">
+                                +61 (3) 9342 7000
+                            </el-button>
+                        </el-descriptions-item>
+                    </el-descriptions>
                 </el-card>
             </el-collapse-item>
         </el-collapse>
 
-        <!-- Additional Resources -->
-        <el-card class="mb-6" shadow="hover">
-            <template #header>
-                <div class="section-title">
-                    <i class="el-icon-phone"></i>
-                    <span class="text-xl font-semibold text-blue-800">Additional Resources</span>
-                </div>
-            </template>
-            <el-descriptions border>
-                <el-descriptions-item label="VicEmergency Hotline">
-                    <el-button type="warning" size="small" plain icon="el-icon-phone"
-                        @click="callNumber('1800 226 226')">
-                        1800 226 226
-                    </el-button>
-                </el-descriptions-item>
-                <el-descriptions-item label="Royal Melbourne Hospital">
-                    <el-button type="primary" size="small" plain icon="el-icon-phone"
-                        @click="callNumber('+61 (3) 9342 7000')">
-                        +61 (3) 9342 7000
-                    </el-button>
-                </el-descriptions-item>
-            </el-descriptions>
-        </el-card>
 
         <!-- Video Resources Section -->
         <el-card shadow="hover">
@@ -166,7 +168,7 @@ const next = () => {
 
 /* Custom collapse panel styles */
 .custom-collapse :deep(.el-collapse-item__header) {
-    background-color: #fef2f2;
+    background-color: white;
     padding: 10px;
     border-radius: 6px;
     margin-bottom: 10px;

@@ -20,16 +20,16 @@
     <el-menu-item index="4">
       <router-link to="/community-support" active-class="active-link">{{ $t('navigation-community-support') }}</router-link>
     </el-menu-item>
-    <el-menu-item index="5">
+    <!-- <el-menu-item index="5">
       <LanguageSwitcher />
-    </el-menu-item>
+    </el-menu-item> -->
   </el-menu>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+// import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 
 const route = useRoute();

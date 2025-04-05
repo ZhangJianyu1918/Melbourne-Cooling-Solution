@@ -19,8 +19,14 @@
         </el-button>
       </div>
       <div style="height: 20px;"></div>
-      <!-- 地图容器 -->
+      
       <div class="google-map" ref="map"></div>
+      <WeatherCard
+        :temp="weather.temp"
+        :placeName="marker?.title"
+        :icon="weather.icon"
+        @find-shade="findShadedArea"
+      />
     </div>
   </div>
 </template>
@@ -28,7 +34,8 @@
 <script>
 import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
-import frostIcon from '@/assets/frost.png'
+import frostIcon from '@/assets/frost.png';
+import WeatherCard from '../components/WeatherCard.vue';
 
 export default {
   name: 'GoogleMap',
@@ -81,54 +88,12 @@ export default {
         };
 
         // Create or update weather overlay
-        this.updateWeatherOverlay();
+        // this.updateWeatherOverlay();
       } catch (error) {
         console.error('Error fetching weather data:', error);
         this.weather.loading = false;
       }
     },
-
-    updateWeatherOverlay() {
-      // Create weather info card on the map
-      const weatherDiv = document.createElement('div');
-      weatherDiv.className = 'weather-card';
-
-      // Use the current date (you can adjust the format as needed)
-      const currentDate = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      });
-
-      // Assuming the place name is available (you might need to store the place name in data)
-      const placeName = this.marker?.title || 'Melbourne'; // Fallback to 'Melbourne' if no marker title
-
-      // Create the weather card HTML with styling similar to the image
-      weatherDiv.innerHTML = `
-        <div class="weather-content" style="background-color: rgb(255, 255, 255); display: flex;
-          flex-direction: column; gap: 5px;   border-radius: 15px;
-          padding: 15px;
-          margin: 10px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          font-family: Arial, sans-serif;
-          width: 200px;">
-          <h3 class="place-name" style="  font-size: 18px;font-weight: bold;color: #19619e;margin: 0;">${placeName}</h3>
-          <p class="date" style="  font-size: 14px; color: #333; margin: 0;">${currentDate}</p>
-          <div class="temp">${this.weather.temp}°C</div>
-          <button class="shade-button" id="find-shaded-area" style="  background-color: #ff4d4d;color: white;border: none;border-radius: 20px;padding: 8px 16px;font-size: 14px;font-weight: bold;cursor: pointer;margin-top: 10px; hover: #e04343;">Find shaded area!</button>
-        </div>
-      `;
-
-      // Remove existing weather control if it exists
-      if (this.weatherControl) {
-        this.map.controls[this.google.maps.ControlPosition.BOTTOM_LEFT].clear();
-      }
-
-      // Add the weather div to the bottom-left of the map
-      this.weatherControl = weatherDiv;
-      this.map.controls[this.google.maps.ControlPosition.BOTTOM_LEFT].push(weatherDiv);
-    },
-
     async initMap() {
       const loader = new Loader({
         apiKey: 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y',
@@ -301,7 +266,7 @@ export default {
               new google.maps.LatLng(latitude, longitude),
               new google.maps.LatLng(fountain.lat, fountain.lon)
             );
-            console.log(distance)
+
             if (distance > 300) {
               continue;
             }
@@ -612,6 +577,9 @@ export default {
       this.routeInfoWindow.open(this.map);
     }
   },
+  components: {
+    WeatherCard
+  }
 
 };
 </script>
@@ -629,24 +597,21 @@ h2 {
 }
 
 .google-map {
-  justify-content: center;
+  /* justify-content: center; */
   height: 500px;
   border-radius: 35px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.weather-card {
-
-
-  /* Adjust width as needed */
+/* Position WeatherCard inside the map */
+.google-map .weather-card {
+  position: absolute;
+  bottom: 0px; /* Distance from bottom */
+  left: 20px; /* Distance from left */
+  z-index: 10; /* Ensure it appears above the map */
 }
-
-.weather-content {}
-
-.place-name {}
-
-.date {}
 
 .temp {
   font-size: 36px;
@@ -654,8 +619,4 @@ h2 {
   color: #333;
   margin: 5px 0;
 }
-
-.shade-button {}
-
-.shade-button:hover {}
 </style>
