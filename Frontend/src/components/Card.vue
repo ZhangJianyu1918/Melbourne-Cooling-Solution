@@ -52,6 +52,7 @@ const getImageUrl = (imagePath) => {
   padding: 1.5rem;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
 }
 
 .card-img-top {
