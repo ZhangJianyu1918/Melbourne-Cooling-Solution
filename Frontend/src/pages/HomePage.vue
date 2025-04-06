@@ -259,12 +259,6 @@ p {
     justify-content: center;
 }
 
-
-.content {
-    /* padding-left: 10px;
-    padding-right: 10px; */
-}
-
 .support {
     background-color: white;
     /* Light blue background */
