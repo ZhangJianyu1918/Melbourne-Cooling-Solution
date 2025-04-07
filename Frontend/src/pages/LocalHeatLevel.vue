@@ -24,14 +24,9 @@
         </el-button>
       </div>
       <div style="height: 20px;"></div>
-      
+
       <div class="google-map" ref="map"></div>
-      <WeatherCard
-        :temp="weather.temp"
-        :placeName="marker?.title"
-        :icon="weather.icon"
-        @find-shade="findShadedArea"
-      />
+      <WeatherCard :temp="weather.temp" :placeName="marker?.title" :icon="weather.icon" @find-shade="findShadedArea" />
     </div>
   </div>
 </template>
@@ -42,6 +37,8 @@ import waterBottleIcon from '@/assets/water-bottle.png';
 import frostIcon from '@/assets/frost.png';
 import WeatherCard from '../components/WeatherCard.vue';
 import validateAndSanitize from '../js/validation'
+import decryptData from '@/js/decryption';
+
 
 export default {
   name: 'GoogleMap',
@@ -228,12 +225,14 @@ export default {
         const response = await fetch(
           'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
         );
-        const data = await response.json();
-
+        const data = await response.text();
+        // console.log("data: " + data)
         if (!data || data.length === 0) {
           console.error('No drinking fountain data found');
           return;
         }
+        let decrypt_data = decryptData(data)
+        // console.log("decrypt_data: " + decrypt_data)
 
         const image = new Image();
         image.src = waterBottleIcon; // Assuming waterBottleIcon is the image URL or import
@@ -266,8 +265,8 @@ export default {
             anchor: new this.google.maps.Point(radius, radius), // Center the image
           };
 
-          for (let i = 0; i < data.length; i++) {
-            const fountain = data[i]
+          for (let i = 0; i < decrypt_data.length; i++) {
+            const fountain = decrypt_data[i]
             const distance = google.maps.geometry.spherical.computeDistanceBetween(
               new google.maps.LatLng(latitude, longitude),
               new google.maps.LatLng(fountain.lat, fountain.lon)
@@ -315,7 +314,16 @@ export default {
           }
         })
         const data = await response.json();
-        const places = JSON.parse(data.body);
+        console.log("data: " + data.body)
+        let decrypt_data
+        if (typeof data === 'string') {
+          decrypt_data = JSON.parse(decryptData(data.body));
+        } else {
+          decrypt_data = decryptData(data.body);
+        }
+        console.log("decrypt_data: " + decrypt_data)
+
+        const places = decrypt_data;
 
         if (!places || !Array.isArray(places)) {
           console.error('Parsed data is not an array:', places);
@@ -618,9 +626,12 @@ h2 {
 /* Position WeatherCard inside the map */
 .google-map .weather-card {
   position: absolute;
-  bottom: 0px; /* Distance from bottom */
-  left: 20px; /* Distance from left */
-  z-index: 10; /* Ensure it appears above the map */
+  bottom: 0px;
+  /* Distance from bottom */
+  left: 20px;
+  /* Distance from left */
+  z-index: 10;
+  /* Ensure it appears above the map */
 }
 
 .temp {
