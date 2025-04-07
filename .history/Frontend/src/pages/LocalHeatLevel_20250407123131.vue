@@ -36,7 +36,6 @@ import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
 import frostIcon from '@/assets/frost.png';
 import WeatherCard from '../components/WeatherCard.vue';
-import validateAndSanitize from '../js/validation'
 
 export default {
   name: 'GoogleMap',
@@ -398,11 +397,7 @@ export default {
         alert('Please enter a search term');
         return;
       }
-      if (!validateAndSanitize(input).valid) {
-        alert('Please input validate places.')
-        return;
-      }
-      console.log(validateAndSanitize(input).valid)
+
       const service = new this.google.maps.places.PlacesService(this.map);
       service.textSearch(
         {
