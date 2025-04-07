@@ -11,8 +11,8 @@
     <div>
       <!-- 搜索框 -->
       <div style="margin-bottom: 10px; text-align: center;">
-        <SanitizedInput ref="searchInput" placeholder="Please enter the location" 
-          :inputStyle="{ width: '600px', padding: '8px', fontSize: '16px', height: '60px', borderRadius: '20px', border: '1px solid #dcdfe6' }" />
+        <ValidationSanitization ref="searchInput" placeholder="Please enter the location" type="text"
+          style="width: 600px; padding: 8px; font-size: 16px; height: 60px; border-radius: 20px; border: 1px solid #dcdfe6;" />
         <el-button @click="searchPlace" type="primary" plain
           style="padding: 8px 16px; margin-left: 10px; height: 45px;">
           Search
@@ -36,6 +36,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
 import frostIcon from '@/assets/frost.png';
 import WeatherCard from '../components/WeatherCard.vue';
+import ValidationSanitization from '@/components/ValidationSanitization.vue';
 
 export default {
   name: 'GoogleMap',
