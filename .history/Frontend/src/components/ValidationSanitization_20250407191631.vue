@@ -1,4 +1,4 @@
-// This component handles input validation and sanitization
+
 <template>
     <div>
       <input
