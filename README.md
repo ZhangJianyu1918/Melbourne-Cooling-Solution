@@ -1,5 +1,5 @@
 # Melbourne Cooling Solution
 
-npm run serve
+`npm run serve`
 
-npm run build
+`npm run build`
