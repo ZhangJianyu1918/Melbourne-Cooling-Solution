@@ -56,7 +56,7 @@ const getImageUrl = (imagePath) => {
 }
 
 .card-img-top {
-  width: 100%; /* 让图片适应新宽度 */
+  width: 100%; /* 让图片适应新宽度111 */
   height: 350px; /* 控制图片高度，避免太大 */
   object-fit: cover; /* 确保图片填充整个区域 */
   border-radius: 20px;
