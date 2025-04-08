@@ -23,6 +23,7 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios';
+import validateAndSanitize from '../js/validation'
 
 const input = ref('')
 const query = ref('')
@@ -32,10 +33,15 @@ const loading = ref(false)
 const searchVideos = async () => {
     if (!input.value) return
 
+    if (!validateAndSanitize(input.value).valid) {
+        alert('Please input validate places.')
+        input.value = ''
+        return;
+    }
+
     loading.value = true
     const apiKey = 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y'
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(input.value)}&key=${apiKey}&maxResults=3`
-
     try {
         const response = await axios.get(url)
         videos.value = response.data.items

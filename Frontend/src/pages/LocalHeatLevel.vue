@@ -11,13 +11,8 @@
     <div>
       <!-- 搜索框 -->
       <div style="margin-bottom: 10px; text-align: center;">
-<<<<<<< HEAD
-        <input ref="searchInput" placeholder="Please Type In Your Area Name" type="text"
+        <input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
           style="width: 600px; padding: 8px; font-size: 16px; height: 60px; border-radius: 20px; border: 1px solid #dcdfe6;" />
-=======
-        <SanitizedInput ref="searchInput" placeholder="Please enter the location" 
-          :inputStyle="{ width: '600px', padding: '8px', fontSize: '16px', height: '60px', borderRadius: '20px', border: '1px solid #dcdfe6' }" />
->>>>>>> 167cf1b4d8f3cc2acc8842c61388a41e1cdf4f7b
         <el-button @click="searchPlace" type="primary" plain
           style="padding: 8px 16px; margin-left: 10px; height: 45px;">
           Search
@@ -44,6 +39,7 @@ export default {
   name: 'GoogleMap',
   data() {
     return {
+      searchText: '',
       map: null,
       google: null,
       marker: null,
@@ -412,6 +408,7 @@ export default {
         return;
       }
       if (!validateAndSanitize(input).valid) {
+        this.searchText = ''
         alert('Please input validate places.')
         return;
       }
