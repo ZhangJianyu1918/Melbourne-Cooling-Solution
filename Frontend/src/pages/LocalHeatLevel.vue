@@ -58,6 +58,8 @@ const markers = ref([]);
 let circle = null;
 let melbourneBounds = null;
 let infoWindow = null;
+let render = null;
+let polyline = null;
 
 // Initialize map on component mount
 onMounted(async () => {
@@ -448,6 +450,7 @@ const updateMap = (place) => {
   map.setZoom(15);
 
   if (marker.value) {
+    marker.value.setVisible(false);
     marker.value.setMap(null);
   }
 
@@ -491,54 +494,56 @@ const calculateRoute = (destination) => {
       origin: origin,
       destination: destination,
       travelMode: google.maps.TravelMode.DRIVING,
-      provideRouteAlternatives: true,
+      provideRouteAlternatives: false, // 只生成一条路线
     };
 
     directionsService.route(request, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
-        clearPreviousRoutes();
-        let markerCount = 0;
-        result.routes.forEach((route, index) => {
-          const currentColor = getRandomColor();
+        clearPreviousRoutes(); // 清除之前的路线
 
-          const render = new google.maps.DirectionsRenderer({
-            map: map,
-            directions: result,
-            routeIndex: index,
-            polylineOptions: {
-              strokeColor: currentColor,
-              strokeWeight: 4,
-            },
-            suppressMarkers: true,
-            directions: result
-          });
+        // 只处理第一条路线（唯一路线）
+        const route = result.routes[0];
+        const currentColor = getRandomColor();
 
-          directionsRenderer.value.push(render);
-
-          const polyline = new google.maps.Polyline({
-            path: route.overview_path,
+        // 创建 DirectionsRenderer
+        render = new google.maps.DirectionsRenderer({
+          map: map,
+          directions: result,
+          routeIndex: 0, // 固定为 0，因为只有一条路线
+          polylineOptions: {
             strokeColor: currentColor,
-            strokeWeight: 8,
-            map: map,
-          });
+            strokeWeight: 4,
+          },
+          suppressMarkers: true,
+        });
+        directionsRenderer.value.push(render);
 
-          const count = countMarkersOnRoute(polyline.getPath());
+        // 创建 Polyline
+        polyline = new google.maps.Polyline({
+          path: route.overview_path,
+          strokeColor: currentColor,
+          strokeWeight: 8,
+          map: map,
+        });
+        routePolylines.value.push(polyline);
 
-          polyline.addListener("click", (event) => {
-            showRouteInfoWindow(event, route, count);
-          });
-          render.addListener("click", (event) => {
-            showRouteInfoWindow(event, route, count);
-          });
+        // 计算路线上的标记数量
+        const count = countMarkersOnRoute(polyline.getPath());
+
+        // 添加点击事件
+        polyline.addListener("click", (event) => {
+          showRouteInfoWindow(event, route, count);
+        });
+        render.addListener("click", (event) => {
+          showRouteInfoWindow(event, route, count);
         });
       } else {
         alert("Directions request failed due to " + status);
       }
     });
-  },
-    () => {
-      alert("Unable to retrieve your location.");
-    });
+  }, () => {
+    alert("Unable to retrieve your location.");
+  });
 };
 
 const countMarkersOnRoute = (routePath) => {
@@ -563,10 +568,22 @@ const countMarkersOnRoute = (routePath) => {
 };
 
 const clearPreviousRoutes = () => {
-  directionsRenderer.value.forEach(render => render = null);
+  if (render != null) {
+    render.setMap(null);
+  }
+  if (polyline != null) {
+    polyline.setMap(null);
+  }
+  directionsRenderer.value.forEach(render => {
+    console.log(render);
+    render.setMap(null);
+  });
   directionsRenderer.value = [];
 
-  routePolylines.value.forEach(polyline => polyline = null);
+  routePolylines.value.forEach(polyline => {
+    console.log(polyline);
+    polyline.setMap(null);
+  });
   routePolylines.value = [];
 
   if (routeInfoWindow) {
