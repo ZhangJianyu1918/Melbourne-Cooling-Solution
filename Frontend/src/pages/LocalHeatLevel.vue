@@ -57,7 +57,6 @@ let routeInfoWindow = null;
 const markers = ref([]);
 let circle = null;
 let melbourneBounds = null;
-let currentMakers = [];
 let infoWindow = null;
 
 // Initialize map on component mount
@@ -106,7 +105,7 @@ const initMap = async () => {
       center: MelbourneCenter,
       zoom: 13,
     });
-    
+
     infoWindow = new google.maps.InfoWindow()
     melbourneBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(-37.906, 144.862), // 西南角
@@ -138,7 +137,7 @@ const initMap = async () => {
   }
 };
 
-const handleMapClick = (event) => {
+const handleMapClick = async (event) => {
   if (!event || !event.latLng) {
     console.error('Event or event.latLng is undefined');
     return;
@@ -163,7 +162,7 @@ const handleMapClick = (event) => {
   });
 
   // Get nearby places
-  fetchNearbyPlaces(lat, lng);
+  await fetchNearbyPlaces(lat, lng);
 };
 
 const clearMarkersAndCircle = () => {
@@ -174,24 +173,15 @@ const clearMarkersAndCircle = () => {
 
   // Clear all markers
   markers.value.forEach((icon) => {
-    // console.log(icon);
+    icon.setVisible(false);
     icon.setMap(null);
     icon = null;
-    // console.log(icon);
-
   });
   markers.value = [];
-
-  currentMakers.forEach((icon) => {
-    console.log(icon)
-    icon.setMap(null);
-    icon = null;
-  });
-  currentMakers = [];
-
+  markers.value.length = 0;
 };
 
-const fetchNearbyPlaces = (latitude, longitude) => {
+const fetchNearbyPlaces = async (latitude, longitude) => {
   loadDrinkingFountains(latitude, longitude);
   loadCoolingPlaces(latitude, longitude);
 };
@@ -306,7 +296,6 @@ const loadDrinkingFountains = async (latitude, longitude) => {
           });
 
           markers.value.push(markerInstance);
-          currentMakers.push(markerInstance);
         }
       }
     };
@@ -403,7 +392,6 @@ const loadCoolingPlaces = async (latitude, longitude) => {
           });
 
           markers.value.push(markerInstance);
-          currentMakers.push(markerInstance)
         }
       }
     };
