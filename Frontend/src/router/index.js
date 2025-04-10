@@ -3,7 +3,7 @@ import HomePage from "@/pages/HomePage.vue";
 import PersonalCoolingGuide from "@/pages/PersonalCoolingGuide.vue";
 import LocalHeatLevel from "@/pages/LocalHeatLevel.vue";
 import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
-import EmergencyContactsPage from "@/pages/EmergencyContactsPage.vue";
+import PrecautionPage from "@/pages/PrecautionPage.vue";
 import UHIFristAidPage from "@/pages/UHIFristAidPage.vue";
 import RecoveryAndAftercarePage from "@/pages/RecoveryAndAftercarePage.vue";
 
@@ -30,9 +30,9 @@ const routes = [
     component: CommunitySupportPage,
   },
   {
-    path: "/community-support/emergency-contacts",
-    name: "EmergencyContacts",
-    component: EmergencyContactsPage
+    path: "/community-support/precaution",
+    name: "Precaution",
+    component: PrecautionPage
   },
   {
     path: "/community-support/uhi-first-aid",

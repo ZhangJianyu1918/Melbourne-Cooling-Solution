@@ -25,11 +25,11 @@ import Card from '@/components/Card.vue';
 
 const communities = [
   {
-    image: "emergency-contacts.png",
-    title: "🚑 Emergency Contacts",
-    description: "This is the body text for this section description, " +
-      "which stands here as a placeholder for later real ideas and contents",
-    to: "/community-support/emergency-contacts"
+    image: "precaution.jpg",
+    title: "☀️ Precautions",
+    description: "Learn about heat risk safety guidelines, prevention tips, " + 
+    "and how to protect yourself and others during extreme heat.",
+    to: "/community-support/precaution"
   },
   {
     image: "uhi-first-aid.png",
