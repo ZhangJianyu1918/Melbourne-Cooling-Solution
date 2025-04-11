@@ -7,7 +7,11 @@
     @select="handleSelect"
     style="background-color: rgba(25, 97, 158, 0.9);"
   >
-    <el-menu-item index="0"></el-menu-item>
+    <el-menu-item index="0">
+      <router-link to="/" active-class="active-link">
+        <img src="../assets/cool.png" width="" height="40px" class="logo">
+      </router-link>
+    </el-menu-item>
     <el-menu-item index="1">
       <router-link to="/" active-class="active-link">{{ $t('navigation-home') }}</router-link>
     </el-menu-item>
@@ -18,6 +22,9 @@
       <router-link to="/personal-cooling-guide" active-class="active-link">{{ $t('navigation-personal-cooling-guide') }}</router-link>
     </el-menu-item>
     <el-menu-item index="4">
+      <router-link to="/chat" active-class="active-link">CHAT</router-link>
+    </el-menu-item>
+    <el-menu-item index="5">
       <router-link to="/community-support" active-class="active-link">{{ $t('navigation-community-support') }}</router-link>
     </el-menu-item>
     <!-- <el-menu-item index="5">
@@ -45,8 +52,10 @@ watch(
       activeIndex.value = '2';
     } else if (newPath === '/personal-cooling-guide') {
       activeIndex.value = '3';
-    } else if (newPath === '/community-support') {
+    } else if (newPath === '/chat') {
       activeIndex.value = '4';
+    } else if (newPath === '/community-support') {
+      activeIndex.value = '5';
     }
   },
   { immediate: true }
@@ -59,6 +68,9 @@ const handleSelect = (key, keyPath) => {
 </script>
 
 <style scoped>
+.logo {
+  vertical-align: middle;
+}
 .el-menu--horizontal {
   width: 100%;  
   height: 60px;
