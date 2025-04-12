@@ -22,7 +22,7 @@
       <router-link to="/personal-cooling-guide" active-class="active-link">{{ $t('navigation-personal-cooling-guide') }}</router-link>
     </el-menu-item>
     <el-menu-item index="4">
-      <router-link to="/chat" active-class="active-link">CHAT</router-link>
+      <router-link to="/heat-impact" active-class="active-link">HEAT IMPACT</router-link>
     </el-menu-item>
     <el-menu-item index="5">
       <router-link to="/community-support" active-class="active-link">{{ $t('navigation-community-support') }}</router-link>
@@ -52,7 +52,7 @@ watch(
       activeIndex.value = '2';
     } else if (newPath === '/personal-cooling-guide') {
       activeIndex.value = '3';
-    } else if (newPath === '/chat') {
+    } else if (newPath === '/heat-impact') {
       activeIndex.value = '4';
     } else if (newPath === '/community-support') {
       activeIndex.value = '5';

@@ -18,7 +18,7 @@
                             }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/chat">CHAT</router-link>
+                        <router-link to="/heat-impact">HEAT IMPACT</router-link>
                     </li>
                     <li>
                         <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>

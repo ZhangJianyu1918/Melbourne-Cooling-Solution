@@ -6,7 +6,7 @@ import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
 import PrecautionPage from "@/pages/PrecautionPage.vue";
 import UHIFristAidPage from "@/pages/UHIFristAidPage.vue";
 import RecoveryAndAftercarePage from "@/pages/RecoveryAndAftercarePage.vue";
-import ChatPage from "@/pages/ChatPage.vue";
+import ChatPage from "@/pages/HeatImpactPage.vue";
 
 const routes = [
   {
