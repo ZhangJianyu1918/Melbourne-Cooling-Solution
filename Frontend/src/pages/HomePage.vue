@@ -3,6 +3,9 @@
         <header class="header">
             <!-- 首页专属导航栏 -->
             <nav v-if="isHome" class="home-nav">
+                <router-link to="/">
+                    <img src="../assets/cool.png" width="" height="40px" class="logo">
+                </router-link>
                 <ul>
                     <li>
                         <router-link to="/">{{ $t('navigation-home') }}</router-link>
@@ -13,6 +16,9 @@
                     <li>
                         <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide')
                             }}</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/heat-impact">HEAT IMPACT</router-link>
                     </li>
                     <li>
                         <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>
@@ -181,19 +187,28 @@ const scrollDown = () => {
     left: 0;
     width: 100%;
     z-index: 2;
-    /* Same z-index as content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 让 logo 在左，ul 在右 */
+    padding: 0.5rem 1rem;
+}
+
+.home-nav .logo {
+    height: 40px;
 }
 
 .home-nav ul {
     list-style: none;
     display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
 }
 
 .home-nav li {
-    margin-left: 2rem;
+    margin: 0; /* 因为我们用了 gap，不需要单独设置 margin */
 }
+
 
 .home-nav a {
     color: #ffffff;

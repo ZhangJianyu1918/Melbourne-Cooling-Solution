@@ -6,6 +6,7 @@ import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
 import PrecautionPage from "@/pages/PrecautionPage.vue";
 import UHIFristAidPage from "@/pages/UHIFristAidPage.vue";
 import RecoveryAndAftercarePage from "@/pages/RecoveryAndAftercarePage.vue";
+import ChatPage from "@/pages/HeatImpactPage.vue";
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
     name: "RecoveryAndAftercare",
     component: RecoveryAndAftercarePage
   },
+  {
+    path: "/chat",
+    name: "Chat",
+    component: ChatPage
+  }
 ];
 
 const router = createRouter({
