@@ -18,7 +18,7 @@
         </div>
 
         <!-- Main Content Cards -->
-        <el-collapse accordion class="custom-collapse mb-6">
+        <el-collapse class="custom-collapse mb-6">
             <!-- Heat-Related Illnesses -->
             <el-collapse-item name="1">
                 <template #title>

@@ -15,9 +15,11 @@
     "bootstrap": "^5.3.3",
     "cesium": "^1.127.0",
     "crypto-js": "^4.2.0",
+    "echarts": "^5.6.0",
     "element-plus": "^2.9.7",
     "vite-plugin-cesium": "^1.2.23",
     "vue": "^3.5.13",
+    "vue-echarts": "^7.0.3",
     "vue-i18n": "^11.1.2",
     "vue-router": "^4.5.0"
   },

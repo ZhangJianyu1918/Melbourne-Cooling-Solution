@@ -1,13 +1,9 @@
 <template>
-  <div>
-    <h1>
-        Chat Page
-    </h1>
-  </div>
+  <line-chart></line-chart>
 </template>
 
 <script setup>
-
+import LineChart from '@/components/LineChart.vue';
 </script>
 
 <style scoped>
