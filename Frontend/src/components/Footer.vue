@@ -1,124 +1,35 @@
 <template>
   <div class="footer">
-    <el-row :gutter="24">
-      <el-col :span="9">
-        <div>
-          <h3>Our Social Media</h3>
-          <el-row :gutter="0" justify="center">
-            <el-col :span="3">
-              <a href="#" class="text-white hover:text-gray-300">
-                <i class="fab fa-instagram fa-3x"></i>
-              </a>
-            </el-col>
-            <el-col :span="3"><a href="#" class="text-white hover:text-gray-300">
-                <i class="fab fa-facebook-f fa-3x"></i>
-              </a></el-col>
-            <el-col :span="3">
-              <a href="#" class="text-white hover:text-gray-300">
-              <i class="fab fa-twitter fa-3x"></i>
-            </a>
-            </el-col>
-            <el-col :span="3">
-              <a href="#" class="text-white hover:text-gray-300">
-              <i class="fab fa-linkedin-in fa-3x"></i>
-            </a>
-            </el-col>
-          </el-row>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="footer-section">
-          <h3 class="text-lg font-semibold mb-4">Footer Title 1</h3>
-          <ul class="space-y-2">
-            <li><a href="#" class="hover:underline">Section 1.1</a></li>
-            <li><a href="#" class="hover:underline">Section 1.2</a></li>
-            <li><a href="#" class="hover:underline">Section 1.3</a></li>
-            <li><a href="#" class="hover:underline">Section 1.4</a></li>
-          </ul>
-        </div>
-      </el-col>
-      <!-- Footer Title 2 -->
-      <el-col :span="5">
-        <div class="footer-section">
-          <h3 class="text-lg font-semibold mb-4">Footer Title 2</h3>
-          <ul class="space-y-2">
-            <li><a href="#" class="hover:underline">Section 2.1</a></li>
-            <li><a href="#" class="hover:underline">Section 2.2</a></li>
-            <li><a href="#" class="hover:underline">Section 2.3</a></li>
-          </ul>
-        </div>
-      </el-col>
-
-      <!-- Footer Title 3 -->
-      <el-col :span="5">
-        <div class="footer-section">
-          <h3 class="text-lg font-semibold mb-4">Footer Title 3</h3>
-          <ul class="space-y-2">
-            <li><a href="#" class="hover:underline">Section 3.1</a></li>
-            <li><a href="#" class="hover:underline">Section 3.2</a></li>
-          </ul>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="24">
-
-      <el-col :span="5" :offset="9">
-        <!-- Copyright Section -->
-        <div class="copyright">
-          <p style="font: bold;">Monash 2025 | Copyright and disclaimer</p>
-        </div>
-      </el-col>
-      <el-col :span="5" :offset="2">
-        <!-- Contact Us -->
-        <div class="contact-us">
-          <h3>Contact Us</h3>
-          <p>Feedback Form</p>
-          <p>+61 123 456 789</p>
-        </div>
-      </el-col>
-    </el-row>
+    <div class="footer-content">
+      <p>Monash 2025 | Copyright and disclaimer</p>
+    </div>
   </div>
-
 </template>
+
 
 <script>
 
 </script>
 
 <style scoped>
-/* Tailwind is used in the template, but here's the equivalent CSS for reference */
 .footer {
-  padding-top: 50px;
   background-color: #19619E;
   color: white;
+  display: flex;
+  align-items: center;     /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
 }
 
-.footer-section {
-  text-align: left;
+.footer-content {
+  font-weight: bold;
+  text-align: center;
 }
-.copyright {
-  display: flex;
-  text-align: left;
-  flex-direction: column; /* Align children vertically */
-  justify-content: flex-end; /* Position text at the bottom */
-  height: 200px; /* Define a height for the container */
-}
-.contact-us {
-  color: white;
-  text-decoration: none;
-  text-align: left;
-  display: flex;
-  flex-direction: column; /* Align children vertically */
-  justify-content: flex-end; /* Position text at the bottom */
-  height: 200px; /* Define a height for the container */
-}
+
 a {
   text-decoration: none;   /* Removes underline */
   color: inherit;  
 }
-ul {
-  list-style: none;
-  padding: 0; 
-  margin: 0; 
+p {
+  margin: none;
 }
 </style>
