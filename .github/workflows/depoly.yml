@@ -14,9 +14,9 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/melbourne-frontend .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/melbourne-cooling-solution .
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        docker push ${{ secrets.DOCKER_USERNAME }}/melbourne-frontend
+        docker push ${{ secrets.DOCKER_USERNAME }}/melbourne-cooling-solution
 
     - name: Write EC2 private key
       run: echo "${{ secrets.EC2_KEY }}" > ec2_key.pem && chmod 600 ec2_key.pem
@@ -29,8 +29,8 @@ jobs:
         key: ${{ secrets.BASTION_KEY }}
         script: |
           ssh -o StrictHostKeyChecking=no -i ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_USERNAME }}/melbourne-frontend
+            docker pull ${{ secrets.DOCKER_USERNAME }}/melbourne-cooling-solution
             docker stop frontend || true
             docker rm frontend || true
-            docker run -d --name frontend -p 80:3000 ${{ secrets.DOCKER_USERNAME }}/melbourne-frontend
+            docker run -d --name frontend -p 80:3000 ${{ secrets.DOCKER_USERNAME }}/melbourne-cooling-solution
           EOF
