@@ -22,7 +22,7 @@
         </el-card>
 
         <!-- Content area using cards and collapse panels -->
-        <el-collapse accordion class="custom-collapse">
+        <el-collapse class="custom-collapse">
             <!-- Post-Emergency Recovery -->
             <el-collapse-item name="1">
                 <template #title>

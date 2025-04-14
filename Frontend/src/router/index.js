@@ -6,7 +6,7 @@ import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
 import PrecautionPage from "@/pages/PrecautionPage.vue";
 import UHIFristAidPage from "@/pages/UHIFristAidPage.vue";
 import RecoveryAndAftercarePage from "@/pages/RecoveryAndAftercarePage.vue";
-import ChatPage from "@/pages/HeatImpactPage.vue";
+import HeatImpactPage from "@/pages/HeatImpactPage.vue";
 
 const routes = [
   {
@@ -46,9 +46,9 @@ const routes = [
     component: RecoveryAndAftercarePage
   },
   {
-    path: "/chat",
-    name: "Chat",
-    component: ChatPage
+    path: "/heat-impact",
+    name: "HeatImpact",
+    component: HeatImpactPage
   }
 ];
 

@@ -58,7 +58,6 @@ const isHome = computed(() => route.meta.isHome || false);
 .el-footer {
   background-color: #19619E;
   color: white;
-  padding: 20px;
   text-align: center;
   --el-footer-height: none;
 }
