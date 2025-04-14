@@ -2,15 +2,17 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
+# 拷贝 package.json 和 package-lock.json 文件
+COPY Frontend/package*.json ./
+
 # 安装依赖
-COPY package*.json ./
 RUN npm install
 
-# 拷贝源代码和 .env（确保 env 被 Vite 读取）
-COPY . .
+# 拷贝源代码和 .env 文件
+COPY Frontend/ ./
 
-# 构建（Vite 会自动读取 .env 文件）
-RUN npm run build
+# 构建并删除 .env（防止泄露）
+RUN npm run build && rm -f .env
 
 # 用 serve 启动前端页面
 FROM node:20-alpine AS serve
