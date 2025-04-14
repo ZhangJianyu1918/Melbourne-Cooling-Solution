@@ -51,6 +51,7 @@ const isHome = computed(() => route.meta.isHome || false);
 }
 .el-main {
   min-height: 100vh;
+  max-width: 100vw;
   flex: 1; /* 让 `el-main` 自动撑开，占据所有剩余空间 */
   --el-main-padding: none;
 }
