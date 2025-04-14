@@ -60,6 +60,8 @@ let melbourneBounds = null;
 let infoWindow = null;
 let render = null;
 let polyline = null;
+const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 // Initialize map on component mount
 onMounted(async () => {
@@ -71,9 +73,9 @@ const fetchWeatherData = async (lat, lng) => {
   weather.loading = true;
   try {
     // Replace with your API key
-    const API_KEY = '7ee007781b59c818c0ddd4f14ecfe857';
+    
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${WEATHER_API_KEY}`
     );
 
     if (!response.ok) {
@@ -95,7 +97,7 @@ const fetchWeatherData = async (lat, lng) => {
 
 const initMap = async () => {
   const loader = new Loader({
-    apiKey: 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y',
+    apiKey: GOOGLE_API_KEY,
     version: 'quarterly',
     libraries: ['places', 'geometry'],
   });
