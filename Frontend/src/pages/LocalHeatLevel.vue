@@ -12,7 +12,7 @@
       <!-- Search box -->
       <div style="margin-bottom: 10px; text-align: center;">
         <input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
-          style="width: 600px; padding: 8px; font-size: 16px; height: 60px; border-radius: 20px; border: 1px solid #dcdfe6;" />
+          style="width: 100%; max-width: 600px; padding: 8px; font-size: 16px; height: 60px; border-radius: 20px; border: 1px solid #dcdfe6;" />
         <el-button @click="searchPlace" type="primary" plain
           style="padding: 8px 16px; margin-left: 10px; height: 45px;">
           Search
