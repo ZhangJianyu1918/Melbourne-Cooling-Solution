@@ -1,9 +1,10 @@
+<!-- components/PieChart.vue -->
 <template>
   <v-chart class="chart" :option="option" autoresize />
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { use } from "echarts/core"
 import VChart from 'vue-echarts'
 import {
@@ -17,10 +18,8 @@ import {
   TooltipComponent,
   LegendComponent
 } from 'echarts/components'
-import axios from 'axios'
 
-
-// 注册组件
+// 注册 ECharts 所需模块
 use([
   CanvasRenderer,
   PieChart,
@@ -29,14 +28,24 @@ use([
   LegendComponent
 ])
 
-// 饼图配置项
-const option = ref({
+// 接收 props
+const props = defineProps({
+  title: String,
+  data: {
+    type: Array,
+    required: true
+  }
+})
+
+// 生成 ECharts 配置项
+const option = computed(() => ({
   title: {
-    text: 'Extreme Weather Related Injury Hospitalisations',
+    text: props.title,
     left: 'center'
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
     orient: 'vertical',
@@ -44,10 +53,10 @@ const option = ref({
   },
   series: [
     {
-      name: [],
+      name: props.title,
       type: 'pie',
       radius: '50%',
-      data: [],
+      data: props.data,
       emphasis: {
         itemStyle: {
           shadowBlur: 10,
@@ -57,32 +66,7 @@ const option = ref({
       }
     }
   ]
-})
-
-onMounted(() => {
-  get_extreme_weather_related_injury_hospitalisations();
-})
-
-const get_extreme_weather_related_injury_hospitalisations = async () => {
-  try {
-    const response = await axios.get(
-      'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_extreme_weather_related_injury_hospitalisations'
-    );
-    console.log(response.data);
-    // Analysis response.body string
-    const data = JSON.parse(response.data.body).data;
-
-    // transfer to ECharts pie chart format
-    option.value.series[0].data = data.map(item => ({
-      name: item.weather_type,
-      value: item.hospitalisations
-    }));
-
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
+}))
 </script>
 
 <style scoped>

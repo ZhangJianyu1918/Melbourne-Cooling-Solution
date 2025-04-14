@@ -1,60 +1,17 @@
 import json
-import boto3 # type: ignore
-import os
-import base64
-from decimal import Decimal
-from Crypto.Cipher import AES # type: ignore
-from Crypto.Util.Padding import pad, unpad # type: ignore
 import pymysql
+import os
+from decimal import Decimal
+import boto3
 from botocore.exceptions import ClientError
-
 
 rds_host = os.environ['RDS_HOST']
 db_user = os.environ['DB_USER']
 db_password = os.environ['DB_PASSWORD']
 db_name = os.environ['DB_NAME']
 
-# 从环境变量中读取 AES 密钥和初始化向量
-AES_KEY = os.environ['AES_KEY'].encode('utf-8')
-AES_IV = os.environ['AES_IV'].encode('utf-8')
 
-# 加密函数
-def encrypt_data(data):
-    try:
-        if not data:
-            raise ValueError("No data to encrypt")
-        
-        # 将数据转换为 JSON 字符串
-        data_json = json.dumps(data, cls=DecimalEncoder)
-        
-        # 将字符串转换为字节数据
-        data_bytes = data_json.encode('utf-8')
-        
-        # 创建 AES 加密器
-        cipher = AES.new(AES_KEY, AES.MODE_CBC, AES_IV)
-        
-        # 填充数据，确保其长度是 AES 块大小的倍数
-        padded_data = pad(data_bytes, AES.block_size)
-        
-        # 加密数据
-        encrypted_bytes = cipher.encrypt(padded_data)
-        
-        # 将加密后的字节数据转换为 base64 编码的字符串
-        encrypted_data = base64.b64encode(encrypted_bytes).decode('utf-8')
-        
-        print(f"Encrypted data: {encrypted_data}")
-        return encrypted_data
-    except Exception as e:
-        print(f"Encryption failed: {e}")
-        return None
-
-class DecimalEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return float(obj)
-        return super(DecimalEncoder, self).default(obj)
-
-
+# 初始化 KMS 客户端
 kms_client = boto3.client('kms')
 
 def decrypt_data(encrypted_data):
@@ -70,6 +27,7 @@ def decrypt_data(encrypted_data):
         print(f"Error decrypting data: {e}")
         return None
 
+
 def convert_decimal(obj):
     if isinstance(obj, Decimal):
         return float(obj)
@@ -78,7 +36,6 @@ def convert_decimal(obj):
     elif isinstance(obj, dict):
         return {key: convert_decimal(value) for key, value in obj.items()}
     return obj
-
 
 def lambda_handler(event, context):
     try:
@@ -90,7 +47,7 @@ def lambda_handler(event, context):
         )
 
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM drinking_fountains"
+            sql = "SELECT * FROM heatwave_duration"
             cursor.execute(sql)
             rows = cursor.fetchall()
             columns = [desc[0] for desc in cursor.description]
@@ -105,6 +62,7 @@ def lambda_handler(event, context):
                     else:
                         row_dict[key] = value
                 data.append(row_dict)
+
         return {
             'statusCode': 200,
             'headers': {
@@ -114,7 +72,7 @@ def lambda_handler(event, context):
             },
             'body': json.dumps({
                 'message': 'Succesfully',
-                'data': encrypt_data(data)
+                'data': data
             }, ensure_ascii=False)
         }
 
