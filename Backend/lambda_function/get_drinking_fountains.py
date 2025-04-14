@@ -1,10 +1,10 @@
 import json
-import boto3
+import boto3 # type: ignore
 import os
 import base64
 from decimal import Decimal
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
+from Crypto.Cipher import AES # type: ignore
+from Crypto.Util.Padding import pad, unpad # type: ignore
 import pymysql
 from botocore.exceptions import ClientError
 
