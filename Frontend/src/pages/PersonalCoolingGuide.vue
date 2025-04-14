@@ -1,5 +1,7 @@
 <template>
-  <div>personal cooling guide</div>
+  <div>
+    <h1>Next Iteration</h1>
+  </div>
 </template>
   
 <script>
