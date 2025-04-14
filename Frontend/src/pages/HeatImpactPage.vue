@@ -3,9 +3,12 @@
     <el-container>
       <el-aside width="200px">Aside</el-aside>
       <el-main>
-        <line-chart></line-chart>
-        <bar-chart></bar-chart>
-        <extreme-weather-related-injury-hospitalisations></extreme-weather-related-injury-hospitalisations>
+        <highest-temperature-trend-chart></highest-temperature-trend-chart>
+        <heatwave-duration-chart></heatwave-duration-chart>
+        <extreme-weather></extreme-weather>
+        <heat-deaths-chart></heat-deaths-chart>
+        <heat-hospitalisations-chart></heat-hospitalisations-chart>
+        <heatwave-peak-temps-chart></heatwave-peak-temps-chart>
       </el-main>
     </el-container>
 
@@ -14,9 +17,13 @@
 </template>
 
 <script setup>
-import LineChart from '@/components/LineChart.vue';
-import BarChart from '@/components/BarChart.vue';
-import ExtremeWeatherRelatedInjuryHospitalisations from '@/components/ExtremeWeatherRelatedInjuryHospitalisations.vue';
+import HighestTemperatureTrendChart from '@/components/HighestTemperatureTrendChart.vue';
+import HeatwaveDurationChart from '@/components/HeatwaveDurationChart.vue';
+import ExtremeWeather from '@/components/ExtremeWeather.vue';
+import HeatDeathsChart from '@/components/HeatDeathsChart.vue';
+import HeatHospitalisationsChart from '@/components/HeatHospitalisationsChart.vue';
+import HeatwavePeakTempsChart from '@/components/HeatwavePeakTempsChart.vue';
+
 </script>
 
 <style scoped></style>

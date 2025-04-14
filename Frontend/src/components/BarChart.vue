@@ -1,76 +1,78 @@
+<!-- components/BarChart.vue -->
 <template>
     <v-chart class="chart" :option="option" autoresize />
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import { use } from "echarts/core"
-import VChart from 'vue-echarts'
-import {
-    CanvasRenderer
-} from 'echarts/renderers'
-import {
+  </template>
+  
+  <script setup>
+  import { computed } from 'vue'
+  import { use } from 'echarts/core'
+  import VChart from 'vue-echarts'
+  import {
     BarChart
-} from 'echarts/charts'
-import {
+  } from 'echarts/charts'
+  import {
     TitleComponent,
     TooltipComponent,
-    LegendComponent,
-    GridComponent
-} from 'echarts/components'
-
-// 注册 ECharts 所需组件
-use([
+    GridComponent,
+    LegendComponent
+  } from 'echarts/components'
+  import { CanvasRenderer } from 'echarts/renderers'
+  
+  use([
     CanvasRenderer,
     BarChart,
     TitleComponent,
     TooltipComponent,
-    LegendComponent,
-    GridComponent
-])
-
-// 图表配置项
-const option = ref({
+    GridComponent,
+    LegendComponent
+  ])
+  
+  const props = defineProps({
+    title: String,
+    xData: Array,
+    seriesData: Array,
+    seriesName: {
+      type: String,
+      default: 'Data'
+    }
+  })
+  
+  const option = computed(() => ({
     title: {
-        text: '访问人数统计',
-        left: 'center'
+      text: props.title,
+      left: 'center'
     },
     tooltip: {
-        trigger: 'axis'
+      trigger: 'axis'
     },
     legend: {
-        data: ['访问人数'],
-        bottom: 0
+      data: [props.seriesName],
+      top: 'bottom'
     },
     xAxis: {
-        type: 'category',
-        data: ['1月', '2月', '3月', '4月', '5月']
+      type: 'category',
+      data: props.xData
     },
     yAxis: {
-        type: 'value'
+      type: 'value'
     },
     series: [
-        {
-            name: '访问人数',
-            type: 'bar',
-            data: [150, 230, 224, 218, 135],
-            itemStyle: {
-                color: '#5470C6'
-            },
-            barWidth: '40%',
-            emphasis: {
-                itemStyle: {
-                    color: '#91cc75'
-                }
-            }
+      {
+        name: props.seriesName,
+        type: 'bar',
+        data: props.seriesData,
+        itemStyle: {
+          color: '#5470C6'
         }
+      }
     ]
-})
-</script>
-
-<style scoped>
-.chart {
+  }))
+  </script>
+  
+  <style scoped>
+  .chart {
     width: 100%;
     height: 400px;
-}
-</style>
+  }
+  </style>
+  
