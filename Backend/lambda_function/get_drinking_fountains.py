@@ -105,7 +105,6 @@ def lambda_handler(event, context):
                     else:
                         row_dict[key] = value
                 data.append(row_dict)
-
         return {
             'statusCode': 200,
             'headers': {
@@ -115,7 +114,7 @@ def lambda_handler(event, context):
             },
             'body': json.dumps({
                 'message': 'Succesfully',
-                'data': data
+                'data': encrypt_data(data)
             }, ensure_ascii=False)
         }
 

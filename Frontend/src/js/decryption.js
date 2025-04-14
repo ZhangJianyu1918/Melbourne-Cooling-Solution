@@ -2,8 +2,8 @@ import CryptoJS from 'crypto-js';
 
 
 function decryptData(encryptedData) {
-  const key = CryptoJS.enc.Utf8.parse("MelbourneCooling");
-  const iv = CryptoJS.enc.Utf8.parse("MelbourneCooling");
+  const key = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_KEY);
+  const iv = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_IV);
 
   // Base64 decode first
   const encryptedWordArray = CryptoJS.enc.Base64.parse(encryptedData);
