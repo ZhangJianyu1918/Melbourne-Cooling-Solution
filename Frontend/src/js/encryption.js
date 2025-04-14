@@ -1,6 +1,6 @@
 function encryptData(data) {
-    const key = CryptoJS.enc.Utf8.parse("Melbourne-Cooling-Solution-12"); 
-    const iv = CryptoJS.enc.Utf8.parse("Melbourne-Cooling-Solution-34");  
+    const key = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_KEY); 
+    const iv = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_IV);  
     const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key, {
       iv: iv,
       mode: CryptoJS.mode.CBC,

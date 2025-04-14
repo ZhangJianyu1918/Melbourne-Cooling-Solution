@@ -34,6 +34,7 @@ import frostIcon from '@/assets/frost.png';
 import WeatherCard from '../components/WeatherCard.vue';
 import validateAndSanitize from '../js/validation';
 import decryptData from '@/js/decryption';
+import axios from 'axios';
 
 // Reactive state
 const searchText = ref('');
@@ -229,17 +230,20 @@ const loadMelbourneBoundary = async () => {
 
 const loadDrinkingFountains = async (latitude, longitude) => {
   try {
-    const response = await fetch(
+    const response = await axios.get(
       'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
     );
-    const data = await response.text();
-
+    // console.log(response.data.data);
+    
+    // const data = JSON.parse(response.data.data);
+    const data = response.data.data;
     if (!data || data.length === 0) {
       console.error('No drinking fountain data found');
       return;
     }
     let decrypt_data = decryptData(data);
-
+    console.log(decrypt_data);
+    // let decrypt_data = data;
     const image = new Image();
     image.src = waterBottleIcon;
 
