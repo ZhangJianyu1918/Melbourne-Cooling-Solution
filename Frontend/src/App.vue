@@ -18,7 +18,8 @@ const isHome = computed(() => route.meta.isHome || false);
         </el-header>
         <el-main>
           <transition name="fade" mode="out-in">
-            <router-view :key="$route.fullPath"></router-view>
+            <!-- <router-view :key="$route.fullPath"></router-view> -->
+            <router-view></router-view>
           </transition>
         </el-main>
         <div style="height: 50px;"></div>
