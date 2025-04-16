@@ -41,7 +41,8 @@ const props = defineProps({
 const option = computed(() => ({
   title: {
     text: props.title,
-    left: 'center'
+    left: 'center',
+    padding: [0, 50, 0, 0]
   },
   tooltip: {
     trigger: 'item',
@@ -56,7 +57,7 @@ const option = computed(() => ({
     {
       name: props.title,
       type: 'pie',
-      radius: '50%',
+      radius: '80%',
       data: props.data,
       emphasis: {
         itemStyle: {
@@ -73,6 +74,6 @@ const option = computed(() => ({
 <style scoped>
 .chart {
   width: 100%;
-  height: 400px;
+  height: 500px;
 }
 </style>
