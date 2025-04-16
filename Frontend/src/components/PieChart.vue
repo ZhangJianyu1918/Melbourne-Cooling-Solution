@@ -49,7 +49,8 @@ const option = computed(() => ({
   },
   legend: {
     orient: 'vertical',
-    right: 'right'
+    right: 'right',
+    top: 'center'
   },
   series: [
     {

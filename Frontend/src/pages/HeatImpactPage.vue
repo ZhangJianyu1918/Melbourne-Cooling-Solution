@@ -4,7 +4,7 @@
     <header class="chart-header">
       <h1 class="chart-title">Heat Insights</h1>
       <p class="text-sm text-gray-700 max-w-3xl mx-auto mt-2">
-        Discover interactive charts and visualizations that reveal real historical insights in heat trends and impacts.
+        Discover interactive charts and visualizations that reveal real historical insights in heat trends and impacts.<br/>
         Click each section from the left tab to switch pages.
       </p>
     </header>
@@ -50,7 +50,7 @@ import AsideNavigationBar from '@/components/AsideNavigationBar.vue';
 .chart-header {
   background-color: #E5F2FF;
   padding: 30px 40px 20px;
-  text-align: center;
+  text-align: left;
 }
 
 .chart-title {
@@ -76,7 +76,8 @@ import AsideNavigationBar from '@/components/AsideNavigationBar.vue';
   align-items: center;
   flex: 1;
   overflow: auto;
-  padding: 20px;
+  padding-left: 50px;
+  background-color: white;
 }
 
 .el-main>* {
