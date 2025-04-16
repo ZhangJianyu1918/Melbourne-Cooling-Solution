@@ -1,9 +1,9 @@
 <template>
   <div class="footer">
     <div class="footer-content">
-      <p>Monash 2025 | 
-        <router-link to="/copyright">Copyright</router-link>
-        and disclaimer</p>
+      <p>Monash 2025 |
+        <router-link to="/copyright">Copyright</router-link>and disclaimer
+      </p>
     </div>
   </div>
 </template>
@@ -18,8 +18,10 @@
   background-color: #19619E;
   color: white;
   display: flex;
-  align-items: center;     /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+  justify-content: center;
+  /* 水平居中 */
 }
 
 .footer-content {
@@ -28,9 +30,11 @@
 }
 
 a {
-  text-decoration: none;   /* Removes underline */
-  color: inherit;  
+  text-decoration: none;
+  /* Removes underline */
+  color: inherit;
 }
+
 p {
   margin: none;
 }

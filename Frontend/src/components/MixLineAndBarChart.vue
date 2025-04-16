@@ -92,9 +92,13 @@ const renderChart = () => {
 
 const initChart = () => {
     if (chartRef.value) {
-        chartInstance = echarts.init(chartRef.value)
-        renderChart()
-        window.addEventListener('resize', resizeChart)
+        chartInstance = echarts.init(chartRef.value);
+        renderChart();
+        // Handle restore event
+        chartInstance.on('restore', () => {
+            renderChart(); // Re-render with current props
+        });
+        window.addEventListener('resize', resizeChart);
     }
 }
 
