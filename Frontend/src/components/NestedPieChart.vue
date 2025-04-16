@@ -172,7 +172,8 @@ const renderChart = () => {
     title: {
       text: props.data.title || 'NestedPieChart',
       left: 'center',
-      top: 20
+      top: 0,
+      padding: [0,60, 0, 0]
     },
     legend: {
       orient: 'vertical',

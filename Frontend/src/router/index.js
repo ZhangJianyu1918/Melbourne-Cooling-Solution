@@ -62,6 +62,10 @@ const routes = [
     component: HeatImpactPage,
     children: [
       {
+        path: '',  
+        redirect: '/heat-impact/age-sex'
+      },
+      {
         path: 'age-sex',
         component: AgeAndSexChart
       },
