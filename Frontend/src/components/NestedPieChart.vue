@@ -176,7 +176,8 @@ const renderChart = () => {
     },
     legend: {
       orient: 'vertical',
-      left: 'left'
+      right: 10,
+      top: 'center'
     },
     tooltip: {
       trigger: 'item',

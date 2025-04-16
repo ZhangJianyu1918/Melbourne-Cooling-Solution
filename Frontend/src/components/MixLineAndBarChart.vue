@@ -54,7 +54,7 @@ const renderChart = () => {
             }
         },
         legend: {
-            data: [props.barName, props.lineName]
+            data: [props.barName, props.lineName],
         },
         xAxis: {
             type: 'category',
