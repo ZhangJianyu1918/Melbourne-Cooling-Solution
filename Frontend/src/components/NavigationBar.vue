@@ -41,21 +41,23 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const activeIndex = ref('');
+const activeIndex = ref('1'); // Default to 'Home'
 
 watch(
   () => route.path,
   (newPath) => {
-    if (newPath === '/') {
-      activeIndex.value = '1';
-    } else if (newPath === '/local-heat-level') {
-      activeIndex.value = '2';
-    } else if (newPath === '/personal-cooling-guide') {
-      activeIndex.value = '3';
-    } else if (newPath === '/heat-impact') {
-      activeIndex.value = '4';
-    } else if (newPath === '/community-support') {
-      activeIndex.value = '5';
+    if (newPath === '/' || newPath === '') {
+      activeIndex.value = '1'; // Home
+    } else if (newPath.startsWith('/local-heat-level')) {
+      activeIndex.value = '2'; // Local Heat Level
+    } else if (newPath.startsWith('/personal-cooling-guide')) {
+      activeIndex.value = '3'; // Personal Cooling Guide
+    } else if (newPath.startsWith('/heat-impact')) {
+      activeIndex.value = '4'; // Heat Impact (including sub-routes)
+    } else if (newPath.startsWith('/community-support')) {
+      activeIndex.value = '5'; // Community Support
+    } else {
+      activeIndex.value = ''; // No highlight for unmatched routes
     }
   },
   { immediate: true }

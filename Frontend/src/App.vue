@@ -18,10 +18,10 @@ const isHome = computed(() => route.meta.isHome || false);
         </el-header>
         <el-main>
           <transition name="fade" mode="out-in">
-            <router-view :key="$route.fullPath"></router-view>
+            <!-- <router-view :key="$route.fullPath"></router-view> -->
+            <router-view></router-view>
           </transition>
         </el-main>
-        <div style="height: 50px;"></div>
         <el-footer>
           <Footer />
         </el-footer>
@@ -50,7 +50,7 @@ const isHome = computed(() => route.meta.isHome || false);
   --el-header-padding: none;
 }
 .el-main {
-  min-height: 100vh;
+  min-height: 86.8vh;
   max-width: 100vw;
   flex: 1; /* 让 `el-main` 自动撑开，占据所有剩余空间 */
   --el-main-padding: none;

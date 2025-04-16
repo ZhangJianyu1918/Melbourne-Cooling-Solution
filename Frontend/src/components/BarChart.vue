@@ -54,7 +54,8 @@
       data: props.xData
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
+      position: 'right'
     },
     series: [
       {
