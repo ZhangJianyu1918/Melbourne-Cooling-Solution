@@ -12,6 +12,7 @@ import HeatwaveDurationAndPeekTempsChart from "@/components/HeatwaveDurationAndP
 import ExtremeWeather from "@/components/ExtremeWeather.vue";
 import HeatDeathsChart from "@/components/HeatDeathsChart.vue";
 import HeatHospitalisationsChart from "@/components/HeatHospitalisationsChart.vue";
+import CopyRightPage from "@/pages/CopyRightPage.vue";
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
     path: "/community-support",
     name: "CommunitySupport",
     component: CommunitySupportPage,
+  },
+  {
+    path: '/copyright',
+    name: 'CopyRightPage',
+    component: CopyRightPage
   },
   {
     path: "/community-support/precaution",
@@ -76,7 +82,7 @@ const routes = [
         component: HeatHospitalisationsChart
       }
     ]
-  }
+  },
 ];
 
 const router = createRouter({

@@ -1,7 +1,9 @@
 <template>
   <div class="footer">
     <div class="footer-content">
-      <p>Monash 2025 | Copyright and disclaimer</p>
+      <p>Monash 2025 | 
+        <router-link to="/copyright">Copyright</router-link>
+        and disclaimer</p>
     </div>
   </div>
 </template>

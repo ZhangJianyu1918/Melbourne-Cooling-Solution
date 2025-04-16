@@ -5,7 +5,7 @@
         <h2 style="color: #19619E; font-family: Abril Fatface;">Heat Insights</h2>
         <p>
           Discover interactive charts and visualizations that reveal
-          real historical insights in about heat trend and its impacts.<br/>
+          real historical insights in about heat trend and its impacts.<br />
           Click on each section from the left tab to switch between pages.
         </p>
       </el-header>
@@ -18,13 +18,25 @@
 
           <!-- 菜单区域：上下折叠 -->
           <transition name="fade">
-            <el-menu v-show="isMenuVisible" :default-active="activeMenu" @select="handleSelect"
-              class="el-menu-vertical-demo">
-              <el-menu-item index="age-sex">Age & Sex</el-menu-item>
-              <el-menu-item index="extreme-weather">Extreme Weather</el-menu-item>
-              <el-menu-item index="heat-deaths">Heat Deaths</el-menu-item>
-              <el-menu-item index="heat-hospitalisations">Hospitalisations</el-menu-item>
-              <el-menu-item index="heatwave-duration-peak">Duration & Peak</el-menu-item>
+            <el-menu v-show="isMenuVisible" :default-active="activeMenu" class="el-menu-vertical-demo">
+              <router-link to="/heat-impact/age-sex" custom v-slot="{ navigate, href }">
+                <el-menu-item :index="'age-sex'" :href="href" @click="navigate">Age & Sex</el-menu-item>
+              </router-link>
+              <router-link to="/heat-impact/extreme-weather" custom v-slot="{ navigate, href }">
+                <el-menu-item :index="'extreme-weather'" :href="href" @click="navigate">Extreme Weather</el-menu-item>
+              </router-link>
+              <router-link to="/heat-impact/heat-deaths" custom v-slot="{ navigate, href }">
+                <el-menu-item :index="'heat-deaths'" :href="href" @click="navigate">Heat Deaths</el-menu-item>
+              </router-link>
+              <router-link to="/heat-impact/heat-hospitalisations" custom v-slot="{ navigate, href }">
+                <el-menu-item :index="'heat-hospitalisations'" :href="href"
+                  @click="navigate">Hospitalisations</el-menu-item>
+              </router-link>
+              <router-link to="/heat-impact/heatwave-duration-peak" custom v-slot="{ navigate, href }">
+                <el-menu-item :index="'heatwave-duration-peak'" :href="href" @click="navigate">Duration &
+                  Peak</el-menu-item>
+              </router-link>
+
             </el-menu>
           </transition>
         </el-aside>
@@ -55,10 +67,6 @@ const activeMenu = computed(() => {
   const segments = route.path.split('/')
   return segments[segments.length - 1] || 'age-sex'
 })
-
-const handleSelect = (key) => {
-  router.push(`/heat-impact/${key}`)
-}
 </script>
 
 <style scoped>
@@ -72,30 +80,37 @@ const handleSelect = (key) => {
 .fade-leave-to {
   opacity: 0;
 }
+
 .common-layout {
   min-height: inherit;
 }
+
 .chart-container {
   background-color: white;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
+
 /* 主体区域设置居中 */
 .el-main {
   display: flex;
-  justify-content: center;  /* 水平居中 */
-  align-items: center;      /* 垂直居中 */
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
   flex: 1;
   overflow: auto;
-  padding: 20px; /* 可选，增加内边距 */
+  padding: 20px;
+  /* 可选，增加内边距 */
 }
 
 /* 使子组件不会被拉伸 */
-.el-main > * {
+.el-main>* {
   max-width: 100%;
   width: 100%;
 }
+
 .chart-header {
   background-color: #E5F2FF;
   height: fit-content;
