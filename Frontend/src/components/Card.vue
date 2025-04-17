@@ -1,7 +1,7 @@
 <template>
-    <div class="card-container">
+    <div class="card-container" :class="`card-variant-${variant}`">
         <router-link :to="to" class="card-link">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm" >
                 <img :src="getImageUrl(image)" alt="Service Image" class="card-img-top" />
                 <div class="card-body">
                     <h5 class="card-title">{{ t(title) }}</h5>
@@ -16,12 +16,14 @@
 import { useI18n } from "vue-i18n";
 
 
-defineProps({
+const props = defineProps({
     image: String,
     title: String,
     description: String,
-    to: String
+    to: String,
+    variant: String
 });
+
 const { t } = useI18n()
 const getImageUrl = (imagePath) => {
     return new URL(`../assets/${imagePath}`, import.meta.url).href;
@@ -38,13 +40,13 @@ const getImageUrl = (imagePath) => {
 
 .card-link {
     text-decoration: none;
-    
-    /* 去除默认的链接样式 */
 }
 
 .card {
-  width: auto; /* 调整宽度，原本18rem，现在变窄 */
-  min-height: 20rem; /* 增加最小高度，让它更高 */
+  /* width: auto; 调整宽度，原本18rem，现在变窄 */
+  /* height: 410px; */
+  min-height: 410px;
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 让内容均匀分布 */
@@ -54,27 +56,31 @@ const getImageUrl = (imagePath) => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
 }
+.card-variant-home .card{
+    height: 410px;
+}
+.card-variant-community-support .card{
+    height: fit-content;
+}
 
 .card-img-top {
-  width: 100%; /* 让图片适应新宽度111 */
-  height: 350px; /* 控制图片高度，避免太大 */
-  object-fit: cover; /* 确保图片填充整个区域 */
+  min-width: 250px; 
+  height: 200px; 
+  object-fit: cover; 
   border-radius: 20px;
 }
 .card-title {
-  font-size: 1.2rem; /* 调整标题大小 */
+  font-size: 1.2rem;
   text-align: center;
 }
 
 .card-text {
   font-size: 0.9rem;
   text-align: center;
-  line-height: 1.4; /* 行距稍微缩小 */
+  line-height: 1.4; 
 }
-
 
 .card:hover {
     transform: scale(1.05);
-    /* 鼠标悬停时放大效果 */
 }
 </style>

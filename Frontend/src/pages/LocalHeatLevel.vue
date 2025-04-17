@@ -19,7 +19,6 @@
         </el-button>
       </div>
       <div style="height: 20px;"></div>
-
       <div class="google-map" ref="mapElement"></div>
       <WeatherCard :temp="weather.temp" :placeName="marker?.title" :icon="weather.icon" @find-shade="findShadedArea" />
     </div>
@@ -61,6 +60,117 @@ let melbourneBounds = null;
 let infoWindow = null;
 let render = null;
 let polyline = null;
+const customMapStyle = [
+  {
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#dedede" }
+    ]
+  },
+  {
+    "elementType": "labels.icon",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },
+  {
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#8a8a8a" }
+    ]
+  },
+  {
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      { "color": "#ffffff" }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      { "color": "#c0c0c0" }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#e6e6e6" }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#b6e3b6" }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#f9f9f9" }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#b3b3b3" }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.icon",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "labels.text",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "labels.text",
+    "stylers": [
+      { "visibility": "on" }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "labels.text",
+    "stylers": [
+      { "visibility": "on" }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#dcdcdc" }
+    ]
+  },
+  {
+    "featureType": "transit.station",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#666666" }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#c9e3f5" }
+    ]
+  }
+]
+
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -74,7 +184,7 @@ const fetchWeatherData = async (lat, lng) => {
   weather.loading = true;
   try {
     // Replace with your API key
-    
+
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${WEATHER_API_KEY}`
     );
@@ -106,12 +216,41 @@ const initMap = async () => {
   try {
     google = await loader.load();
     const MelbourneCenter = { lat: -37.8136, lng: 144.9631 };
+    const styledMapType = new google.maps.StyledMapType(customMapStyle);
     map = new google.maps.Map(mapElement.value, {
       center: MelbourneCenter,
-      zoom: 13,
+      zoom: 17,
+      styles: [
+        {
+          featureType: "poi",
+          elementType: "labels",
+          stylers: [{ visibility: "off" }]
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels",
+          stylers: [{ visibility: "on" }]
+        }
+      ],
+      mapTypeControlOptions: {
+        mapTypeIds: ["roadmap", "satellite", "styled_map"],
+      },
     });
 
-    infoWindow = new google.maps.InfoWindow()
+    map.mapTypes.set("styled_map", styledMapType);
+    map.setMapTypeId("styled_map");
+    // map.data.loadGeoJson('/trees.geojson');
+    map.data.loadGeoJson('/trees-with-species-and-dimensions-urban-forest.geojson');
+    map.data.setStyle(function (feature) {
+      return {
+        icon: {
+          url: '/tree.png',
+          scaledSize: new google.maps.Size(15, 15)
+        }
+      };
+    });
+
+    infoWindow = new google.maps.InfoWindow();
     melbourneBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(-37.906, 144.862), // 西南角
       new google.maps.LatLng(-37.754, 145.056)  // 东北角
@@ -125,6 +264,7 @@ const initMap = async () => {
       componentRestrictions: { country: 'au' },
       types: ['geocode', 'establishment']
     });
+
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
       if (place.geometry) {
@@ -234,7 +374,7 @@ const loadDrinkingFountains = async (latitude, longitude) => {
       'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
     );
     // console.log(response.data.data);
-    
+
     // const data = JSON.parse(response.data.data);
     const data = response.data.data;
     if (!data || data.length === 0) {
@@ -242,7 +382,7 @@ const loadDrinkingFountains = async (latitude, longitude) => {
       return;
     }
     let decrypt_data = decryptData(data);
-    console.log(decrypt_data);
+    // console.log(decrypt_data);
     // let decrypt_data = data;
     const image = new Image();
     image.src = waterBottleIcon;
@@ -581,13 +721,13 @@ const clearPreviousRoutes = () => {
     polyline.setMap(null);
   }
   directionsRenderer.value.forEach(render => {
-    console.log(render);
+    // console.log(render);
     render.setMap(null);
   });
   directionsRenderer.value = [];
 
   routePolylines.value.forEach(polyline => {
-    console.log(polyline);
+    // console.log(polyline);
     polyline.setMap(null);
   });
   routePolylines.value = [];

@@ -4,7 +4,7 @@
             <!-- 首页专属导航栏 -->
             <nav v-if="isHome" class="home-nav">
                 <router-link to="/">
-                    <img src="../assets/cool.png" width="" height="40px" class="logo">
+                    <img src="../assets/logo.png" width="" height="40px" class="logo">
                 </router-link>
                 <ul>
                     <li>
@@ -18,7 +18,7 @@
                             }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/heat-impact">HEAT IMPACT</router-link>
+                        <router-link to="/heat-impact">Heat Insights</router-link>
                     </li>
                     <li>
                         <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>
@@ -50,9 +50,9 @@
             </el-row>
             <div style="height: 30px;"></div>
             <el-row :gutter="24" justify="space-evenly">
-                <el-col v-for="(service, index) in services" :key="index" :span="6" :xs="24" :sm="12" :md="8">
+                <el-col v-for="(service, index) in services" :key="index" :span="6" :xs="24" :sm="12" :md="6">
                     <Card :title="service.title" :image="service.image" :description="service.description"
-                        :to="service.to" />
+                        :to="service.to" :variant="service.variant"/>
                 </el-col>
             </el-row>
             <div style="height: 50px;"></div>
@@ -110,20 +110,31 @@ const services = [
         image: "local-heat-level.png",
         title: "service-card-local-heat-level-title",
         description: "service-card-local-heat-level-description",
-        to: "/local-heat-level"
+        to: "/local-heat-level",
+        variant: 'home'
     },
     {
         image: "personal-cooling-guide.png",
         title: "service-card-personal-cooling-guide-title",
         description: "service-card-personal-cooling-guide-description",
-        to: "/personal-cooling-guide"
+        to: "/personal-cooling-guide",
+        variant: 'home'
+    },
+    {
+        image: "heat-insights.png",
+        title: "🔥 Heat Insights",
+        description: "Discover interactive charts and visualizations that reveal real historical insights in about heat trend and its impacts",
+        to: "/heat-Insights",
+        variant: 'home'
     },
     {
         image: "community-support.png",
         title: "service-card-communtity-support-title",
         description: "service-card-communtity-support-description",
-        to: "/community-support"
+        to: "/community-support",
+        variant: 'home'
     }
+    
 ];
 
 const scrollDown = () => {

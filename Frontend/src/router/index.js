@@ -6,13 +6,13 @@ import CommunitySupportPage from "@/pages/CommunitySupportPage.vue";
 import PrecautionPage from "@/pages/PrecautionPage.vue";
 import UHIFristAidPage from "@/pages/UHIFristAidPage.vue";
 import RecoveryAndAftercarePage from "@/pages/RecoveryAndAftercarePage.vue";
-import HeatImpactPage from "@/pages/HeatImpactPage.vue";
 import AgeAndSexChart from "@/components/AgeAndSexChart.vue";
 import HeatwaveDurationAndPeekTempsChart from "@/components/HeatwaveDurationAndPeekTempsChart.vue";
 import ExtremeWeather from "@/components/ExtremeWeather.vue";
 import HeatDeathsChart from "@/components/HeatDeathsChart.vue";
 import HeatHospitalisationsChart from "@/components/HeatHospitalisationsChart.vue";
 import CopyRightPage from "@/pages/CopyRightPage.vue";
+import HeatInsightsPage from "@/pages/HeatInsightsPage.vue";
 
 const routes = [
   {
@@ -57,32 +57,37 @@ const routes = [
     component: RecoveryAndAftercarePage
   },
   {
-    path: "/heat-impact",
-    name: "HeatImpact",
-    component: HeatImpactPage,
+    path: "/heat-insights",
+    name: "HeatInsights",
+    component: HeatInsightsPage,
     children: [
       {
         path: '',  
-        redirect: '/heat-impact/age-sex'
+        redirect: '/heat-insights/age-sex'
       },
       {
         path: 'age-sex',
+        name: 'AgeAndSexChart',
         component: AgeAndSexChart
       },
       {
         path: 'heatwave-duration-peak',
+        name: 'HeatwaveDurationAndPeekTempsChart',
         component: HeatwaveDurationAndPeekTempsChart
       },
       {
         path: 'extreme-weather',
+        name: 'ExtremeWeather',
         component: ExtremeWeather
       },
       {
         path: 'heat-deaths',
+        name: 'HeatDeathsChart',
         component: HeatDeathsChart
       },
       {
         path: 'heat-hospitalisations',
+        name: 'HeatHospitalisationsChart',
         component: HeatHospitalisationsChart
       }
     ]

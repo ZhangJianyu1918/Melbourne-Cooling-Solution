@@ -7,11 +7,11 @@
         </div>
 
         <el-menu v-if="!isCollapsed" :default-active="activeMenu" router class="custom-menu" active-text-color="#fff">
-            <el-menu-item index="/heat-impact/age-sex">Age & Sex</el-menu-item>
-            <el-menu-item index="/heat-impact/extreme-weather">Extreme Weather</el-menu-item>
-            <el-menu-item index="/heat-impact/heat-deaths">Heat Deaths</el-menu-item>
-            <el-menu-item index="/heat-impact/heat-hospitalisations">Hospitalisations</el-menu-item>
-            <el-menu-item index="/heat-impact/heatwave-duration-peak">Duration & Peak</el-menu-item>
+            <el-menu-item index="/heat-insights/age-sex">Age & Sex</el-menu-item>
+            <el-menu-item index="/heat-insights/extreme-weather">Extreme Weather</el-menu-item>
+            <el-menu-item index="/heat-insights/heat-deaths">Heat Deaths</el-menu-item>
+            <el-menu-item index="/heat-insights/heat-hospitalisations">Hospitalisations</el-menu-item>
+            <el-menu-item index="/heat-insights/heatwave-duration-peak">Duration & Peak</el-menu-item>
         </el-menu>
     </div>
 </template>
@@ -25,7 +25,7 @@ const route = useRoute()
 
 const activeMenu = computed(() => {
     const segments = route.path.split('/')
-    return segments.length > 2 ? `/heat-impact/${segments[segments.length - 1]}` : '/heat-impact/age-sex'
+    return segments.length > 2 ? `/heat-insights/${segments[segments.length - 1]}` : '/heat-insights/age-sex'
 })
 
 const isCollapsed = ref(false)

@@ -22,14 +22,13 @@ const isHome = computed(() => route.meta.isHome || false);
             <router-view></router-view>
           </transition>
         </el-main>
+        <div style="height: 30px;"></div>
         <el-footer>
           <Footer />
         </el-footer>
       </el-container>
     </div>
   </div>
-
-
 </template>
 
 <style scoped>
