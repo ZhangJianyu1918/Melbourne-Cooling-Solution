@@ -10,18 +10,98 @@
     </p>
     <div>
       <!-- Search box -->
-      <div style="margin-bottom: 10px; text-align: center;">
-        <input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
-          style="width: 100%; max-width: 600px; padding: 8px; font-size: 16px; height: 60px; border-radius: 20px; border: 1px solid #dcdfe6;" />
-        <el-button @click="searchPlace" type="primary" plain
+      <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
+        <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
+          class="searchInputArea" @keyup.enter="searchPlace">
+
+          <template #suffix>
+            <el-icon @click="expandInputArea" style="cursor: pointer;">
+              <Open />
+            </el-icon>
+            <el-icon @click="searchPlace" style="cursor: pointer;">
+              <Search />
+            </el-icon>
+          </template>
+        </el-input>
+        <!-- <el-button @click="searchPlace" type="primary" plain
           style="padding: 8px 16px; margin-left: 10px; height: 45px;">
           Search
-        </el-button>
+        </el-button> -->
+      </div>
+      <div v-else class="searchArea">
+        <!-- <el-form :model="navigationForm" label-width="auto">
+          <el-form-item label="" prop="type">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <el-segmented v-model="navigationForm.type" :options="navigationType" />
+              <el-radio-group v-model="navigationForm.path">
+                <el-radio value="Shortest">Shortest</el-radio>
+                <el-radio value="Coolest">Coolest</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+          <el-form-item label="From">
+            <el-input v-model="navigationForm.from" />
+          </el-form-item>
+          <el-form-item label="To">
+            
+            <el-input v-model="navigationForm.to" />
+          </el-form-item>
+        </el-form> -->
+        <el-row>
+          <el-col :span="12">
+            <el-segmented v-model="navigationForm.type" :options="navigationType" />
+          </el-col>
+          <el-col :span="12">
+            <el-radio-group v-model="navigationForm.path">
+              <el-radio value="Shortest">Shortest</el-radio>
+              <el-radio value="Coolest">Coolest</el-radio>
+            </el-radio-group>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-row>
+              <el-col>
+                <el-input v-model="navigationForm.from" placeholder="From">
+                  <template #prefix>
+                    <el-icon>
+                      <Location />
+                    </el-icon>
+                  </template>
+                </el-input>
+              </el-col>
+            </el-row>
+
+            <el-input v-model="navigationForm.to" placeholder="To" @keyup.enter="calculateRoute">
+              <template #prefix>
+                <el-icon>
+                  <Location />
+                </el-icon>
+              </template>
+            </el-input>
+          </el-col>
+
+          <el-col :span="12">
+            Detail
+          </el-col>
+        </el-row>
+
       </div>
       <div style="height: 20px;"></div>
       <div class="google-map" ref="mapElement"></div>
       <WeatherCard :temp="weather.temp" :placeName="marker?.title" :icon="weather.icon" @find-shade="findShadedArea" />
     </div>
+    <el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
+      <span>The temperature is {{ weather.temp }}°C!</span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="centerDialogVisible = false">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -34,7 +114,8 @@ import WeatherCard from '../components/WeatherCard.vue';
 import validateAndSanitize from '../js/validation';
 import decryptData from '@/js/decryption';
 import axios from 'axios';
-
+import { Search, Open, Location } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus'
 // Reactive state
 const searchText = ref('');
 const mapElement = ref(null);
@@ -43,8 +124,8 @@ let map = null;
 let google = null;
 let marker = ref(null);
 let autocomplete = null;
-let directionsService = null;
-const directionsRenderer = ref([]);
+let directionsService = ref(null);
+const directionsRenderer = ref(null);
 const weather = reactive({
   temp: null,
   humidity: null,
@@ -60,6 +141,7 @@ let melbourneBounds = null;
 let infoWindow = null;
 let render = null;
 let polyline = null;
+const isExpand = ref(false)
 const customMapStyle = [
   {
     "elementType": "geometry",
@@ -170,41 +252,26 @@ const customMapStyle = [
     ]
   }
 ]
+const navigationType = ["WALKING", "BICYCLING"]
+const centerDialogVisible = ref(false)
+const navigationForm = ref({
+  from: '',
+  to: '',
+  type: '',
+  path: ''
 
+})
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const drinkingFountainList = ref([])
+const coolingPlaceList = ref([])
 
 // Initialize map on component mount
 onMounted(async () => {
+  await getCoolingPlace();
+  await getDrinkingFoundtains();
   await initMap();
 });
-
-// Methods
-const fetchWeatherData = async (lat, lng) => {
-  weather.loading = true;
-  try {
-    // Replace with your API key
-
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${WEATHER_API_KEY}`
-    );
-
-    if (!response.ok) {
-      throw new Error('Weather data request failed');
-    }
-
-    const data = await response.json();
-
-    weather.temp = Math.round(data.main.temp);
-    weather.humidity = data.main.humidity;
-    weather.description = data.weather[0].description;
-    weather.icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-    weather.loading = false;
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-    weather.loading = false;
-  }
-};
 
 const initMap = async () => {
   const loader = new Loader({
@@ -258,7 +325,7 @@ const initMap = async () => {
 
     fetchWeatherData(MelbourneCenter.lat, MelbourneCenter.lng);
 
-    autocomplete = new google.maps.places.Autocomplete(searchInput.value, {
+    autocomplete = new google.maps.places.Autocomplete(searchInput.value.input, {
       bounds: melbourneBounds,
       strictBounds: true,
       componentRestrictions: { country: 'au' },
@@ -274,13 +341,48 @@ const initMap = async () => {
         console.log('No details available for input: ' + place.name);
       }
     });
-    directionsService = new google.maps.DirectionsService();
-
+    directionsService.value = new google.maps.DirectionsService();
+    directionsRenderer.value = new google.maps.DirectionsRenderer();
+    directionsRenderer.value.setMap(map);
     map.addListener("click", (event) => handleMapClick(event));
   } catch (error) {
     console.error('Failed to load Google Maps API:', error);
   }
 };
+
+const expandInputArea = () => {
+  isExpand.value = true;
+};
+
+// Methods
+const fetchWeatherData = async (lat, lng) => {
+  weather.loading = true;
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${WEATHER_API_KEY}`
+    );
+
+    if (!response.ok) {
+      throw new Error('Weather data request failed');
+    }
+
+    const data = await response.json();
+
+    weather.temp = Math.round(data.main.temp);
+    // weather.temp = 40;
+    if (weather.temp >= 30) {
+      centerDialogVisible.value = true;
+    }
+    weather.humidity = data.main.humidity;
+    weather.description = data.weather[0].description;
+    weather.icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    weather.loading = false;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    weather.loading = false;
+  }
+};
+
 
 const handleMapClick = async (event) => {
   if (!event || !event.latLng) {
@@ -368,20 +470,23 @@ const loadMelbourneBoundary = async () => {
   }
 };
 
-const loadDrinkingFountains = async (latitude, longitude) => {
-  try {
-    const response = await axios.get(
-      'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
-    );
-    // console.log(response.data.data);
+const getDrinkingFoundtains = async () => {
+  const response = await axios.get(
+    'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
+  );
+  const data = response.data.data;
+  if (!data || data.length === 0) {
+    console.error('No drinking fountain data found');
+    return;
+  }
+  let decrypt_data = decryptData(data);
+  drinkingFountainList.value = decrypt_data;
+  // console.log(drinkingFountainList.value);
+}
 
-    // const data = JSON.parse(response.data.data);
-    const data = response.data.data;
-    if (!data || data.length === 0) {
-      console.error('No drinking fountain data found');
-      return;
-    }
-    let decrypt_data = decryptData(data);
+const loadDrinkingFountains = (latitude, longitude) => {
+  try {
+    let decrypt_data = drinkingFountainList.value;
     // console.log(decrypt_data);
     // let decrypt_data = data;
     const image = new Image();
@@ -452,33 +557,33 @@ const loadDrinkingFountains = async (latitude, longitude) => {
   }
 };
 
+const getCoolingPlace = async () => {
+  const response = await fetch('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  const data = await response.json();
+
+  let decrypt_data;
+  if (typeof data === 'string') {
+    decrypt_data = JSON.parse(decryptData(data.body));
+  } else {
+    decrypt_data = decryptData(data.body);
+  }
+  coolingPlaceList.value = decrypt_data;
+  console.log(coolingPlaceList.value);
+}
+
 const loadCoolingPlaces = async (latitude, longitude) => {
   try {
-    const response = await fetch('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    const data = await response.json();
-
-    let decrypt_data;
-    if (typeof data === 'string') {
-      decrypt_data = JSON.parse(decryptData(data.body));
-    } else {
-      decrypt_data = decryptData(data.body);
-    }
-
-    const places = decrypt_data;
-
+    const places = coolingPlaceList.value;
     if (!places || !Array.isArray(places)) {
       console.error('Parsed data is not an array:', places);
       return [];
     }
-    if (!data) {
-      console.error('Invalid response data');
-      return [];
-    }
+    
 
     const image = new Image();
     image.src = frostIcon;
@@ -567,7 +672,7 @@ const searchPlace = () => {
       query: input + " Melbourne", // 添加"Melbourne"作为关键词
       bounds: melbourneBounds,
       location: new google.maps.LatLng(-37.8136, 144.9631), // 墨尔本中心位置
-      radius: 15000, // 搜索半径（米）
+      radius: 10000, // 搜索半径（米）
       region: 'au' // 澳大利亚区域
     },
     (results, status) => {
@@ -606,172 +711,157 @@ const updateMap = (place) => {
     title: place.name,
   });
 
-  const navButton = document.createElement("button");
-  navButton.innerText = "Navigate Here";
-  navButton.style = "background: #19619e; color: white; padding: 10px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px;";
-  navButton.onclick = () => calculateRoute(location);
-
   if (directionsRenderer.value.length > 0) {
     clearPreviousRoutes();
   }
-
-  const infoWindow = new google.maps.InfoWindow({
-    content: navButton
-  });
-
-  marker.value.addListener("click", () => {
-    infoWindow.open(map, marker.value);
-  });
 };
 
-const calculateRoute = (destination) => {
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported by your browser.");
-    return;
+
+const calculateRoute = () => {
+  if (!navigationForm.value.from || !navigationForm.value.to || !navigationForm.value.type) {
+    ElMessage.warning('请输入起点和终点')
+    return
   }
+  if (navigationForm.value.type == 'WALKING') {
+    navigationForm.value.type = google.maps.TravelMode.WALKING;
+  } else {
+    navigationForm.value.type = google.maps.TravelMode.BICYCLING;
+  }
+  const request = {
+    origin: navigationForm.value.from,
+    destination: navigationForm.value.to,
+    travelMode: navigationForm.value.type,
+    provideRouteAlternatives: true,
+  };
 
-  navigator.geolocation.getCurrentPosition((position) => {
-    const origin = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    };
-
-    const request = {
-      origin: origin,
-      destination: destination,
-      travelMode: google.maps.TravelMode.DRIVING,
-      provideRouteAlternatives: false, // 只生成一条路线
-    };
-
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        clearPreviousRoutes(); // 清除之前的路线
-
-        // 只处理第一条路线（唯一路线）
-        const route = result.routes[0];
-        const currentColor = getRandomColor();
-
-        // 创建 DirectionsRenderer
-        render = new google.maps.DirectionsRenderer({
-          map: map,
-          directions: result,
-          routeIndex: 0, // 固定为 0，因为只有一条路线
-          polylineOptions: {
-            strokeColor: currentColor,
-            strokeWeight: 4,
-          },
-          suppressMarkers: true,
-        });
-        directionsRenderer.value.push(render);
-
-        // 创建 Polyline
-        polyline = new google.maps.Polyline({
-          path: route.overview_path,
-          strokeColor: currentColor,
-          strokeWeight: 8,
-          map: map,
-        });
-        routePolylines.value.push(polyline);
-
-        // 计算路线上的标记数量
-        const count = countMarkersOnRoute(polyline.getPath());
-
-        // 添加点击事件
-        polyline.addListener("click", (event) => {
-          showRouteInfoWindow(event, route, count);
-        });
-        render.addListener("click", (event) => {
-          showRouteInfoWindow(event, route, count);
-        });
+  directionsService.value.route(request, (result, status) => {
+    if (status === google.maps.DirectionsStatus.OK) {
+      const routes = result.routes;
+      let targetRoute;
+      if (navigationForm.value.path == 'Shortest') {
+        targetRoute = findShortestPath(routes);
       } else {
-        alert("Directions request failed due to " + status);
+        targetRoute = findCoolestPath(routes).maxCountRoute;
       }
-    });
-  }, () => {
-    alert("Unable to retrieve your location.");
+      directionsRenderer.value.setDirections({
+        ...result,
+        routes: [targetRoute]
+      });
+    } else {
+      console.error('Walking directions failed:', status);
+    }
   });
 };
 
-const countMarkersOnRoute = (routePath) => {
-  let count = 0;
-
-  // Iterate over existing markers
-  markers.value.forEach((marker) => {
-    const markerPosition = marker.getPosition();
-
-    // Check if marker is within the route polyline
-    routePath.forEach((pathPoint) => {
-      // Check if the marker is near the route (within a certain tolerance)
-      const distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition, pathPoint);
-      if (distance < 150) { // You can adjust the tolerance distance
-        count++;
-      }
-    });
-  });
-
-  console.log(`Number of markers near the route: ${count}`);
-  return count;
-};
-
-const clearPreviousRoutes = () => {
-  if (render != null) {
-    render.setMap(null);
-  }
-  if (polyline != null) {
-    polyline.setMap(null);
-  }
-  directionsRenderer.value.forEach(render => {
-    // console.log(render);
-    render.setMap(null);
-  });
-  directionsRenderer.value = [];
-
-  routePolylines.value.forEach(polyline => {
-    // console.log(polyline);
-    polyline.setMap(null);
-  });
-  routePolylines.value = [];
-
-  if (routeInfoWindow) {
-    routeInfoWindow.close();
-  }
-};
-
-const getRandomColor = () => {
-  const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFA500", "#800080"];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
-const showRouteInfoWindow = (event, route, count) => {
-  if (routeInfoWindow != null) {
-    routeInfoWindow.close();
-  }
-  const leg = route.legs[0]; // Only take the first leg of the route
-  const distance = leg.distance.text;
-  const duration = leg.duration.text;
-  const startAddress = leg.start_address;
-  const endAddress = leg.end_address;
-
-  routeInfoWindow = new google.maps.InfoWindow({
-    content: `<div>
-            <strong>Route Detail</strong><br>
-            <strong>From:</strong> ${startAddress} <br>
-            <strong>To:</strong> ${endAddress} <br>
-            <strong>Distance:</strong>: ${distance} <br>
-            <strong>Duration:</strong>: ${duration} <br>
-            <strong>The Number of the Drinking Foundtains and Cooling Places:</strong>: ${count}
-          </div>`,
-    position: event.latLng,
-  });
-
-  routeInfoWindow.open(map);
-};
-
-// Define findShadedArea function (was missing in original code)
 const findShadedArea = () => {
   console.log("Finding shaded areas nearby");
   // Implementation would go here
 };
+
+const findShortestPath = (routes) => {
+  let shortestRoute = routes[0];
+  let minDistance = routes[0].legs[0].distance.value;
+  for (let i = 1; i < routes.length; i++) {
+    const dist = routes[i].legs[0].distance.value; // 单位是米
+    if (dist < minDistance) {
+      minDistance = dist;
+      shortestRoute = routes[i];
+    }
+  }
+  return shortestRoute;
+}
+
+const findCoolestPath = (routes) => {
+  let maxCountRoute = routes[0];
+  let pathPoints = countPathPoints(maxCountRoute);
+  let maxCoolingPlaces = countCoolingPalcesOnRoute(pathPoints);
+  let maxTrees = countTreesOnRoute(pathPoints);
+  let maxDrinkingFountains = countDrinkingFountainsOnRoute(pathPoints);
+  let maxTotal = maxCoolingPlaces + maxTrees + maxDrinkingFountains;
+  for (let i = 1; i < routes.length; i++) {
+    pathPoints = countPathPoints(routes[i]);
+    let coolingPlaces = countCoolingPalcesOnRoute(pathPoints);
+    let trees = countTreesOnRoute(pathPoints);
+    let drinkingFountains = countDrinkingFountainsOnRoute(pathPoints);
+    let total = coolingPlaces + trees + drinkingFountains;
+    if (total > maxTotal) {
+      maxCoolingPlaces = coolingPlaces;
+      maxTrees = trees;
+      maxDrinkingFountains = drinkingFountains;
+      maxTotal = total;
+      maxCountRoute = routes[i];
+    }
+  }
+  console.log('maxTotal' + maxTotal);
+  return { maxCountRoute, maxTotal, maxCoolingPlaces, maxDrinkingFountains, maxTrees };
+}
+
+const countPathPoints = (route) => {
+  const pathPoints = []; // 存储路径上所有点
+
+  // 收集所有路径点
+  route.legs.forEach((leg) => {
+    leg.steps.forEach((step) => {
+      pathPoints.push(...step.path); // 每一步的详细 path
+    });
+  });
+  return pathPoints;
+}
+
+const countTreesOnRoute = (pathPoints) => {
+  let treeCount = 0;
+
+  map.data.forEach((feature) => {
+    const treePosition = feature.getGeometry().get();
+    // 判断该树是否靠近路径上的任意点
+    const isNearPath = pathPoints.some((point) => {
+      const distance = google.maps.geometry.spherical.computeDistanceBetween(point, treePosition);
+      return distance < 20; // 你可以调整这个半径，比如 20 米
+    });
+
+    if (isNearPath) {
+      treeCount++;
+    }
+  });
+  console.log(`路径上经过了 ${treeCount} 棵树 🌳`);
+  return treeCount;
+};
+
+const countDrinkingFountainsOnRoute = (pathPoints) => {
+  let count = 0;
+
+  drinkingFountainList.value.forEach(drinkingFountain => {
+    const position = {lat: parseFloat(drinkingFountain.lat), lng: parseFloat(drinkingFountain.lon)};
+    const isNearby = pathPoints.some(routePoint => {
+      const distance = google.maps.geometry.spherical.computeDistanceBetween(routePoint, position);
+      return distance < 20;  // 20 米内算“在路线附近”
+    });
+
+    if (isNearby) {
+      count++;
+    }
+  })
+  console.log(count)
+  return count;
+}
+
+const countCoolingPalcesOnRoute = (pathPoints) => {
+  let count = 0;
+
+  coolingPlaceList.value.forEach(coolingPlace => {
+    const position = {lat: parseFloat(coolingPlace.Latitude), lng: parseFloat(coolingPlace.lon)};
+    const isNearby = pathPoints.some(routePoint => {
+      const distance = google.maps.geometry.spherical.computeDistanceBetween(routePoint, position);
+      return distance < 20;  // 20 米内算“在路线附近”
+    });
+
+    if (isNearby) {
+      count++;
+    }
+  })
+  console.log(count)
+  return count;
+}
 </script>
 
 <style scoped>
@@ -784,6 +874,22 @@ h2 {
   font-size: 3rem;
   font-weight: bold;
   font-family: 'Abril Fatface';
+}
+
+.searchArea {
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.searchInputArea {
+  width: 100%;
+  /* max-width: 600px; */
+  padding: 8px;
+  font-size: 16px;
+  height: 60px;
+  border-radius: 20px;
+  border: 1px solid #dcdfe6;
 }
 
 .google-map {
