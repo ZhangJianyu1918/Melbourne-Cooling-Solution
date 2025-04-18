@@ -11,64 +11,102 @@
     <div>
       <!-- Search box -->
       <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
-        <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
-          class="searchInputArea" @keyup.enter="searchPlace">
-
-          <template #suffix>
-            <el-icon @click="expandInputArea" style="cursor: pointer;">
-              <Open />
-            </el-icon>
-            <el-icon @click="searchPlace" style="cursor: pointer;">
-              <Search />
-            </el-icon>
-          </template>
-        </el-input>
-        <!-- <el-button @click="searchPlace" type="primary" plain
-          style="padding: 8px 16px; margin-left: 10px; height: 45px;">
-          Search
-        </el-button> -->
-      </div>
-      <div v-else class="searchArea">
-        <el-row>
-          <el-col :span="12">
-            <el-segmented v-model="navigationForm.type" :options="navigationType" />
-          </el-col>
-          <el-col :span="12">
-            <el-radio-group v-model="navigationForm.path">
-              <el-radio value="Shortest">Shortest</el-radio>
-              <el-radio value="Coolest">Coolest</el-radio>
-            </el-radio-group>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-row>
-              <el-col>
-                <el-input v-model="navigationForm.from" placeholder="From">
-                  <template #prefix>
-                    <el-icon>
-                      <Location />
-                    </el-icon>
-                  </template>
-                </el-input>
-              </el-col>
-            </el-row>
-
-            <el-input v-model="navigationForm.to" placeholder="To" @keyup.enter="calculateRoute">
-              <template #prefix>
-                <el-icon>
-                  <Location />
+        <el-row class="searchInputArea">
+          <el-col :span="22">
+            <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
+               @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
+              <template #suffix>
+                <el-icon @click="searchPlace" style="cursor: pointer;">
+                  <Search />
                 </el-icon>
               </template>
             </el-input>
           </el-col>
+          <el-col :span="2">
+            <el-button type="click" @click="expandInputArea">
+              <font-awesome-icon :icon="['fas', 'arrow-right-arrow-left']" 
+              style="cursor: pointer;" />
+            </el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <div v-else class="searchArea">
+        <el-row type="flex" justify="space-between" align="middle" style="margin-bottom: 20px;">
+          <el-col :span="11">
+            <div style="display: flex; justify-content: center; width: 100%;">
+              <el-radio-group v-model="navigationForm.type" class=""
+                style="display: flex; justify-content: space-evenly; flex: 1;">
+                <el-radio value="WALKING" class="custom-radio" style="cursor: pointer;">
+                  <font-awesome-icon :icon="['fas', 'person-walking']" class="radio-icon" />
+                </el-radio>
+                <el-radio value="BICYCLING" class="custom-radio" style="cursor: pointer;">
+                  <font-awesome-icon :icon="['fas', 'person-biking']" class="radio-icon" />
+                </el-radio>
+              </el-radio-group>
+            </div>
+          </el-col>
 
-          <el-col :span="12">
-            Detail
-            There is {{ maxCoolingPlace }} cooling palces on this road.<br/>
-            There is {{ maxDrinkingFountains }} drinking foundtains on this road.<br/>
-            There is {{ maxTrees }} trees on this road.<br/>
-            There is {{ maxTotalCoolingResources }} cooling resources on this road.<br/>
+          <!-- Radio 控件 -->
+          <el-col :span="11">
+            <div style="display: flex; justify-content: center; width: 100%;">
+              <el-radio-group v-model="navigationForm.path"
+                style="display: flex; justify-content: space-evenly; flex: 1;">
+                <el-radio value="Shortest">Shortest</el-radio>
+                <el-radio value="Coolest">Coolest</el-radio>
+              </el-radio-group>
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="click" @click="isExpand = false" style="cursor: pointer;">
+            <font-awesome-icon :icon="['fas', 'xmark']"  />
+            </el-button>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12" style="display: flex; justify-content: space-evenly; flex-direction: column;">
+            <el-row>
+              <el-col style="display: flex; align-items: center;">
+                <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff; margin-right: 8px;" />
+                <el-input v-model="navigationForm.from" placeholder="From" @keyup.enter="calculateRoute" size="large"
+                  style="flex: 1; --el-border-radius-base: 20px" />
+              </el-col>
+            </el-row>
+            <el-row style="height: 20px;">
+              <el-col>
+                <font-awesome-icon :icon="['fas', 'chevron-down']" />
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col style="display: flex; align-items: center;">
+                <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500; margin-right: 8px;" />
+                <el-input v-model="navigationForm.to" placeholder="To" @keyup.enter="calculateRoute" size="large"
+                  style="flex: 1; --el-border-radius-base: 20px"/>
+              </el-col>
+            </el-row>
+          </el-col>
+
+          <el-col :offset="1" :span="10" style="padding-top: 20px">
+            <el-row style="display: flex; justify-content: center; align-items: center;">
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Total" :value="maxTotalCoolingResources" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Trees" :value="maxTrees" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Places" :value="maxCoolingPlace" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Drinking" :value="maxDrinkingFountains" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Distance(M)" :value="routeDistance" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Duration(Mi)" :value="routeDuration" />
+              </el-col>
+            </el-row>
           </el-col>
         </el-row>
 
@@ -252,9 +290,11 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const drinkingFountainList = ref([])
 const coolingPlaceList = ref([])
 const maxTotalCoolingResources = ref(0)
-const maxCoolingPlace= ref(0)
+const maxCoolingPlace = ref(0)
 const maxDrinkingFountains = ref(0)
 const maxTrees = ref(0)
+const routeDuration = ref(0)
+const routeDistance = ref(0)
 
 // Initialize map on component mount
 onMounted(async () => {
@@ -274,9 +314,11 @@ const initMap = async () => {
     google = await loader.load();
     const MelbourneCenter = { lat: -37.8136, lng: 144.9631 };
     const styledMapType = new google.maps.StyledMapType(customMapStyle);
+
     map = new google.maps.Map(mapElement.value, {
       center: MelbourneCenter,
       zoom: 17,
+      styles: customMapStyle,
       styles: [
         {
           featureType: "poi",
@@ -290,12 +332,13 @@ const initMap = async () => {
         }
       ],
       mapTypeControlOptions: {
-        mapTypeIds: ["roadmap", "satellite", "styled_map"],
+        mapTypeIds: ["roadmap", "satellite", "route_map"],
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
       },
     });
-
-    map.mapTypes.set("styled_map", styledMapType);
-    map.setMapTypeId("styled_map");
+    map.mapTypes.set("route_map", styledMapType);
+    map.mapTypes.get("route_map").name = "Route Map"; // 添加显示名称
+    map.setMapTypeId("route_map");
     // map.data.loadGeoJson('/trees.geojson');
     map.data.loadGeoJson('/trees-with-species-and-dimensions-urban-forest.geojson');
     map.data.setStyle(function (feature) {
@@ -559,7 +602,7 @@ const getCoolingPlace = async () => {
   // console.log(data);
   // console.log(JSON.parse(data.body).data)
   let decrypt_data = decryptData(JSON.parse(data.body).data);
-  
+
   coolingPlaceList.value = decrypt_data;
   // console.log(coolingPlaceList.value);
 }
@@ -571,7 +614,7 @@ const loadCoolingPlaces = async (latitude, longitude) => {
       console.error('Parsed data is not an array:', places);
       return [];
     }
-    
+
 
     const image = new Image();
     image.src = frostIcon;
@@ -707,8 +750,11 @@ const updateMap = (place) => {
 
 
 const calculateRoute = () => {
-  if (!navigationForm.value.from || !navigationForm.value.to || !navigationForm.value.type) {
-    ElMessage.warning('请输入起点和终点')
+  if (!navigationForm.value.from ||
+    !navigationForm.value.to ||
+    !navigationForm.value.type ||
+    !navigationForm.value.path) {
+    ElMessage.warning('Please enter the starting point, end point, route type, and travel mode.')
     return
   }
   if (navigationForm.value.type == 'WALKING') {
@@ -726,20 +772,21 @@ const calculateRoute = () => {
   directionsService.value.route(request, (result, status) => {
     if (status === google.maps.DirectionsStatus.OK) {
       const routes = result.routes;
-      let targetRoute;
+      let path;
       if (navigationForm.value.path == 'Shortest') {
-        targetRoute = findShortestPath(routes);
+        path = findShortestPath(routes);
       } else {
-        let targetPath = findCoolestPath(routes);
-        targetRoute = targetPath.maxCountRoute;
-        maxTotalCoolingResources.value = targetPath.maxTotal;
-        maxCoolingPlace.value = targetPath.maxCoolingPlaces;
-        maxDrinkingFountains.value = targetPath.maxDrinkingFountains;
-        maxTrees.value = targetPath.maxTrees;
+        path = findCoolestPath(routes);
       }
+      maxTotalCoolingResources.value = path.maxTotal;
+      maxCoolingPlace.value = path.maxCoolingPlaces;
+      maxDrinkingFountains.value = path.maxDrinkingFountains;
+      maxTrees.value = path.maxTrees;
+      routeDuration.value = path.targetRoute.legs[0].duration.value / 60;
+      routeDistance.value = path.targetRoute.legs[0].distance.value;
       directionsRenderer.value.setDirections({
         ...result,
-        routes: [targetRoute]
+        routes: [path.targetRoute]
       });
     } else {
       console.error('Walking directions failed:', status);
@@ -753,21 +800,26 @@ const findShadedArea = () => {
 };
 
 const findShortestPath = (routes) => {
-  let shortestRoute = routes[0];
+  let targetRoute = routes[0];
   let minDistance = routes[0].legs[0].distance.value;
   for (let i = 1; i < routes.length; i++) {
     const dist = routes[i].legs[0].distance.value; // 单位是米
     if (dist < minDistance) {
       minDistance = dist;
-      shortestRoute = routes[i];
+      targetRoute = routes[i];
     }
   }
-  return shortestRoute;
+  let pathPoints = countPathPoints(targetRoute);
+  let maxTrees = countTreesOnRoute(pathPoints);
+  let maxDrinkingFountains = countDrinkingFountainsOnRoute(pathPoints);
+  let maxCoolingPlaces = countCoolingPalcesOnRoute(pathPoints);
+  let maxTotal = maxTrees + maxDrinkingFountains + maxCoolingPlaces;
+  return {targetRoute, maxTrees, maxDrinkingFountains, maxCoolingPlaces, maxTotal};
 }
 
 const findCoolestPath = (routes) => {
-  let maxCountRoute = routes[0];
-  let pathPoints = countPathPoints(maxCountRoute);
+  let targetRoute = routes[0];
+  let pathPoints = countPathPoints(targetRoute);
   let maxCoolingPlaces = countCoolingPalcesOnRoute(pathPoints);
   let maxTrees = countTreesOnRoute(pathPoints);
   let maxDrinkingFountains = countDrinkingFountainsOnRoute(pathPoints);
@@ -783,11 +835,11 @@ const findCoolestPath = (routes) => {
       maxTrees = trees;
       maxDrinkingFountains = drinkingFountains;
       maxTotal = total;
-      maxCountRoute = routes[i];
+      targetRoute = routes[i];
     }
   }
   console.log('maxTotal' + maxTotal);
-  return { maxCountRoute, maxTotal, maxCoolingPlaces, maxDrinkingFountains, maxTrees };
+  return { targetRoute, maxTotal, maxCoolingPlaces, maxDrinkingFountains, maxTrees };
 }
 
 const countPathPoints = (route) => {
@@ -825,10 +877,10 @@ const countDrinkingFountainsOnRoute = (pathPoints) => {
   let count = 0;
 
   drinkingFountainList.value.forEach(drinkingFountain => {
-    const position = {lat: parseFloat(drinkingFountain.lat), lng: parseFloat(drinkingFountain.lon)};
+    const position = { lat: parseFloat(drinkingFountain.lat), lng: parseFloat(drinkingFountain.lon) };
     const isNearby = pathPoints.some(routePoint => {
       const distance = google.maps.geometry.spherical.computeDistanceBetween(routePoint, position);
-      return distance < 100;  
+      return distance < 100;
     });
 
     if (isNearby) {
@@ -843,11 +895,10 @@ const countCoolingPalcesOnRoute = (pathPoints) => {
   let count = 0;
 
   coolingPlaceList.value.forEach(coolingPlace => {
-    const position = {lat: parseFloat(coolingPlace.lat), lng: parseFloat(coolingPlace.lon)};
+    const position = { lat: parseFloat(coolingPlace.lat), lng: parseFloat(coolingPlace.lon) };
     const isNearby = pathPoints.some(routePoint => {
       const distance = google.maps.geometry.spherical.computeDistanceBetween(routePoint, position);
-      console.log('Distance: ' + distance)
-      return distance < 300; 
+      return distance < 300;
     });
 
     if (isNearby) {
@@ -870,7 +921,6 @@ h2 {
   font-weight: bold;
   font-family: 'Abril Fatface';
 }
-
 .searchArea {
   background-color: white;
   border-radius: 20px;
@@ -880,11 +930,6 @@ h2 {
 .searchInputArea {
   width: 100%;
   /* max-width: 600px; */
-  padding: 8px;
-  font-size: 16px;
-  height: 60px;
-  border-radius: 20px;
-  border: 1px solid #dcdfe6;
 }
 
 .google-map {
@@ -908,5 +953,68 @@ h2 {
   font-weight: bold;
   color: #333;
   margin: 5px 0;
+}
+.rounded-input .el-input__inner {
+  border-radius: 50px; 
+}
+:deep(.el-button) {
+  border-radius: 50px;
+}
+:deep(.custom-radio .el-radio__inner) {
+  display: none;
+}
+
+/* Remove default padding/margin and ensure the icon is the primary element */
+:deep(.custom-radio .el-radio__label) {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style the radio container */
+:deep(.custom-radio) {
+  position: relative;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+/* Highlight the selected radio */
+:deep(.custom-radio.is-checked) {
+  background: #1e90ff;
+  /* Blue background for selected */
+}
+
+/* Change icon color when selected */
+:deep(.custom-radio.is-checked .radio-icon) {
+  color: white;
+}
+
+/* Style the icon */
+.radio-icon {
+  font-size: 28px;
+  /* Larger icon size */
+  color: #555;
+  /* Default icon color */
+  cursor: pointer;
+  /* Hand cursor on hover */
+}
+
+/* Hover effect only on the icon */
+.radio-icon:hover {
+  transform: scale(1.1);
+  /* Optional: Slight zoom on hover */
+  transition: transform 0.2s;
+}
+
+/* Ensure the entire radio area is clickable, but without cursor override */
+:deep(.custom-radio .el-radio__input) {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: default;
+  /* Prevent hand cursor on the input */
 }
 </style>
