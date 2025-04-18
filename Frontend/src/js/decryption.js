@@ -1,29 +1,24 @@
 import CryptoJS from 'crypto-js';
 
-
 function decryptData(encryptedData) {
   const key = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_KEY);
   const iv = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_IV);
 
-  // Base64 decode first
-  const encryptedWordArray = CryptoJS.enc.Base64.parse(encryptedData);
+  // 尝试直接解密 base64 字符串
+  const decrypted = CryptoJS.AES.decrypt(encryptedData, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
 
-  // Wrap in expected structure
-  const decrypted = CryptoJS.AES.decrypt(
-      { ciphertext: encryptedWordArray },
-      key,
-      {
-          iv: iv,
-          mode: CryptoJS.mode.CBC,
-          padding: CryptoJS.pad.Pkcs7
-      }
-  );
-
-  // Decode from WordArray to string
-  const decryptedData = CryptoJS.enc.Utf8.stringify(decrypted);
-  return JSON.parse(decryptedData);
+  const decryptedText = CryptoJS.enc.Utf8.stringify(decrypted);
+  // console.log(decryptedText);
+  try {
+    return JSON.parse(decryptedText);
+  } catch (e) {
+    console.error('JSON parse error:', decryptedText);
+    throw e;
+  }
 }
 
-
-
-export default decryptData
+export default decryptData;

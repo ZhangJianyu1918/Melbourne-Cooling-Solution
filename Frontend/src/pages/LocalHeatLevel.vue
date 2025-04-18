@@ -29,24 +29,6 @@
         </el-button> -->
       </div>
       <div v-else class="searchArea">
-        <!-- <el-form :model="navigationForm" label-width="auto">
-          <el-form-item label="" prop="type">
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <el-segmented v-model="navigationForm.type" :options="navigationType" />
-              <el-radio-group v-model="navigationForm.path">
-                <el-radio value="Shortest">Shortest</el-radio>
-                <el-radio value="Coolest">Coolest</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="From">
-            <el-input v-model="navigationForm.from" />
-          </el-form-item>
-          <el-form-item label="To">
-            
-            <el-input v-model="navigationForm.to" />
-          </el-form-item>
-        </el-form> -->
         <el-row>
           <el-col :span="12">
             <el-segmented v-model="navigationForm.type" :options="navigationType" />
@@ -83,6 +65,10 @@
 
           <el-col :span="12">
             Detail
+            There is {{ maxCoolingPlace }} cooling palces on this road.<br/>
+            There is {{ maxDrinkingFountains }} drinking foundtains on this road.<br/>
+            There is {{ maxTrees }} trees on this road.<br/>
+            There is {{ maxTotalCoolingResources }} cooling resources on this road.<br/>
           </el-col>
         </el-row>
 
@@ -265,6 +251,10 @@ const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const drinkingFountainList = ref([])
 const coolingPlaceList = ref([])
+const maxTotalCoolingResources = ref(0)
+const maxCoolingPlace= ref(0)
+const maxDrinkingFountains = ref(0)
+const maxTrees = ref(0)
 
 // Initialize map on component mount
 onMounted(async () => {
@@ -480,6 +470,7 @@ const getDrinkingFoundtains = async () => {
     return;
   }
   let decrypt_data = decryptData(data);
+  console.log(decrypt_data)
   drinkingFountainList.value = decrypt_data;
   // console.log(drinkingFountainList.value);
 }
@@ -534,7 +525,7 @@ const loadDrinkingFountains = (latitude, longitude) => {
           const position = {
             lat: Number(fountain.lat),
             lng: Number(fountain.lon),
-            description: fountain.Description
+            description: fountain.description
           };
           const markerInstance = new google.maps.Marker({
             position,
@@ -565,15 +556,12 @@ const getCoolingPlace = async () => {
     }
   });
   const data = await response.json();
-
-  let decrypt_data;
-  if (typeof data === 'string') {
-    decrypt_data = JSON.parse(decryptData(data.body));
-  } else {
-    decrypt_data = decryptData(data.body);
-  }
+  // console.log(data);
+  // console.log(JSON.parse(data.body).data)
+  let decrypt_data = decryptData(JSON.parse(data.body).data);
+  
   coolingPlaceList.value = decrypt_data;
-  console.log(coolingPlaceList.value);
+  // console.log(coolingPlaceList.value);
 }
 
 const loadCoolingPlaces = async (latitude, longitude) => {
@@ -621,15 +609,16 @@ const loadCoolingPlaces = async (latitude, longitude) => {
         if (place) {
           const distance = google.maps.geometry.spherical.computeDistanceBetween(
             new google.maps.LatLng(latitude, longitude),
-            new google.maps.LatLng(place.Latitude, place.Longitude)
+            new google.maps.LatLng(place.lat, place.lon)
           );
           if (distance > 300) {
             continue;
           }
           const position = {
-            lat: Number(place.Latitude),
-            lng: Number(place.Longitude),
-            description: place["Place Name"]
+            lat: Number(place.lat),
+            lng: Number(place.lon),
+            building_name: place["building_name"],
+            street_address: place["street_address"]
           };
 
           const markerInstance = new google.maps.Marker({
@@ -640,7 +629,7 @@ const loadCoolingPlaces = async (latitude, longitude) => {
           });
 
           markerInstance.addListener('click', () => {
-            infoWindow.setContent(`<p><strong>${position.description}</strong></p>`);
+            infoWindow.setContent(`<p><strong>Cooling Place:<br/>${position.building_name}<br/>${position.street_address}</strong></p>`);
             infoWindow.open(map, markerInstance);
           });
 
@@ -741,7 +730,12 @@ const calculateRoute = () => {
       if (navigationForm.value.path == 'Shortest') {
         targetRoute = findShortestPath(routes);
       } else {
-        targetRoute = findCoolestPath(routes).maxCountRoute;
+        let targetPath = findCoolestPath(routes);
+        targetRoute = targetPath.maxCountRoute;
+        maxTotalCoolingResources.value = targetPath.maxTotal;
+        maxCoolingPlace.value = targetPath.maxCoolingPlaces;
+        maxDrinkingFountains.value = targetPath.maxDrinkingFountains;
+        maxTrees.value = targetPath.maxTrees;
       }
       directionsRenderer.value.setDirections({
         ...result,
@@ -834,14 +828,14 @@ const countDrinkingFountainsOnRoute = (pathPoints) => {
     const position = {lat: parseFloat(drinkingFountain.lat), lng: parseFloat(drinkingFountain.lon)};
     const isNearby = pathPoints.some(routePoint => {
       const distance = google.maps.geometry.spherical.computeDistanceBetween(routePoint, position);
-      return distance < 20;  // 20 米内算“在路线附近”
+      return distance < 100;  
     });
 
     if (isNearby) {
       count++;
     }
   })
-  console.log(count)
+  console.log('DrinkingFountains' + count)
   return count;
 }
 
@@ -849,17 +843,18 @@ const countCoolingPalcesOnRoute = (pathPoints) => {
   let count = 0;
 
   coolingPlaceList.value.forEach(coolingPlace => {
-    const position = {lat: parseFloat(coolingPlace.Latitude), lng: parseFloat(coolingPlace.lon)};
+    const position = {lat: parseFloat(coolingPlace.lat), lng: parseFloat(coolingPlace.lon)};
     const isNearby = pathPoints.some(routePoint => {
       const distance = google.maps.geometry.spherical.computeDistanceBetween(routePoint, position);
-      return distance < 20;  // 20 米内算“在路线附近”
+      console.log('Distance: ' + distance)
+      return distance < 300; 
     });
 
     if (isNearby) {
       count++;
     }
   })
-  console.log(count)
+  console.log('CoolingPalces: ' + count)
   return count;
 }
 </script>
