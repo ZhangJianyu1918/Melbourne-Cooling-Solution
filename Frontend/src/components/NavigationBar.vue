@@ -53,7 +53,7 @@ watch(
     } else if (newPath.startsWith('/personal-cooling-guide')) {
       activeIndex.value = '3'; // Personal Cooling Guide
     } else if (newPath.startsWith('/heat-insights')) {
-      activeIndex.value = '4'; // Heat Impact (including sub-routes)
+      activeIndex.value = '4'; 
     } else if (newPath.startsWith('/community-support')) {
       activeIndex.value = '5'; // Community Support
     } else {

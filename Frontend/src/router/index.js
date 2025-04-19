@@ -13,6 +13,7 @@ import HeatDeathsChart from "@/components/HeatDeathsChart.vue";
 import HeatHospitalisationsChart from "@/components/HeatHospitalisationsChart.vue";
 import CopyRightPage from "@/pages/CopyRightPage.vue";
 import HeatInsightsPage from "@/pages/HeatInsightsPage.vue";
+import HeatmapChart from "@/components/heatmapChart.vue";
 
 const routes = [
   {
@@ -89,6 +90,11 @@ const routes = [
         path: 'heat-hospitalisations',
         name: 'HeatHospitalisationsChart',
         component: HeatHospitalisationsChart
+      },
+      {
+        path: 'heatmap',
+        name: 'HeatMap',
+        component: HeatmapChart
       }
     ]
   },

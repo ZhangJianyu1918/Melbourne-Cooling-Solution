@@ -10,107 +10,109 @@
     </p>
     <div>
       <!-- Search box -->
-      <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
-        <el-row class="searchInputArea">
-          <el-col :span="22">
-            <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
-               @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
-              <template #suffix>
-                <el-icon @click="searchPlace" style="cursor: pointer;">
-                  <Search />
-                </el-icon>
-              </template>
-            </el-input>
-          </el-col>
-          <el-col :span="2">
-            <el-button type="click" @click="expandInputArea">
-              <font-awesome-icon :icon="['fas', 'arrow-right-arrow-left']" 
-              style="cursor: pointer;" />
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <div v-else class="searchArea">
-        <el-row type="flex" justify="space-between" align="middle" style="margin-bottom: 20px;">
-          <el-col :span="11">
-            <div style="display: flex; justify-content: center; width: 100%;">
-              <el-radio-group v-model="navigationForm.type" class=""
-                style="display: flex; justify-content: space-evenly; flex: 1;">
-                <el-radio value="WALKING" class="custom-radio" style="cursor: pointer;">
-                  <font-awesome-icon :icon="['fas', 'person-walking']" class="radio-icon" />
-                </el-radio>
-                <el-radio value="BICYCLING" class="custom-radio" style="cursor: pointer;">
-                  <font-awesome-icon :icon="['fas', 'person-biking']" class="radio-icon" />
-                </el-radio>
-              </el-radio-group>
-            </div>
-          </el-col>
+      <transition name="fade-zoom">
+        <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
+          <el-row class="searchInputArea">
+            <el-col :span="22">
+              <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
+                @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
+                <template #suffix>
+                  <el-icon @click="searchPlace" style="cursor: pointer;">
+                    <Search />
+                  </el-icon>
+                </template>
+              </el-input>
+            </el-col>
+            <el-col :span="2">
+              <el-button type="click" @click="expandInputArea">
+                <font-awesome-icon :icon="['fas', 'arrow-right-arrow-left']" style="cursor: pointer;" />
+              </el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-else class="searchArea">
+          <el-row type="flex" justify="space-between" align="middle" style="margin-bottom: 20px;">
+            <el-col :span="11">
+              <div style="display: flex; justify-content: center; width: 100%;">
+                <el-radio-group v-model="navigationForm.type" class=""
+                  style="display: flex; justify-content: space-evenly; flex: 1;">
+                  <el-radio value="WALKING" class="custom-radio" style="cursor: pointer;">
+                    <font-awesome-icon :icon="['fas', 'person-walking']" class="radio-icon" />
+                  </el-radio>
+                  <el-radio value="BICYCLING" class="custom-radio" style="cursor: pointer;">
+                    <font-awesome-icon :icon="['fas', 'person-biking']" class="radio-icon" />
+                  </el-radio>
+                </el-radio-group>
+              </div>
+            </el-col>
 
-          <!-- Radio 控件 -->
-          <el-col :span="11">
-            <div style="display: flex; justify-content: center; width: 100%;">
-              <el-radio-group v-model="navigationForm.path"
-                style="display: flex; justify-content: space-evenly; flex: 1;">
-                <el-radio value="Shortest">Shortest</el-radio>
-                <el-radio value="Coolest">Coolest</el-radio>
-              </el-radio-group>
-            </div>
-          </el-col>
-          <el-col :span="2">
-            <el-button type="click" @click="isExpand = false" style="cursor: pointer;">
-            <font-awesome-icon :icon="['fas', 'xmark']"  />
-            </el-button>
-          </el-col>
-        </el-row>
+            <!-- Radio 控件 -->
+            <el-col :span="11">
+              <div style="display: flex; justify-content: center; width: 100%;">
+                <el-radio-group v-model="navigationForm.path"
+                  style="display: flex; justify-content: space-evenly; flex: 1;">
+                  <el-radio value="Shortest">Shortest</el-radio>
+                  <el-radio value="Coolest">Coolest</el-radio>
+                </el-radio-group>
+              </div>
+            </el-col>
+            <el-col :span="2">
+              <el-button type="click" @click="isExpand = false" style="cursor: pointer;">
+                <font-awesome-icon :icon="['fas', 'xmark']" />
+              </el-button>
+            </el-col>
+          </el-row>
 
-        <el-row>
-          <el-col :span="12" style="display: flex; justify-content: space-evenly; flex-direction: column;">
-            <el-row>
-              <el-col style="display: flex; align-items: center;">
-                <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff; margin-right: 8px;" />
-                <el-input v-model="navigationForm.from" placeholder="From" @keyup.enter="calculateRoute" size="large"
-                  style="flex: 1; --el-border-radius-base: 20px" />
-              </el-col>
-            </el-row>
-            <el-row style="height: 20px;">
-              <el-col>
-                <font-awesome-icon :icon="['fas', 'chevron-down']" />
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col style="display: flex; align-items: center;">
-                <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500; margin-right: 8px;" />
-                <el-input v-model="navigationForm.to" placeholder="To" @keyup.enter="calculateRoute" size="large"
-                  style="flex: 1; --el-border-radius-base: 20px"/>
-              </el-col>
-            </el-row>
-          </el-col>
+          <el-row>
+            <el-col :span="12" style="display: flex; justify-content: space-evenly; flex-direction: column;">
+              <el-row>
+                <el-col style="display: flex; align-items: center;">
+                  <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff; margin-right: 8px;" />
+                  <el-input v-model="navigationForm.from" placeholder="From" @keyup.enter="calculateRoute" size="large"
+                    style="flex: 1; --el-border-radius-base: 20px" />
+                </el-col>
+              </el-row>
+              <el-row style="height: 20px;">
+                <el-col>
+                  <font-awesome-icon :icon="['fas', 'chevron-down']" />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col style="display: flex; align-items: center;">
+                  <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500; margin-right: 8px;" />
+                  <el-input v-model="navigationForm.to" placeholder="To" @keyup.enter="calculateRoute" size="large"
+                    style="flex: 1; --el-border-radius-base: 20px" />
+                </el-col>
+              </el-row>
+            </el-col>
 
-          <el-col :offset="1" :span="10" style="padding-top: 20px">
-            <el-row style="display: flex; justify-content: center; align-items: center;">
-              <el-col :span="4" style="text-align: center;">
-                <el-statistic title="Total" :value="maxTotalCoolingResources" />
-              </el-col>
-              <el-col :span="4" style="text-align: center;">
-                <el-statistic title="Trees" :value="maxTrees" />
-              </el-col>
-              <el-col :span="4" style="text-align: center;">
-                <el-statistic title="Places" :value="maxCoolingPlace" />
-              </el-col>
-              <el-col :span="4" style="text-align: center;">
-                <el-statistic title="Drinking" :value="maxDrinkingFountains" />
-              </el-col>
-              <el-col :span="4" style="text-align: center;">
-                <el-statistic title="Distance(M)" :value="routeDistance" />
-              </el-col>
-              <el-col :span="4" style="text-align: center;">
-                <el-statistic title="Duration(Mi)" :value="routeDuration" />
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
+            <el-col :offset="1" :span="10" style="padding-top: 20px">
+              <el-row style="display: flex; justify-content: center; align-items: center;">
+                <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Total" :value="maxTotalCoolingResources" />
+                </el-col>
+                <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Trees" :value="maxTrees" />
+                </el-col>
+                <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Places" :value="maxCoolingPlace" />
+                </el-col>
+                <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Drinking" :value="maxDrinkingFountains" />
+                </el-col>
+                <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Distance(M)" :value="routeDistance" />
+                </el-col>
+                <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Duration(Mi)" :value="routeDuration" />
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
 
-      </div>
+        </div>
+      </transition>
+
       <div style="height: 20px;"></div>
       <div class="google-map" ref="mapElement"></div>
       <WeatherCard :temp="weather.temp" :placeName="marker?.title" :icon="weather.icon" @find-shade="findShadedArea" />
@@ -814,7 +816,7 @@ const findShortestPath = (routes) => {
   let maxDrinkingFountains = countDrinkingFountainsOnRoute(pathPoints);
   let maxCoolingPlaces = countCoolingPalcesOnRoute(pathPoints);
   let maxTotal = maxTrees + maxDrinkingFountains + maxCoolingPlaces;
-  return {targetRoute, maxTrees, maxDrinkingFountains, maxCoolingPlaces, maxTotal};
+  return { targetRoute, maxTrees, maxDrinkingFountains, maxCoolingPlaces, maxTotal };
 }
 
 const findCoolestPath = (routes) => {
@@ -921,6 +923,7 @@ h2 {
   font-weight: bold;
   font-family: 'Abril Fatface';
 }
+
 .searchArea {
   background-color: white;
   border-radius: 20px;
@@ -954,12 +957,15 @@ h2 {
   color: #333;
   margin: 5px 0;
 }
+
 .rounded-input .el-input__inner {
-  border-radius: 50px; 
+  border-radius: 50px;
 }
+
 :deep(.el-button) {
   border-radius: 50px;
 }
+
 :deep(.custom-radio .el-radio__inner) {
   display: none;
 }
@@ -1017,4 +1023,19 @@ h2 {
   cursor: default;
   /* Prevent hand cursor on the input */
 }
+.fade-zoom-enter-active,
+.fade-zoom-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-zoom-enter-from,
+.fade-zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.fade-zoom-enter-to,
+.fade-zoom-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
 </style>
