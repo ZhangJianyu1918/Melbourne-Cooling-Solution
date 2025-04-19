@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="footer-content">
       <p>Monash 2025 |
-        <router-link to="/copyright">Copyright</router-link>and disclaimer
+        <router-link to="/copyright">Copyright</router-link> and disclaimer
       </p>
     </div>
   </div>
@@ -30,7 +30,7 @@
 }
 
 a {
-  text-decoration: none;
+  /* text-decoration: none; */
   /* Removes underline */
   color: inherit;
 }

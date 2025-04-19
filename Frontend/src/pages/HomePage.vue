@@ -4,7 +4,7 @@
             <!-- 首页专属导航栏 -->
             <nav v-if="isHome" class="home-nav">
                 <router-link to="/">
-                    <img src="../assets/cool.png" width="" height="40px" class="logo">
+                    <img src="../assets/logo.png" width="" height="40px" class="logo">
                 </router-link>
                 <ul>
                     <li>
@@ -18,7 +18,7 @@
                             }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/heat-impact">HEAT IMPACT</router-link>
+                        <router-link to="/heat-impact">Heat Insights</router-link>
                     </li>
                     <li>
                         <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>
@@ -36,8 +36,12 @@
                     {{ $t('home-content') }}
                 </p>
                 <div style="height: 50px;"></div>
-                <el-button type="primary" class="find-out" round size="extra-large" @click="scrollDown">{{
-                    $t('home-button') }}</el-button>
+                <el-button type="primary" class="find-out" tag="router-link" round  to="/local-heat-level">
+                    Explore Cooling Resources
+                </el-button>
+                <el-button class="learn-more" round  tag="router-link" to="/community-support">
+                    Learn more
+                </el-button>
             </div>
         </header>
 
@@ -45,23 +49,51 @@
             <div style="height: 30px;"></div>
             <el-row :gutter="24">
                 <el-col :span="21">
+                    <h2 class="service-title">What is Urban Heat Island?</h2>
+                </el-col>
+            </el-row>
+            <el-row :gutter="24">
+                <el-col :span="16">
+                    <p class="">
+                        Urban Heat Island (UHI) is a condition where urban 
+                        areas experience significantly higher temperatures than their rural surroundings. 
+                        This phenomenon is the impact from human activities, dense infrastructure, 
+                        and limited vegetation. The Urban Heat Island effect is intensified by various 
+                        urban design factors that trap and retain heat. Cities and metropolitan areas with 
+                        concrete buildings, asphalt roads, and limited green spaces absorb and retain more 
+                        heat from the sun compared to natural landscapes. This effect can increase energy 
+                        demands for cooling, exacerbate air pollution, and create challenges for urban sustainability. 
+                        Especially as temperatures continue to rise due to climate change.<br/>
+                        <br/>
+                        Source: 
+                        <a href="https://geoai.au/urban-heat-island-uhi-understanding-and-technology-for-measurement/">
+                        Urban Heat Island (UHI): Understanding and Technology for Measurement. 
+                        Geospatial Artificial Intelligence | GeoAI
+                        </a>
+                    </p>
+                </el-col>
+                <el-col :span="8">
+                    <img src="../assets/urban-heat-island.png" alt="" style="max-width: 100%;">
+                </el-col>
+            </el-row>
+            <el-row :gutter="24">
+                <el-col :span="21">
                     <h2 class="service-title">{{ $t('home-service-title') }}</h2>
                 </el-col>
             </el-row>
             <div style="height: 30px;"></div>
             <el-row :gutter="24" justify="space-evenly">
-                <el-col v-for="(service, index) in services" :key="index" :span="6" :xs="24" :sm="12" :md="8">
+                <el-col v-for="(service, index) in services" :key="index" :span="6" :xs="24" :sm="12" :md="6">
                     <Card :title="service.title" :image="service.image" :description="service.description"
-                        :to="service.to" />
+                        :to="service.to" :variant="service.variant"/>
                 </el-col>
             </el-row>
             <div style="height: 50px;"></div>
             <el-row>
                 <el-col :span="21">
-                    <h2>Need Immediate Support</h2>
+                    <h2 class="service-title">Need Immediate Support</h2>
                 </el-col>
             </el-row>
-            <div style="height: 30px;"></div>
             <el-row class="support">
                 <el-col :span="16" class="support-content">
                     <p>This is the body
@@ -110,20 +142,31 @@ const services = [
         image: "local-heat-level.png",
         title: "service-card-local-heat-level-title",
         description: "service-card-local-heat-level-description",
-        to: "/local-heat-level"
+        to: "/local-heat-level",
+        variant: 'home'
     },
     {
         image: "personal-cooling-guide.png",
         title: "service-card-personal-cooling-guide-title",
         description: "service-card-personal-cooling-guide-description",
-        to: "/personal-cooling-guide"
+        to: "/personal-cooling-guide",
+        variant: 'home'
+    },
+    {
+        image: "heat-insights.png",
+        title: "🔥 Heat Insights",
+        description: "Discover interactive charts and visualizations that reveal real historical insights in about heat trend and its impacts",
+        to: "/heat-Insights",
+        variant: 'home'
     },
     {
         image: "community-support.png",
         title: "service-card-communtity-support-title",
         description: "service-card-communtity-support-description",
-        to: "/community-support"
+        to: "/community-support",
+        variant: 'home'
     }
+    
 ];
 
 const scrollDown = () => {
@@ -230,9 +273,9 @@ h1 {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-h2 {
+.service-title {
     color: #19619E;
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: bold;
     font-family: 'Abril Fatface';
     text-align: left;
@@ -256,10 +299,22 @@ p {
 }
 
 .find-out {
-    font-size: 25px;
+    font-size: 20px;
     text-align: left;
+    text-decoration: none;
+}
+.learn-more {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  text-decoration: none;
+  font-size: 20px;
 }
 
+.learn-more:hover {
+  background: white;
+  color: #409EFF;
+}
 .cta-button:hover {
     transform: scale(1.1);
 }
@@ -275,12 +330,8 @@ p {
 }
 
 .support {
-    background-color: white;
-    /* Light blue background */
-    padding: 20px;
-    border-radius: 30px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .support-content {

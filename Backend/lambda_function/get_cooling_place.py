@@ -5,10 +5,19 @@ import base64
 from decimal import Decimal
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
+import pymysql
+from botocore.exceptions import ClientError
+
+
+rds_host = os.environ['RDS_HOST']
+db_user = os.environ['DB_USER']
+db_password = os.environ['DB_PASSWORD']
+db_name = os.environ['DB_NAME']
+
 
 # 从环境变量中读取 AES 密钥和初始化向量
-AES_KEY = os.environ['AES_KEY'].encode('utf-8')  
-AES_IV = os.environ['AES_IV'].encode('utf-8') 
+AES_KEY = os.environ['AES_KEY'].encode('utf-8')  # 如果需要的话进行编码
+AES_IV = os.environ['AES_IV'].encode('utf-8')    # 如果需要的话进行编码
 
 # 加密函数
 def encrypt_data(data):
@@ -46,54 +55,78 @@ class DecimalEncoder(json.JSONEncoder):
             return float(obj)
         return super(DecimalEncoder, self).default(obj)
 
+kms_client = boto3.client('kms')
+
 def decrypt_data(encrypted_data):
     try:
-        encrypted_bytes = base64.b64decode(encrypted_data)
-        cipher = AES.new(AES_KEY, AES.MODE_CBC, AES_IV)
-        decrypted_bytes = unpad(cipher.decrypt(encrypted_bytes), AES.block_size)
-        return json.loads(decrypted_bytes.decode("utf-8"))
-    except Exception as e:
-        print(f"Decryption failed: {e}")
+        # 解密数据
+        response = kms_client.decrypt(
+            CiphertextBlob=encrypted_data
+        )
+        # 解密后的明文数据
+        plaintext = response['Plaintext']
+        return plaintext.decode('utf-8')  # 返回明文字符串
+    except ClientError as e:
+        print(f"Error decrypting data: {e}")
         return None
 
 
-dynamodb = boto3.resource('dynamodb')
-TABLE_NAME = os.getenv('DYNAMODB_TABLE', 'cooling_places')
+def convert_decimal(obj):
+    if isinstance(obj, Decimal):
+        return float(obj)
+    elif isinstance(obj, list):
+        return [convert_decimal(item) for item in obj]
+    elif isinstance(obj, dict):
+        return {key: convert_decimal(value) for key, value in obj.items()}
+    return obj
 
 def lambda_handler(event, context):
-    headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',  # 允许所有源访问
-        'Access-Control-Allow-Methods': 'GET,OPTIONS',  # 允许的 HTTP 方法
-        'Access-Control-Allow-Headers': 'Content-Type'  # 允许的头部
-    }
-    table = dynamodb.Table(TABLE_NAME)
-    print("Lambda function started")
-
     try:
-        print(f"Using DynamoDB table: {TABLE_NAME}")
-        response = table.scan()
-        items = response.get('Items', [])
-        
-        print(f"Retrieved items: {items}")
-        encrypted_data = encrypt_data(items)
-        print(f"Encrypted data: {encrypted_data}")
-        if not encrypted_data:
-            return {
-                'statusCode': 500,
-                'body': json.dumps({'error': 'Encryption failed or no data to encrypt'}),
-                'headers': headers
-            }
-        
+        connection = pymysql.connect(
+            host=rds_host,
+            user=db_user,
+            password=db_password,
+            database=db_name
+        )
+
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM cooling_places"
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+
+            # 将每行转换为字典，并将 Decimal 转为 float
+            data = []
+            for row in rows:
+                row_dict = {}
+                for key, value in zip(columns, row):
+                    if isinstance(value, Decimal):
+                        row_dict[key] = float(value)
+                    else:
+                        row_dict[key] = value
+                data.append(row_dict)
+
         return {
             'statusCode': 200,
-            'body': encrypted_data,
-            'headers': headers
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'GET'
+            },
+            'body': json.dumps({
+                'message': 'Succesfully',
+                'data': encrypt_data(data)
+            }, ensure_ascii=False)
         }
+
     except Exception as e:
-        print(f"Error: {str(e)}")
         return {
             'statusCode': 500,
-            'body': json.dumps({'error': str(e)}),
-            'headers': headers
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'GET'
+            }, 
+            'body': json.dumps({'error': str(e)})
+            
         }

@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue'
 import * as echarts from 'echarts'
 
 // 接收父组件传来的 props
@@ -92,15 +92,23 @@ const renderChart = () => {
 
 const initChart = () => {
     if (chartRef.value) {
-        chartInstance = echarts.init(chartRef.value);
-        renderChart();
-        // Handle restore event
+        const { clientWidth, clientHeight } = chartRef.value
+        if (clientWidth === 0 || clientHeight === 0) {
+            // 等待一小段时间再尝试初始化
+            setTimeout(initChart, 1000)
+            return
+        }
+
+        chartInstance = echarts.init(chartRef.value)
+        renderChart()
+
         chartInstance.on('restore', () => {
-            renderChart(); // Re-render with current props
-        });
-        window.addEventListener('resize', resizeChart);
+            renderChart()
+        })
+        window.addEventListener('resize', resizeChart)
     }
 }
+
 
 const resizeChart = () => {
     if (chartInstance) {
@@ -109,7 +117,9 @@ const resizeChart = () => {
 }
 
 onMounted(() => {
-    initChart()
+    nextTick(() => {
+        initChart()
+    })
 })
 
 // 响应式更新
