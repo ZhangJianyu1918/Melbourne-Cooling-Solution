@@ -70,6 +70,6 @@ const getVirtualData = (data) => {
 <style scoped>
 .heatmap-container {
     width: 100%;
-    height: 400px;
+    height: 500px;
 }
 </style>
