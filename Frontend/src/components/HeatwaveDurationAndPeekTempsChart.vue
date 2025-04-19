@@ -1,5 +1,6 @@
 <template>
     <MixLineAndBarChart 
+        v-if="isDataReady"
         :x-data="heatwaveDurationLabels"
         :bar-data="heatwaveDurationValues"
         :line-data="heatwavePeekTempsValues"
@@ -20,10 +21,12 @@ const heatwavePeakTempsLabels = ref([]);
 const heatwavePeekTempsValues = ref([]);
 const barName = ref("Heatwave Duration");
 const lineName = ref("Heatwave Peek Temps");
+const isDataReady = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
     getHeatwavePeakTempsData();
     getHeatwaveDurationData();
+    isDataReady.value = true;
 });
 
 

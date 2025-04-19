@@ -86,26 +86,21 @@ const renderChart = () => {
             }
         ]
     }
-
+    console.log('xData:', props.xData)
+    console.log('barData:', props.barData)
+    console.log('lineData:', props.lineData)
     chartInstance.setOption(option)
 }
 
 const initChart = () => {
     if (chartRef.value) {
-        const { clientWidth, clientHeight } = chartRef.value
-        if (clientWidth === 0 || clientHeight === 0) {
-            // 等待一小段时间再尝试初始化
-            setTimeout(initChart, 1000)
-            return
-        }
-
-        chartInstance = echarts.init(chartRef.value)
-        renderChart()
+        chartInstance = echarts.init(chartRef.value);
+        renderChart();
 
         chartInstance.on('restore', () => {
-            renderChart()
-        })
-        window.addEventListener('resize', resizeChart)
+            renderChart(); // Re-render with current props
+        });
+        window.addEventListener('resize', resizeChart);
     }
 }
 
@@ -143,5 +138,6 @@ onBeforeUnmount(() => {
 .chart-container {
     width: 100%;
     height: 500px;
+    min-height: 500px;
 }
 </style>
