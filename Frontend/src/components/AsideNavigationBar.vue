@@ -12,7 +12,7 @@
             <el-menu-item index="/heat-insights/heat-deaths">Heat Deaths</el-menu-item>
             <el-menu-item index="/heat-insights/heat-hospitalisations">Hospitalisations</el-menu-item>
             <el-menu-item index="/heat-insights/heatwave-duration-peak">Duration & Peak</el-menu-item>
-            <el-menu-item index="/heat-insights/heatmap">Temperature in the past year</el-menu-item>
+            <el-menu-item index="/heat-insights/heatmap">Daily Temperature</el-menu-item>
         </el-menu>
     </div>
 </template>
