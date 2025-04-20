@@ -85,85 +85,64 @@
                         <span class="text-xl font-semibold">Outdoor Work Tips</span>
                     </div>
                 </template>
-                <el-collapse v-model="activeNames">
-                    <el-collapse-item title="Construction Sites / Physically Demanding Work" name="1">
-                        <el-space direction="vertical" alignment="start">
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Avoid heavy labor between noon and 3 PM</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Take at least a 15-minute break every hour, preferably in the shade</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Drink plenty of water; avoid caffeinated or alcoholic beverages</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Wear breathable, light-colored clothing, a wide-brimmed hat, and sunscreen
-                            </div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Watch for signs of heatstroke: dizziness, nausea, excessive sweating, or
-                                confusion</div>
-                        </el-space>
-                    </el-collapse-item>
 
-                    <el-collapse-item title="Gardening / Agricultural Work" name="2">
-                        <el-space direction="vertical" alignment="start">
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Schedule work during early mornings or late afternoons</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Use portable shade, such as canopies or umbrellas</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Drink water every 30 minutes, even if you're not thirsty</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Stay in touch with coworkers and monitor each other’s condition</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> If feeling unwell, stop working and seek help immediately</div>
-                        </el-space>
-                    </el-collapse-item>
+                <div class="nested-collapse-wrapper">
+                    <el-collapse v-model="activeNames" class="nested-collapse">
+                        <!-- Construction Sites -->
+                        <el-collapse-item title="Construction Sites / Physically Demanding Work" name="1"
+                            class="sub-collapse-item">
+                            <el-space direction="vertical" alignment="start">
+                                <CollapseTip> Avoid heavy labor between noon and 3 PM </CollapseTip>
+                                <CollapseTip> Take at least a 15-minute break every hour, preferably in the shade
+                                </CollapseTip>
+                                <CollapseTip> Drink plenty of water; avoid caffeinated or alcoholic beverages
+                                </CollapseTip>
+                                <CollapseTip> Wear breathable, light-colored clothing, a wide-brimmed hat, and sunscreen
+                                </CollapseTip>
+                                <CollapseTip> Watch for signs of heatstroke: dizziness, nausea, excessive sweating, or
+                                    confusion
+                                </CollapseTip>
+                            </el-space>
+                        </el-collapse-item>
 
-                    <el-collapse-item title="Road Maintenance / Infrastructure Inspection" name="3">
-                        <el-space direction="vertical" alignment="start">
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Wear high-visibility, sun-protective workwear</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Use portable fans or misters to stay cool</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Work in shifts to reduce prolonged exposure</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Monitor equipment surface temperatures to prevent burns</div>
-                            <div><el-icon>
-                                    <CircleCheck />
-                                </el-icon> Learn to recognize and respond to early signs of heat exhaustion and
-                                heatstroke
-                            </div>
-                        </el-space>
-                    </el-collapse-item>
+                        <!-- Gardening -->
+                        <el-collapse-item title="Gardening / Agricultural Work" name="2" class="sub-collapse-item">
+                            <el-space direction="vertical" alignment="start">
+                                <CollapseTip> Schedule work during early mornings or late afternoons </CollapseTip>
+                                <CollapseTip> Use portable shade, such as canopies or umbrellas </CollapseTip>
+                                <CollapseTip> Drink water every 30 minutes, even if you're not thirsty </CollapseTip>
+                                <CollapseTip> Stay in touch with coworkers and monitor each other’s condition
+                                </CollapseTip>
+                                <CollapseTip> If feeling unwell, stop working and seek help immediately </CollapseTip>
+                            </el-space>
+                        </el-collapse-item>
 
-                    <el-collapse-item title="Reminder" name="4">
-                        <el-space direction="vertical" alignment="start">
-                            <div><el-icon>
-                                    <InfoFilled />
-                                </el-icon> Melbourne weather can change rapidly—check official weather alerts daily
-                                (e.g.,
-                                BOM)</div>
-                            <div><el-icon>
-                                    <InfoFilled />
-                                </el-icon> Always carry enough water, sunscreen, and personal cooling equipment</div>
-                        </el-space>
-                    </el-collapse-item>
+                        <!-- Road Maintenance -->
+                        <el-collapse-item title="Road Maintenance / Infrastructure Inspection" name="3"
+                            class="sub-collapse-item">
+                            <el-space direction="vertical" alignment="start">
+                                <CollapseTip> Wear high-visibility, sun-protective workwear </CollapseTip>
+                                <CollapseTip> Use portable fans or misters to stay cool </CollapseTip>
+                                <CollapseTip> Work in shifts to reduce prolonged exposure </CollapseTip>
+                                <CollapseTip> Monitor equipment surface temperatures to prevent burns </CollapseTip>
+                                <CollapseTip> Learn to recognize and respond to early signs of heat exhaustion and
+                                    heatstroke
+                                </CollapseTip>
+                            </el-space>
+                        </el-collapse-item>
 
-                </el-collapse>
+                        <!-- Reminder -->
+                        <el-collapse-item title="Reminder" name="4" class="sub-collapse-item reminder-style">
+                            <el-space direction="vertical" alignment="start">
+                                <ReminderTip> Melbourne weather can change rapidly—check official weather alerts daily
+                                    (e.g., BOM)
+                                </ReminderTip>
+                                <ReminderTip> Always carry enough water, sunscreen, and personal cooling equipment
+                                </ReminderTip>
+                            </el-space>
+                        </el-collapse-item>
+                    </el-collapse>
+                </div>
             </el-collapse-item>
         </el-collapse>
 
@@ -223,5 +202,42 @@ import SearchVideo from '@/components/SearchVideo.vue';
     border-radius: 16px;
     padding: 0 12px;
     margin-right: 8px;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nested-collapse-wrapper {
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 4px solid #dcdfe6;
+}
+
+.nested-collapse {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.sub-collapse-item {
+  margin-bottom: 12px;
+  border: 1px solid #e4e7ed;
+  border-radius: 6px;
+  background-color: #ffffff;
+  padding: 0.5rem;
+}
+
+.reminder-style {
+  background-color: #fef6e0;
+  border-color: #f3d19e;
+}
+
+.collapse-tip,
+.reminder-tip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 </style>
