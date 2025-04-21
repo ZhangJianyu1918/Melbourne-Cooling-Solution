@@ -81,38 +81,6 @@
                     <p>Practice mindfulness and relaxation techniques.</p>
                 </el-card>
             </el-collapse-item>
-
-            <!-- Additional Resources -->
-            <el-collapse-item name="4">
-                <template #title>
-                    <div class="section-title">
-                        <i class="el-icon-phone"></i>
-                        <span class="text-xl font-semibold">Additional Resources</span>
-                    </div>
-                </template>
-                <el-card class="info-card" shadow="never">
-                    <el-descriptions border>
-                        <el-descriptions-item label="Royal Melbourne Hospital">
-                            <el-button type="primary" size="small" plain icon="el-icon-phone"
-                                @click="callNumber('+61 (3) 9342 7000')">
-                                +61 (3) 9342 7000
-                            </el-button>
-                        </el-descriptions-item>
-                        <el-descriptions-item label="Lifeline Australia">
-                            <el-button type="success" size="small" plain icon="el-icon-phone"
-                                @click="callNumber('13 11 14')">
-                                13 11 14
-                            </el-button>
-                        </el-descriptions-item>
-                        <el-descriptions-item label="VicEmergency Hotline">
-                            <el-button type="danger" size="small" plain icon="el-icon-phone"
-                                @click="callNumber('1800 226 226')">
-                                1800 226 226
-                            </el-button>
-                        </el-descriptions-item>
-                    </el-descriptions>
-                </el-card>
-            </el-collapse-item>
         </el-collapse>
 
         <!-- Search video component -->
