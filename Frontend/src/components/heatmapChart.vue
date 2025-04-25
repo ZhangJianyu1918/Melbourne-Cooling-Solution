@@ -6,6 +6,7 @@
 import { onMounted, ref } from 'vue';
 import * as echarts from 'echarts';
 import axios from 'axios';
+import decryptData from '@/js/decryption';
 // 定义 ref 引用
 const heatmapContainer = ref(null);
 
@@ -49,7 +50,7 @@ onMounted(async () => {
     };
     const response = await axios.get('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_daily_max_air_temperature');
     console.log(JSON.parse(response.data.body).data);
-    const data = JSON.parse(response.data.body).data;
+    const data = decryptData(JSON.parse(response.data.body).data);
     let virtualData = getVirtualData(data);
     option.series.data = virtualData;
     chart.setOption(option);

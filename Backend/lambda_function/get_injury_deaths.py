@@ -4,15 +4,43 @@ import os
 from decimal import Decimal
 import boto3
 from botocore.exceptions import ClientError
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+import base64
 
+# 读取环境变量
 rds_host = os.environ['RDS_HOST']
 db_user = os.environ['DB_USER']
 db_password = os.environ['DB_PASSWORD']
 db_name = os.environ['DB_NAME']
-
+AES_KEY = os.environ['AES_KEY'].encode('utf-8')
+AES_IV = os.environ['AES_IV'].encode('utf-8')
 
 # 初始化 KMS 客户端
 kms_client = boto3.client('kms')
+
+# AES 加密函数
+def encrypt_data(data):
+    try:
+        data_json = json.dumps(data, cls=DecimalEncoder)
+        data_bytes = data_json.encode('utf-8')
+        padded_data = pad(data_bytes, AES.block_size)
+
+        cipher = AES.new(AES_KEY, AES.MODE_CBC, AES_IV)
+        encrypted_bytes = cipher.encrypt(padded_data)
+        encrypted_data = base64.b64encode(encrypted_bytes).decode('utf-8')
+
+        return encrypted_data
+    except Exception as e:
+        print(f"Encryption failed: {e}")
+        return None
+
+# Decimal 编码器
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super(DecimalEncoder, self).default(obj)
 
 def decrypt_data(encrypted_data):
     try:
@@ -72,7 +100,7 @@ def lambda_handler(event, context):
             },
             'body': json.dumps({
                 'message': 'Succesfully',
-                'data': data
+                'data': encrypt_data(data)
             }, ensure_ascii=False)
         }
 

@@ -4,12 +4,44 @@ import os
 from decimal import Decimal
 import boto3
 from botocore.exceptions import ClientError
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+import base64
 
 rds_host = os.environ['RDS_HOST']
 db_user = os.environ['DB_USER']
 db_password = os.environ['DB_PASSWORD']
 db_name = os.environ['DB_NAME']
 
+# 读取 AES 密钥和 IV（需确保长度正确）
+AES_KEY = os.environ['AES_KEY'].encode('utf-8')
+AES_IV = os.environ['AES_IV'].encode('utf-8')
+
+# AES 加密函数
+def encrypt_data(data):
+    try:
+        if not data:
+            raise ValueError("No data to encrypt")
+        
+        data_json = json.dumps(data, cls=DecimalEncoder)
+        data_bytes = data_json.encode('utf-8')
+        padded_data = pad(data_bytes, AES.block_size)
+        
+        cipher = AES.new(AES_KEY, AES.MODE_CBC, AES_IV)
+        encrypted_bytes = cipher.encrypt(padded_data)
+        encrypted_data = base64.b64encode(encrypted_bytes).decode('utf-8')
+        
+        return encrypted_data
+    except Exception as e:
+        print(f"Encryption failed: {e}")
+        return None
+
+# Decimal 转换器（用于 JSON 序列化）
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super(DecimalEncoder, self).default(obj)
 
 # 初始化 KMS 客户端
 kms_client = boto3.client('kms')
@@ -36,6 +68,7 @@ def convert_decimal(obj):
     elif isinstance(obj, dict):
         return {key: convert_decimal(value) for key, value in obj.items()}
     return obj
+    
 
 def lambda_handler(event, context):
     try:
@@ -72,7 +105,7 @@ def lambda_handler(event, context):
             },
             'body': json.dumps({
                 'message': 'Succesfully',
-                'data': data
+                'data': encrypt_data(data)
             }, ensure_ascii=False)
         }
 

@@ -6,6 +6,7 @@
 import { ref, onMounted } from 'vue';
 import NestedPieChart from './NestedPieChart.vue';
 import axios from 'axios'
+import decryptData from '@/js/decryption'
 
 
 const chartData = ref({
@@ -24,7 +25,7 @@ const getAgeAndSexData = async () => {
       'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_age_groups_and_sex'
     );
     
-    const data = JSON.parse(response.data.body).data;
+    const data = decryptData(JSON.parse(response.data.body).data);
 
 
     // 提取年龄分组的顺序

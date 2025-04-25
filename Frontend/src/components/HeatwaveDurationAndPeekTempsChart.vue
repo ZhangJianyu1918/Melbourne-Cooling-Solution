@@ -14,6 +14,7 @@
 import MixLineAndBarChart from './MixLineAndBarChart.vue';
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import decryptData from '@/js/decryption'
 
 const heatwaveDurationLabels = ref([]);
 const heatwaveDurationValues = ref([]);
@@ -35,7 +36,7 @@ const getHeatwaveDurationData = async () => {
         const response = await axios.get(
             'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_heatwave_duration'
         )
-        const data = JSON.parse(response.data.body).data
+        const data = decryptData(JSON.parse(response.data.body).data)
 
         heatwaveDurationLabels.value = data.map(item => item.year)
         heatwaveDurationValues.value = data.map(item => item.duration)
@@ -53,7 +54,7 @@ const getHeatwavePeakTempsData = async () => {
         const response = await axios.get(
             'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_heatwave_peak_temps'
         )
-        const data = JSON.parse(response.data.body).data
+        const data = decryptData(JSON.parse(response.data.body).data)
 
         heatwavePeakTempsLabels.value = data.map(item => item.year)
         heatwavePeekTempsValues.value = data.map(item => item.temperature)
