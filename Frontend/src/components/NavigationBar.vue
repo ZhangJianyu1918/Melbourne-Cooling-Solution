@@ -8,12 +8,12 @@
     style="background-color: rgba(25, 97, 158, 0.9);"
   >
     <el-menu-item index="0">
-      <router-link to="/" active-class="active-link">
+      <router-link to="/home" active-class="active-link">
         <img src="../assets/logo.png" width="" height="40px" class="logo">
       </router-link>
     </el-menu-item>
     <el-menu-item index="1">
-      <router-link to="/" active-class="active-link">{{ $t('navigation-home') }}</router-link>
+      <router-link to="/home" active-class="active-link">{{ $t('navigation-home') }}</router-link>
     </el-menu-item>
     <el-menu-item index="2">
       <router-link to="/local-heat-level" active-class="active-link">{{ $t('navigation-local-heat-level') }}</router-link>
