@@ -27,7 +27,7 @@ onMounted(() => {
 const getHeatHospitalisationsData = async () => {
   try {
     const response = await axios.get(
-      'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_injury_hospitalisations'
+      'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_injury_hospitalisations'
     )
     const data = decryptData(JSON.parse(response.data.body).data)
 

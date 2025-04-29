@@ -32,7 +32,7 @@ onMounted(() => {
 const getAgeAndSexData = async () => {
   try {
     const response = await axios.get(
-      'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_age_group_and_sex',
+      'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_age_group_and_sex',
       // {
       //   withCredentials: true,  // Include credentials (cookies)
       //   headers: {

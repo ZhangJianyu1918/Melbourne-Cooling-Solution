@@ -556,9 +556,9 @@ const loadMelbourneBoundary = async () => {
 
 const getDrinkingFoundtains = async () => {
   const response = await axios.get(
-    'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
+    'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_drinking_foundtains'
   );
-  const data = response.data.data;
+  const data = JSON.parse(response.data.body).data;
   if (!data || data.length === 0) {
     console.error('No drinking fountain data found');
     return;
@@ -643,7 +643,7 @@ const loadDrinkingFountains = (latitude, longitude) => {
 };
 
 const getCoolingPlace = async () => {
-  const response = await fetch('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
+  const response = await fetch('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_cooling_place', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
