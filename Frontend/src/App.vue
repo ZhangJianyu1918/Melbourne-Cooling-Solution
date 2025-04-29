@@ -35,6 +35,7 @@ const isHome = computed(() => route.meta.isHome || false);
 .common-layout {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
    /* 让整个布局至少占满视口高度 */
 }
 

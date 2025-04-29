@@ -91,7 +91,7 @@
                     <span class="text-xl font-semibold text-gray-800">Video Resources</span>
                 </div>
             </template>
-            <search-video></search-video>
+            <search-video :keywords="['Post Heatwave Recovery Tips', 'Rehydration After Heat Exposure', 'Long term Effects Of Heat Stress']"></search-video>
         </el-card>
     </div>
 </template>

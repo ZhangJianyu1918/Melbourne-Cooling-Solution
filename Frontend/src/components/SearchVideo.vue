@@ -1,55 +1,66 @@
 <template>
-    <div style="padding: 20px">
-        <el-input v-model="input" placeholder="Please Input YouTube Key Word" style="width: 300px; margin-right: 10px"
-            @keyup.enter="searchVideos" clearable />
-        <el-button type="primary" @click="searchVideos" :loading="loading">Search</el-button>
-
-        <el-scrollbar style="margin-top: 20px; overflow-x: auto">
-            <div class="video-container">
-                <el-card v-for="video in videos" :key="video.id.videoId" class="video-card" shadow="hover">
-                    <iframe width="350" height="200" :src="`https://www.youtube.com/embed/${video.id.videoId}`"
-                        frameborder="0" allowfullscreen></iframe>
-                    <div style="margin-top: 10px; font-weight: bold; font-size: 14px">
-                        {{ video.snippet.title }}
-                    </div>
-                </el-card>
-            </div>
-        </el-scrollbar>
+  <div style="padding: 20px">
+    <div style="margin-bottom: 10px">
+      <el-button 
+        v-for="keyword in keywords" 
+        :key="keyword" 
+        type="primary" 
+        @click="searchVideos(keyword)" 
+        :loading="loading"
+        style="margin-right: 10px"
+      >
+        {{ keyword }}
+      </el-button>
     </div>
+
+    <el-scrollbar style="margin-top: 20px; overflow-x: auto">
+      <div class="video-container">
+        <el-card v-for="video in videos" :key="video.id.videoId" class="video-card" shadow="hover">
+          <iframe width="350" height="200" :src="`https://www.youtube.com/embed/${video.id.videoId}`"
+            frameborder="0" allowfullscreen></iframe>
+          <div style="margin-top: 10px; font-weight: bold; font-size: 14px">
+            {{ video.snippet.title }}
+          </div>
+        </el-card>
+      </div>
+    </el-scrollbar>
+  </div>
 </template>
-
-
 
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios';
+import { defineProps } from 'vue'
+import axios from 'axios'
 import validateAndSanitize from '../js/validation'
 
-const input = ref('')
-const query = ref('')
+const props = defineProps({
+  keywords: {
+    type: Array,
+    required: true
+  }
+})
+
 const videos = ref([])
 const loading = ref(false)
+const videoKey = import.meta.env.VITE_VIDEO_API_KEY
 
-const searchVideos = async () => {
-    if (!input.value) return
+const searchVideos = async (keyword) => {
+  if (!validateAndSanitize(keyword).valid) {
+    alert('Please input valid keyword.')
+    return;
+  }
 
-    if (!validateAndSanitize(input.value).valid) {
-        alert('Please input validate places.')
-        input.value = ''
-        return;
-    }
-
-    loading.value = true
-    const apiKey = 'AIzaSyC8ZRwMu4odONGFCfbUCIQblmDS0itPV_Y'
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(input.value)}&key=${apiKey}&maxResults=3`
-    try {
-        const response = await axios.get(url)
-        videos.value = response.data.items
-    } catch (error) {
-        console.error('Error fetching YouTube videos:', error)
-    } finally {
-        loading.value = false
-    }
+  loading.value = true
+  const apiKey = videoKey
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(keyword)}&key=${apiKey}&maxResults=3`
+  try {
+    const response = await axios.get(url)
+    videos.value = response.data.items
+  } catch (error) {
+    console.error('Error fetching YouTube videos:', error)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -60,8 +71,8 @@ const searchVideos = async () => {
 }
 
 .video-card {
-  width: 360px; 
+  width: 360px;
   display: inline-block;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 </style>
