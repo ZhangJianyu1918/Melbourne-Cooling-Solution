@@ -3,19 +3,18 @@
         <header class="header">
             <!-- 首页专属导航栏 -->
             <nav v-if="isHome" class="home-nav">
-                <router-link to="/">
+                <router-link to="/home">
                     <img src="../assets/logo.png" width="" height="40px" class="logo">
                 </router-link>
                 <ul>
                     <li>
-                        <router-link to="/">{{ $t('navigation-home') }}</router-link>
+                        <router-link to="/home">{{ $t('navigation-home') }}</router-link>
                     </li>
                     <li>
                         <router-link to="/local-heat-level">{{ $t('navigation-local-heat-level') }}</router-link>
                     </li>
                     <li>
-                        <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide')
-                            }}</router-link>
+                        <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide')}}</router-link>
                     </li>
                     <li>
                         <router-link to="/heat-impact">Heat Insights</router-link>
@@ -91,7 +90,7 @@
             <div style="height: 50px;"></div>
             <el-row>
                 <el-col :span="21">
-                    <h2 class="service-title">Need Immediate Support</h2>
+                    <h2 class="service-title">Need Immediate Support(Next Iteration)</h2>
                 </el-col>
             </el-row>
             <el-row class="support">
@@ -135,7 +134,7 @@ import Card from '@/components/Card.vue';
 
 
 const route = useRoute();
-const isHome = route.path === '/';
+const isHome = route.path === '/home';
 
 const services = [
     {

@@ -89,23 +89,24 @@
             <el-col :offset="1" :span="10" style="padding-top: 20px">
               <el-row style="display: flex; justify-content: center; align-items: center;">
                 <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Total" :value="maxTotalCoolingResources" />
+                  <AnimatedStatistic title="Total" :value="maxTotalCoolingResources" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Trees" :value="maxTrees" />
+                  <AnimatedStatistic title="Trees" :value="maxTrees" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Places" :value="maxCoolingPlace" />
+                  <AnimatedStatistic title="Places" :value="maxCoolingPlace" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Drinking" :value="maxDrinkingFountains" />
+                  <AnimatedStatistic title="Drinking" :value="maxDrinkingFountains" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Distance(M)" :value="routeDistance" />
+                  <AnimatedStatistic title="Distance" :value="routeDistance" :decimals="1" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Duration(Mi)" :value="routeDuration" />
+                  <AnimatedStatistic title="Duration" :value="routeDuration" :decimals="1" />
                 </el-col>
+
               </el-row>
             </el-col>
           </el-row>
@@ -142,6 +143,8 @@ import decryptData from '@/js/decryption';
 import axios from 'axios';
 import { Search, Open, Location } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus'
+import AnimatedStatistic from '@/components/AnimatedStatistic.vue';
+
 // Reactive state
 const searchText = ref('');
 const mapElement = ref(null);
@@ -1023,19 +1026,21 @@ h2 {
   cursor: default;
   /* Prevent hand cursor on the input */
 }
+
 .fade-zoom-enter-active,
 .fade-zoom-leave-active {
   transition: all 0.3s ease;
 }
+
 .fade-zoom-enter-from,
 .fade-zoom-leave-to {
   opacity: 0;
   transform: scale(0.9);
 }
+
 .fade-zoom-enter-to,
 .fade-zoom-leave-from {
   opacity: 1;
   transform: scale(1);
 }
-
 </style>
