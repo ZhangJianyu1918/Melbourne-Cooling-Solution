@@ -41,10 +41,10 @@ const getAgeAndSexData = async () => {
       // }
     );
     
-    console.log(response.data.data)
+    console.log(response)
 
-    // const data = decryptData(JSON.parse(response.data.body).data);
-    const data = decryptData(response.data.data);
+    const data = decryptData(JSON.parse(response.data.body).data);
+    // const data = decryptData(response.data.data);
 
 
     // 提取年龄分组的顺序
