@@ -24,6 +24,8 @@ const checkPassword = async () => {
     if (response.data.statusCode === 200) {
         // 如果密码正确，将认证标记保存到 Cookie
         Cookies.set('authenticated', 'true', { path: '/' })
+        // Cookies.set('Origin', 'http://localhost:5173', { path: '/' })
+        // Cookies.set('withCredentials', 'true', { path: '/' })
         router.push('/home') // 跳转到受保护的页面
     } else {
         errorMessage.value = 'Password is incorrect!'; // 错误提示
@@ -34,13 +36,11 @@ const checkPassword = async () => {
 </script>
 
 <style scoped>
-/* 设置页面的高度为 100% */
 .passwordForm {
     height: 80vh;
     margin: 0;
 }
 
-/* 使用 flexbox 实现全屏居中 */
 .passwordForm {
     display: flex;
     justify-content: center;

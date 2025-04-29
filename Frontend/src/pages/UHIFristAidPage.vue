@@ -180,7 +180,7 @@
                     <span class="text-xl font-semibold text-gray-800">Video Resources</span>
                 </div>
             </template>
-            <search-video></search-video>
+            <search-video :keywords="['Heatstroke First Aid', 'Emergency Cooling Techniques', 'Heat Exhaustion Symptoms And Care']"></search-video>
         </el-card>
     </div>
 </template>

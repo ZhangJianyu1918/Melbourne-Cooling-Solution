@@ -16,6 +16,7 @@ import HeatInsightsPage from "@/pages/HeatInsightsPage.vue";
 import HeatmapChart from "@/components/heatmapChart.vue";
 import PasswordPage from "@/pages/PasswordPage.vue";
 import Cookies from "js-cookie";
+import HeatDeathsAndHospitalisationsChart from "@/components/HeatDeathsAndHospitalisationsChart.vue";
 
 
 const routes = [
@@ -112,7 +113,12 @@ const routes = [
         path: 'heatmap',
         name: 'HeatMap',
         component: HeatmapChart
-      }
+      },
+      {
+        path: 'heat-deaths-and-hospitalisations',
+        name: 'HeatDeathsAndHospitalisationsChart',
+        component: HeatDeathsAndHospitalisationsChart
+      },
     ]
   },
 ];

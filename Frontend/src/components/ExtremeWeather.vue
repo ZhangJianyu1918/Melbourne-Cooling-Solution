@@ -1,6 +1,11 @@
 <!-- components/ExtremeWeatherChart.vue -->
 <template>
-  <PieChart title="Extreme Weather Related Injury Hospitalisations" :data="chartData" />
+  <div>
+    <PieChart title="Extreme Weather Related Injury Hospitalisations" :data="chartData" />
+    <p>This pie chart shows the proportion of injury hospitalisations caused by different types of extreme weather over the last decade. Surprisingly, Heat is the dominant force taking nearly 80% of all extreme weather injury hospitalisations, far outpaces injury from other causes. Although Cold and Bushfire injuries make up a noticeable chunk, they are much less common in total. 
+This dangerous impact from heatwaves underlines an urgent need for heat resilience strategies such as better infrastructure, early warnings, public education, and support systems during heat events.
+</p>
+  </div>
 </template>
 
 <script setup>

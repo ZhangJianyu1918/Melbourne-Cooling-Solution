@@ -1,5 +1,27 @@
 <template>
   <div class="container">
+    <el-button type="success" @click="drawer = true" size="large"
+      style="position: fixed; bottom: 120px; right:30px; z-index: 1000;">
+      User GuideLine
+    </el-button>
+    <el-drawer v-model="drawer" title="User GuideLine" :direction="direction" :before-close="handleClose">
+      <h3>Close this drawer</h3>
+      <p>Click anywhere outside of this drawer area.</p>
+      <h3>Search Place</h3>
+      <p>Input place name at input area. And click the autocomplete content or click 'Search' button.</p>
+      <h3>Navigate Route</h3>
+      <p>User should choose travel options, route type and input starting and ending points. The place name also need
+        'VIC' as suffix.</p>
+      <h3>Map</h3>
+      <p>When user click the map, this map will display a circle. And map will display the cooling places and drinking
+        foudtains icon in this circle.</p>
+      <h3>Tree Icon</h3>
+      <img src="../assets/tree.png" style="width: 50px; border-radius: 50px;" alt="">
+      <h3>Cooling Place Icon</h3>
+      <img src="../assets/frost.png" style="width: 50px; border-radius: 50px;" alt="">
+      <h3>Drinking Foundtain Icon</h3>
+      <img src="../assets/water-bottle.png" style="width: 50px; border-radius: 50px;" alt="">
+    </el-drawer>
     <div style="height: 50px;"></div>
     <h2>This is local heat level page</h2>
     <div style="height: 20px;"></div>
@@ -13,19 +35,24 @@
       <transition name="fade-zoom">
         <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
           <el-row class="searchInputArea">
-            <el-col :span="22">
+            <el-col :span="18">
               <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
                 @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
                 <template #suffix>
-                  <el-icon @click="searchPlace" style="cursor: pointer;">
+                  <el-icon>
                     <Search />
                   </el-icon>
                 </template>
               </el-input>
             </el-col>
-            <el-col :span="2">
-              <el-button type="click" @click="expandInputArea">
-                <font-awesome-icon :icon="['fas', 'arrow-right-arrow-left']" style="cursor: pointer;" />
+            <el-col :span="2" style="margin-left: 30px;">
+              <el-button type="primary" size="large" @click="searchPlace">
+                Search Place
+              </el-button>
+            </el-col>
+            <el-col :span="2" style="margin-left: 30px;">
+              <el-button type="primary" size="large" @click="expandInputArea">
+                Navigate Route
               </el-button>
             </el-col>
           </el-row>
@@ -68,7 +95,7 @@
               <el-row>
                 <el-col style="display: flex; align-items: center;">
                   <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff; margin-right: 8px;" />
-                  <el-input v-model="navigationForm.from" placeholder="From" @keyup.enter="calculateRoute" size="large"
+                  <el-input v-model="navigationForm.from" placeholder="From" size="large"
                     style="flex: 1; --el-border-radius-base: 20px" />
                 </el-col>
               </el-row>
@@ -80,33 +107,36 @@
               <el-row>
                 <el-col style="display: flex; align-items: center;">
                   <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500; margin-right: 8px;" />
-                  <el-input v-model="navigationForm.to" placeholder="To" @keyup.enter="calculateRoute" size="large"
+                  <el-input v-model="navigationForm.to" placeholder="To" size="large"
                     style="flex: 1; --el-border-radius-base: 20px" />
                 </el-col>
               </el-row>
             </el-col>
-
-            <el-col :offset="1" :span="10" style="padding-top: 20px">
+            <el-col :span="2">
+              <el-button type="primary" plain  @click="calculateRoute" style="height: 100px; border-radius: 10px;">
+                Navigate
+              </el-button>
+            </el-col>
+            <el-col :span="10" style="padding-top: 20px">
               <el-row style="display: flex; justify-content: center; align-items: center;">
+                <!-- <el-col :span="4" style="text-align: center;">
+                  <el-statistic title="Total" :value="maxTotalCoolingResources" />
+                </el-col> -->
                 <el-col :span="4" style="text-align: center;">
-                  <AnimatedStatistic title="Total" :value="maxTotalCoolingResources" />
+                  <el-statistic title="Trees" :value="maxTrees" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <AnimatedStatistic title="Trees" :value="maxTrees" />
+                  <el-statistic title="Cooling Places" :value="maxCoolingPlace" />
+                </el-col>
+                <el-col :span="6" style="text-align: center;">
+                  <el-statistic title="Drinking Foudtains" :value="maxDrinkingFountains" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <AnimatedStatistic title="Places" :value="maxCoolingPlace" />
+                  <el-statistic title="Distance(M)" :value="routeDistance" />
                 </el-col>
                 <el-col :span="4" style="text-align: center;">
-                  <AnimatedStatistic title="Drinking" :value="maxDrinkingFountains" />
+                  <el-statistic title="Duration(Mi)" :value="routeDuration" />
                 </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <AnimatedStatistic title="Distance" :value="routeDistance" :decimals="1" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <AnimatedStatistic title="Duration" :value="routeDuration" :decimals="1" />
-                </el-col>
-
               </el-row>
             </el-col>
           </el-row>
@@ -118,6 +148,7 @@
       <div class="google-map" ref="mapElement"></div>
       <WeatherCard :temp="weather.temp" :placeName="marker?.title" :icon="weather.icon" @find-shade="findShadedArea" />
     </div>
+
     <el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
       <span>The temperature is {{ weather.temp }}°C!</span>
       <template #footer>
@@ -129,6 +160,7 @@
         </div>
       </template>
     </el-dialog>
+
   </div>
 </template>
 
@@ -144,6 +176,8 @@ import axios from 'axios';
 import { Search, Open, Location } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus'
 import AnimatedStatistic from '@/components/AnimatedStatistic.vue';
+// import { DrawerProps } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 
 // Reactive state
 const searchText = ref('');
@@ -300,6 +334,9 @@ const maxDrinkingFountains = ref(0)
 const maxTrees = ref(0)
 const routeDuration = ref(0)
 const routeDistance = ref(0)
+const drawer = ref(false)
+const direction = ref('rtl')
+
 
 // Initialize map on component mount
 onMounted(async () => {
@@ -346,13 +383,11 @@ const initMap = async () => {
     map.setMapTypeId("route_map");
     // map.data.loadGeoJson('/trees.geojson');
     map.data.loadGeoJson('/trees-with-species-and-dimensions-urban-forest.geojson');
-    map.data.setStyle(function (feature) {
-      return {
-        icon: {
-          url: '/tree.png',
-          scaledSize: new google.maps.Size(15, 15)
-        }
-      };
+
+    updateTreeIconStyle(map.getZoom());
+    map.addListener('zoom_changed', () => {
+      const newZoom = map.getZoom();
+      updateTreeIconStyle(newZoom);
     });
 
     infoWindow = new google.maps.InfoWindow();
@@ -386,6 +421,17 @@ const initMap = async () => {
   } catch (error) {
     console.error('Failed to load Google Maps API:', error);
   }
+};
+const updateTreeIconStyle = (zoomLevel) => {
+  const size = Math.max(zoomLevel * 0.5, 0.5); // 保底大小防止太小
+  map.data.setStyle(function (feature) {
+    return {
+      icon: {
+        url: '/tree.png',
+        scaledSize: new google.maps.Size(size, size)
+      }
+    };
+  });
 };
 
 const expandInputArea = () => {
@@ -793,6 +839,10 @@ const calculateRoute = () => {
         ...result,
         routes: [path.targetRoute]
       });
+      const bounds = path.targetRoute.bounds;
+      if (bounds && map) {
+        map.fitBounds(bounds);
+      }
     } else {
       console.error('Walking directions failed:', status);
     }
@@ -912,6 +962,16 @@ const countCoolingPalcesOnRoute = (pathPoints) => {
   })
   console.log('CoolingPalces: ' + count)
   return count;
+}
+
+const handleClose = () => {
+  ElMessageBox.confirm('Are you sure you want to close this?')
+    .then(() => {
+      drawer.value = false
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 </script>
 

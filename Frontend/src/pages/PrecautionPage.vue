@@ -153,7 +153,7 @@
                     <span class="text-xl font-semibold text-gray-800">Video Resources</span>
                 </div>
             </template>
-            <search-video></search-video>
+            <search-video :keywords="['Heat Wave Prevention Tips', 'Urban Heat Island Solutions', 'Stay Safe During Heatwave']"></search-video>
         </el-card>
     </div>
 </template>

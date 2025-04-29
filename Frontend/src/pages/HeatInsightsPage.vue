@@ -77,6 +77,7 @@ import AsideNavigationBar from '@/components/AsideNavigationBar.vue';
   flex: 1;
   overflow: auto;
   padding-left: 50px;
+  min-height: 500px;
   background-color: white;
 }
 
