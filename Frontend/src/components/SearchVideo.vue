@@ -42,7 +42,7 @@ const props = defineProps({
 
 const videos = ref([])
 const loading = ref(false)
-const videoKey = import.meta.env.VITE_VIDEO_API_KEY
+const videoKey = import.meta.env.VITE_GOOGLE_API_KEY
 
 const searchVideos = async (keyword) => {
   if (!validateAndSanitize(keyword).valid) {

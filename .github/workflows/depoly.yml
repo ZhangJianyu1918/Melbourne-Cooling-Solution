@@ -19,7 +19,6 @@ jobs:
         echo "VITE_WEATHER_API_KEY=${{ secrets.VITE_WEATHER_API_KEY }}" >> Frontend/.env
         echo "VITE_AES_KEY=${{ secrets.VITE_AES_KEY }}" > Frontend/.env
         echo "VITE_AES_IV=${{ secrets.VITE_AES_IV }}" >> Frontend/.env
-        echo "VITE_VIDEO_API_KEY=${{ secrets.VITE_VIDEO_API_KEY }}" >> Frontend/.env
 
     
     # 设置 buildx 构建器
