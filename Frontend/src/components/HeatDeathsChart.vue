@@ -23,7 +23,7 @@
   const getHeatDeathsData = async () => {
     try {
       const response = await axios.get(
-        'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_injury_deaths'
+        'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_injury_deaths'
       )
       const data = decryptData(JSON.parse(response.data.body).data)
       

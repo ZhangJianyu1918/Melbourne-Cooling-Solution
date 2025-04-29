@@ -55,7 +55,7 @@ onMounted(async () => {
             data: []
         }
     };
-    const response = await axios.get('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_daily_max_air_temperature');
+    const response = await axios.get('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_daily_max_air_temperature');
     // console.log(JSON.parse(response.data.body).data);
     const data = decryptData(JSON.parse(response.data.body).data);
     let virtualData = getVirtualData(data);

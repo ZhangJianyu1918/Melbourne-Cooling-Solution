@@ -18,7 +18,7 @@
   const getHeatwavePeakTempsData = async () => {
     try {
       const response = await axios.get(
-        'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_heatwave_peak_temps'
+        'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_heatwave_peak_temps'
       )
       const data = decryptData(JSON.parse(response.data.body).data)
       

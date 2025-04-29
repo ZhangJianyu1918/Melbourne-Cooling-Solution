@@ -19,7 +19,7 @@ const errorMessage = ref('');  // 错误信息
 
 // 校验密码
 const checkPassword = async () => {
-    const response = await axios.post('https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies', {'password': password.value});
+    const response = await axios.post('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies', {'password': password.value});
     console.log(response)
     if (response.data.statusCode === 200) {
         // 如果密码正确，将认证标记保存到 Cookie

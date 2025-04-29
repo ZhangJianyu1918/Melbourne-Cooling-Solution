@@ -18,7 +18,7 @@ onMounted(() => {
 const getHighestTemperatureTrendData = async () => {
   try {
     const response = await axios.get(
-      'https://03c5tdcr17.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_highest_temperature_trend'
+      'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/get_highest_temperature_trend'
     )
     const data = decryptData(JSON.parse(response.data.body).data)
     
