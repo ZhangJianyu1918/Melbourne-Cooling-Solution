@@ -10,10 +10,10 @@
             <el-menu-item index="/heat-insights/heatmap">Daily Temperature</el-menu-item>
             <el-menu-item index="/heat-insights/age-sex">Age & Sex</el-menu-item>
             <el-menu-item index="/heat-insights/extreme-weather">Extreme Weather</el-menu-item>
-            <el-menu-item index="/heat-insights/heat-deaths">Heat Deaths</el-menu-item>
-            <el-menu-item index="/heat-insights/heat-hospitalisations">Hospitalisations</el-menu-item>
+            <!-- <el-menu-item index="/heat-insights/heat-deaths">Heat Deaths</el-menu-item> -->
+            <!-- <el-menu-item index="/heat-insights/heat-hospitalisations">Hospitalisations</el-menu-item> -->
             <el-menu-item index="/heat-insights/heatwave-duration-peak">Duration & Peak</el-menu-item>
-            <!-- <el-menu-item index="/heat-insights/heat-deaths-and-hospitalisations">Heat Hospitalisations</el-menu-item> -->
+            <el-menu-item index="/heat-insights/heat-deaths-and-hospitalisations">Heat Injury</el-menu-item>
         </el-menu>
     </div>
 </template>

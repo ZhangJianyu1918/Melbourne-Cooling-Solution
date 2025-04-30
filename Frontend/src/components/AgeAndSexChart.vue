@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h4>Heatwave injury hospitalisations in Australia (2019-2021) by Age group and Gender</h4>
+<br>
+    
     <NestedPieChart :data="chartData" />
     <br>
     <p>This dual-layered donut chart visualises the distribution of heatwave-related injury hospitalisations in Australia from 2019 to 2021, segmented by age group (inner ring) and further broken down by gender (outer ring). 
