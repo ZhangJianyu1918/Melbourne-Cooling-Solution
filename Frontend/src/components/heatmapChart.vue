@@ -1,7 +1,15 @@
 <template>
-    <div >
-    <div ref="heatmapContainer" class="heatmap-container"></div>
-    <p>This calendar heatmap shows each day in one year from April 2024 to March 2025, which is colored based on the highest recorded temperature. With red color indicating hotter days and blue showing cool days, it helps us quickly spot periods of extreme heat or cooler trends across the year. Although City of Melbourne is not an area with extreme heat over the year, there are clear periods where the temperatures are consistently high, usually during the summer months (December to March). The very high temperature (around 40 Celsius degrees) can happen quite suddenly which may impact people's health and adaptability. </p>
+    <div>
+        <h4>Calendar heatmap for highest temperature in City of Melbourne (April 2024 - March 2025)
+        </h4>
+        <br>
+        <div ref="heatmapContainer" class="heatmap-container"></div>
+        <p>This calendar heatmap shows each day in one year from April 2024 to March 2025, which is colored based on the
+            highest recorded temperature. With red color indicating hotter days and blue showing cool days, it helps us
+            quickly spot periods of extreme heat or cooler trends across the year. Although City of Melbourne is not an
+            area with extreme heat over the year, there are clear periods where the temperatures are consistently high,
+            usually during the summer months (December to March). The very high temperature (around 40 Celsius degrees)
+            can happen quite suddenly which may impact people's health and adaptability. </p>
     </div>
 </template>
 
