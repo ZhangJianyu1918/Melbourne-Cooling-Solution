@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h4>Heatwave deaths in Australia from 2011 to 2020</h4>
+    <h4>Heat-related deaths in Australia from 2011 to 2020</h4>
     <br>
     <bar-chart title="Heatwave Deaths" :xData="deathLabels" :seriesData="deathSeriesData"
       seriesName="Injury Deaths"></bar-chart>
     <br>
     <br>
-    <h3>Heatwave injury hospitalisations in Australia from 2012 to 2021</h3>
+    <h3>Heat-related injury hospitalisations in Australia from 2012 to 2021</h3>
     <br>
     <bar-chart title="Heatwave Hospitalisations" :xData="hospitalisationsLabels"
       :seriesData="hospitalisationsSeriesData" seriesName="Injury Hospitalisations"></bar-chart>

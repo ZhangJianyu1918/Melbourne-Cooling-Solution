@@ -36,7 +36,7 @@
                 </p>
                 <div style="height: 50px;"></div>
                 <el-button type="primary" class="find-out" tag="router-link" round  to="/local-heat-level">
-                    Explore Cooling Resources
+                    Find Cooler Paths
                 </el-button>
                 <el-button class="learn-more" round  tag="router-link" to="/community-support">
                     Learn more
@@ -63,12 +63,6 @@
                         heat from the sun compared to natural landscapes. This effect can increase energy 
                         demands for cooling, exacerbate air pollution, and create challenges for urban sustainability. 
                         Especially as temperatures continue to rise due to climate change.<br/>
-                        <br/>
-                        Source: 
-                        <a href="https://geoai.au/urban-heat-island-uhi-understanding-and-technology-for-measurement/">
-                        Urban Heat Island (UHI): Understanding and Technology for Measurement. 
-                        Geospatial Artificial Intelligence | GeoAI
-                        </a>
                     </p>
                 </el-col>
                 <el-col :span="8">

@@ -2,7 +2,7 @@
   <div>
     <BarChart title="Heatwave Deaths" :xData="labels" :seriesData="values" seriesName="Injury Deaths" />
     <br>
-    <p>The first graph shows the number of deaths related to heatwaves, and the second graph  displays the number of hospitalisations caused by heat-related illnesses. Both graphs highlight the health impacts of extreme heat events over time. 
+    <p>The first graph shows the number of deaths related to heat, and the second graph  displays the number of hospitalisations caused by heat-related illnesses. Both graphs highlight the health impacts of extreme heat events over time. 
 </p>
   </div>
 </template>

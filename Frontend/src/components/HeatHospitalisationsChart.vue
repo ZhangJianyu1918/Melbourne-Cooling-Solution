@@ -4,7 +4,7 @@
       seriesName="Injury Hospitalisations" />
     <br>
     <p>The number of hospitalisations is generally higher than the number of deaths. However, both spike during major
-      heatwaves.
+      heat incidents.
       Some years show particularly large increases compared to others.
     </p>
   </div>

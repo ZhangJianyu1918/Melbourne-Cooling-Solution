@@ -1,17 +1,17 @@
 <template>
     <div>
-        <h4>Heatwave peak temperature and duration in Melbourne from 2004 to 2016
+        <h4>Peak temperature and duration in Melbourne from 2004 to 2016
         </h4>
         <br>
         <MixLineAndBarChart v-if="isDataReady" :x-data="heatwaveDurationLabels" :bar-data="heatwaveDurationValues"
             :line-data="heatwavePeekTempsValues" :bar-name="barName" :line-name="lineName">
         </MixLineAndBarChart>
-        <p>The visualization combines a line chart showing the peak temperatures during each heatwave event with a bar
-            chart underneath that displays the duration (in days) of each heatwave. This dual representation allows
+        <p>The visualization combines a line chart showing the peak temperatures during each heat event with a bar
+            chart underneath that displays the duration (in days) of each heat. This dual representation allows
             users to see both how hot and how long each heatwave lasted. A key observation is that some heatwaves have
             very high peak temperatures but are short-lived, while others may have lower peak temperatures yet last much
             longer—indicating that there isn't always a direct correlation between peak temperature and duration. This
-            highlights the importance of considering both intensity and duration when assessing the impact of heatwaves,
+            highlights the importance of considering both intensity and duration when assessing the impact of heat,
             as a long moderate event can be just as dangerous as a short extreme one. Effective planning for both types
             is crucial for public health and infrastructure resilience.</p>
     </div>
