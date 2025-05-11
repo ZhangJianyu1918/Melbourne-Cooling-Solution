@@ -17,6 +17,8 @@ import HeatmapChart from "@/components/heatmapChart.vue";
 import PasswordPage from "@/pages/PasswordPage.vue";
 import Cookies from "js-cookie";
 import HeatDeathsAndHospitalisationsChart from "@/components/HeatDeathsAndHospitalisationsChart.vue";
+import HeatHealthGuidePage from "@/pages/HeatHealthGuidePage.vue";
+import CoolingHomePage from "@/pages/CoolingHomePage.vue";
 
 
 const routes = [
@@ -82,7 +84,7 @@ const routes = [
     children: [
       {
         path: '',  
-        redirect: '/heat-insights/age-sex'
+        redirect: '/heat-insights/heatmap'
       },
       {
         path: 'age-sex',
@@ -121,6 +123,18 @@ const routes = [
       },
     ]
   },
+  {
+    path: "/personal-cooling-guide/heat-health-guide",
+    name: "HeatHealthGuide",
+    component: HeatHealthGuidePage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/personal-cooling-guide/cooling-home",
+    name: "CoolingHome",
+    component: CoolingHomePage,
+    meta: { requiresAuth: true }
+  }
 ];
 
 const router = createRouter({

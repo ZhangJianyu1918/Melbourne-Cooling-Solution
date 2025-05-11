@@ -24,11 +24,11 @@ const heatmapContainer = ref(null);
 onMounted(async () => {
     const chart = echarts.init(heatmapContainer.value);
     const option = {
-        title: {
-            top: 10,
-            left: 'center',
-            text: 'Daily Highest Temperature'
-        },
+        // title: {
+        //     top: 10,
+        //     left: 'center',
+        //     text: 'Daily Highest Temperature'
+        // },
         tooltip: {
             position: "top",
             formatter: (p) => `${p.data[0]}: ${p.data[1]} °C`,
