@@ -17,59 +17,6 @@ const props = defineProps({
 const chartRef = ref(null);
 let chartInstance = null;
 
-// const processData = () => {
-//   const raw = props.data.genderGroups;
-
-//   const ageGroups = [];
-//   const genderGroups = [];
-
-//   // 将数据按年龄段分类
-//   const ageGroupMap = {};
-
-//   raw.forEach(item => {
-//     const [gender, age] = item.name.split(' ');
-//     const key = age;
-
-//     if (!ageGroupMap[key]) {
-//       ageGroupMap[key] = {
-//         age: key,
-//         male: 0,
-//         female: 0
-//       };
-//     }
-
-//     if (gender === 'Male') {
-//       ageGroupMap[key].male += item.value;
-//     } else if (gender === 'Female') {
-//       ageGroupMap[key].female += item.value;
-//     }
-//   });
-
-//   Object.values(ageGroupMap).forEach(group => {
-//     const total = group.male + group.female;
-//     ageGroups.push({
-//       name: group.age,
-//       value: total
-//     });
-
-//     // 把每组的男女分别作为独立数据项
-//     genderGroups.push({
-//       name: `Male ${group.age}`,
-//       value: group.male,
-//       group: group.age,
-//       percent: ((group.male / total) * 100).toFixed(2)
-//     });
-//     genderGroups.push({
-//       name: `Female ${group.age}`,
-//       value: group.female,
-//       group: group.age,
-//       percent: ((group.female / total) * 100).toFixed(2)
-//     });
-//   });
-
-//   return { ageGroups, genderGroups };
-// };
-
 const processData = () => {
   const raw = props.data.genderGroups;
 
@@ -169,12 +116,12 @@ const renderChart = () => {
   const { ageGroups, genderGroups } = processData();
 
   const option = {
-    title: {
-      text: props.data.title || 'NestedPieChart',
-      left: 'center',
-      top: 0,
-      padding: [0,60, 0, 0]
-    },
+    // title: {
+    //   text: props.data.title || 'NestedPieChart',
+    //   left: 'center',
+    //   top: 0,
+    //   padding: [0,60, 0, 0]
+    // },
     legend: {
       orient: 'vertical',
       right: 10,

@@ -30,7 +30,7 @@ use([
 
 // 接收 props
 const props = defineProps({
-  title: String,
+  // title: String,
   data: {
     type: Array,
     required: true

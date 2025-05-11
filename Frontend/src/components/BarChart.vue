@@ -28,7 +28,7 @@
   ])
   
   const props = defineProps({
-    title: String,
+    // title: String,
     xData: Array,
     seriesData: Array,
     seriesName: {
