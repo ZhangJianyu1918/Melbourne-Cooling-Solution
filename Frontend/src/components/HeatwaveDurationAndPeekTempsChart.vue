@@ -1,5 +1,8 @@
 <template>
     <div>
+        <h4>Heatwave peak temperature and duration in Melbourne from 2004 to 2016
+        </h4>
+        <br>
         <MixLineAndBarChart v-if="isDataReady" :x-data="heatwaveDurationLabels" :bar-data="heatwaveDurationValues"
             :line-data="heatwavePeekTempsValues" :bar-name="barName" :line-name="lineName">
         </MixLineAndBarChart>

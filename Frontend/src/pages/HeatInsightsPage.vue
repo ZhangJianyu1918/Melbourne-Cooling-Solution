@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-[#f0f6ff] min-h-screen p-4">
+  <div class="relative bg-[#f0f6ff] min-h-screen p-8" style="padding-left: 150px; padding-right: 150px;">
     <!-- 顶部标题 -->
     <header class="chart-header">
       <h1 class="chart-title">Heat Insights</h1>

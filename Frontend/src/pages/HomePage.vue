@@ -17,7 +17,7 @@
                         <router-link to="/personal-cooling-guide">{{ $t('navigation-personal-cooling-guide')}}</router-link>
                     </li>
                     <li>
-                        <router-link to="/heat-impact">Heat Insights</router-link>
+                        <router-link to="/heat-insights">Heat Insights</router-link>
                     </li>
                     <li>
                         <router-link to="/community-support">{{ $t('navigation-community-support') }}</router-link>
