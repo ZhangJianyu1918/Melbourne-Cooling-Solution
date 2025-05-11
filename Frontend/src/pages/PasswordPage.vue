@@ -23,7 +23,12 @@ const checkPassword = async () => {
     console.log(response)
     if (response.data.statusCode === 200) {
         // 如果密码正确，将认证标记保存到 Cookie
-        Cookies.set('authenticated', 'true', { path: '/' })
+        Cookies.set('authenticated', 'true', { 
+            path: '/', // 设置 Cookie 的路径为根目录
+            expires: 0.417, // 设置 Cookie 的过期时间为 1 天
+            secure: true, // 仅在 HTTPS 下发送 Cookie
+            sameSite: 'Strict' // 设置 SameSite 属性为 Strict，防止 CSRF 攻击
+        })
         // Cookies.set('Origin', 'http://localhost:5173', { path: '/' })
         // Cookies.set('withCredentials', 'true', { path: '/' })
         router.push('/home') // 跳转到受保护的页面
