@@ -87,8 +87,7 @@
                                 <el-row>
                                     <el-col :span="12"><el-button v-show="!game"
                                             @click="game = !game; centerDialogVisible = true; coins = null">Setting</el-button></el-col>
-                                    <el-col :span="12"><el-button v-show="!game"
-                                            @click="game = !game; coins = null">Exit
+                                    <el-col :span="12"><el-button v-show="!game" @click="exitGame()">Exit
                                             Game</el-button></el-col>
                                 </el-row>
                             </div>
@@ -160,18 +159,25 @@
                             <!-- shop 面板 -->
                             <div v-if="shopAisde" class="shop">
                                 <el-button @click="shopAisde = !shopAisde">
-                                    <el-icon><DArrowLeft /></el-icon>
-                                    <el-icon><ShoppingCart /></el-icon> Shop
+                                    <el-icon>
+                                        <DArrowLeft />
+                                    </el-icon>
+                                    <el-icon>
+                                        <ShoppingCart />
+                                    </el-icon> Shop
                                 </el-button>
                             </div>
                             <div v-else class="shop">
                                 <el-button @click="shopAisde = !shopAisde">
-                                    <el-icon><DArrowRight /></el-icon>
+                                    <el-icon>
+                                        <DArrowRight />
+                                    </el-icon>
                                 </el-button>
-                                <el-icon><ShoppingCart /></el-icon> Shop
+                                <el-icon>
+                                    <ShoppingCart />
+                                </el-icon> Shop
                                 <div v-for="(item, key) in storeItems" :key="key" style="overflow: hidden;">
-                                    <div  @click="showDetail(key)"
-                                        draggable="false" style="cursor: pointer;">
+                                    <div @click="showDetail(key)" draggable="false" style="cursor: pointer;">
                                         <el-row class="list">
                                             <el-col :span="8"><img :src="item.img" style="width: 50px;" /></el-col>
                                             <el-col :span="16">
@@ -218,7 +224,7 @@
                             </div>
                             <el-button class="bag" v-else @click="bagAisde = !bagAisde">My Bag</el-button>
                         </div>
-                        <el-button class="endButton" @click="endGame()">Finish My Setup</el-button>
+                        <el-button class="endButton" @click="endGame()" round>Finish My Setup</el-button>
                     </div>
                 </div>
 
@@ -260,6 +266,25 @@
             </template>
         </el-dialog>
 
+        <el-dialog v-model="endGameDialogVisible" title="Warning" width="500" align-center :modal="false">
+            <span>✅ Setup Complete!</span>
+            <p>Well done! You’ve finished setting up your living room to beat the heat.</p>
+            <p>Here’s your strategy feedback:</p>
+            <ul>
+                <li>🌡️ Room temperature reduced by:</li>
+                <li>💰 Budget used:</li>
+                <li>💪 Efficiency:</li>
+            </ul>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="endGameDialogVisible = false" round>Play Again</el-button>
+                    <el-button @click="endGameDialogVisible = false" round>Home</el-button>
+                    <el-button type="primary" @click="endGameDialogVisible = false" round>
+                        Confirm
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -267,6 +292,7 @@
 import { ref, computed } from 'vue'
 import { GridLayout, GridItem } from 'vue3-grid-layout'
 import livingRoomBg from '../assets/living-room.png';
+import { ElMessageBox } from 'element-plus'
 
 const coins = ref()
 const game = ref(true)
@@ -308,6 +334,7 @@ const dialogVisible = ref(false)
 const currentKey = ref(null)
 const itemNumber = ref(1)
 const temperature = ref(35)
+const endGameDialogVisible = ref(false)
 
 const startGame = () => {
     if (coins.value <= 0) {
@@ -320,6 +347,11 @@ const exitGame = () => {
     coins.value = 0
     layout.value = []
     bag.value = []
+    game.value = true
+}
+
+const endGame = () => {
+    endGameDialogVisible.value = true
 
 }
 
@@ -382,11 +414,11 @@ const buyItem = () => {
 </script>
 
 <style scoped>
-
 .container {
     padding-left: 100px;
     padding-right: 100px;
 }
+
 .aside {
     position: absolute;
     top: 100px;
@@ -433,17 +465,15 @@ const buyItem = () => {
     position: relative;
     background-color: white;
     border-radius: 10px;
-    
+
 }
 
-.list {
-    position: absolute;
-    top: 450px;
-    left: 0;
-}
+.list {}
 
 .endButton {
-
+    position: absolute;
+    top: 450px;
+    right: 10px;
 }
 
 .plant-card {
