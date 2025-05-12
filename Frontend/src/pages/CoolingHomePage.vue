@@ -10,33 +10,37 @@
             cooling strategies, decoration, and smart energy-saving tips. </p>
         <div style="border-radius: 20px;">
             <el-container style="height: 80vh; margin: 0; padding: 0; overflow: hidden;">
-                <el-main style="padding: 0;">
-                    <div v-if="game">
-                        <div
-                            style="background: #f0f0f0; width: 100%; height: 500px; overflow: hidden; border-radius: 20px; justify-items: center; align-content: center;">
-                            <p>1111</p>
-                            <input v-model="coins">
-                            <el-button type="" @click="game = !game;">
-                                Start Game
-                            </el-button>
-                        </div>
-                    </div>
-                    <div v-else @dragover.prevent @drop="onDrop($event)">
-                        <GridLayout ref="gridRef" :layout="layout" :col-num="12" :row-height="30" :is-draggable="true"
-                            :is-resizable="true" :vertical-compact="false" :margin="[10, 10]" :use-css-transforms="true"
-                            style="background-image: url('../assets/l');; width: 100%; height: 500px; overflow: hidden; border-radius: 20px;"
-                            :prevent-collision="true">
-                            <GridItem v-for="item in layout" :key="item.i" :x="item.x" :y="item.y" :w="item.w"
-                                :h="item.h" :i="item.i" :static="item.static">
-                                <img :src="getImageSrc(item.type)" alt="Image"
-                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; min-width: 50px; min-height: 50px;" />
-                            </GridItem>
-                        </GridLayout>
-                    </div>
-                </el-main>
                 <aside class="aside">
-                    <h2 v-show="!game">Budget {{ coins }} AUD</h2>
+                    <h2 v-show="!game">🏠 Mode: Owner</h2>
+                    <h2 v-show="!game">💰 Budget {{ coins }} AUD</h2>
                     <h2 class="text-xl font-bold mb-4">Buy Item</h2>
+                    <el-collapse v-model="activeNames" @change="handleChange">
+                        <el-collapse-item title="How to play" name="1">
+                            <p>User Guideline</p>
+                        </el-collapse-item>
+                        <el-collapse-item title="Description" name="2">
+                            <p>
+                                It’s a scorching 35°C day, and
+                                your living room is baking.
+                                You’re renting, so forget
+                                drilling holes, installing fans,
+                                or asking your landlord for
+                                help. You’ve got to work with
+                                what’s portable, affordable,
+                                and approval-free.
+                                You’ve got a limited budget
+                                and a mission: cool this space
+                                down using smart, renter-
+                                friendly solutions.
+                                Aim to bring the room
+                                temperature down by at least
+                                5°C to survive the heat.
+                                Think strategically. Spend
+                                wisely. And whatever you do…
+                                don’t melt. 🫠
+                            </p>
+                        </el-collapse-item>
+                    </el-collapse>
                     <div v-for="(item, key) in storeItems" :key="key" class="mb-2">
                         <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
                             @dragstart="onDragStart($event, key)">
@@ -47,9 +51,43 @@
                             </div>
                         </div>
                     </div>
-                    <el-button v-show="!game" @click="game = !game; centerDialogVisible = true; coins = null">Finish Game</el-button>
+                    <el-button v-show="!game" @click="game = !game; centerDialogVisible = true; coins = null">Setting</el-button>
                     <el-button v-show="!game" @click="game = !game; coins = null">Exit Game</el-button>
                 </aside>
+                <el-main style="padding: 0;">
+                    <div v-if="game">
+                        <div
+                            style="background: #f0f0f0; width: 100%; height: 500px; overflow: hidden; border-radius: 20px; justify-items: center; align-content: center;">
+                            <p></p>
+                            <el-input v-model="coins" placeholder="Please Input Your Budget." width="200px"
+                                type="number"></el-input>
+                            <el-button type="" @click="game = !game;" style="">
+                                Start Game
+                            </el-button>
+                        </div>
+                    </div>
+                    <div v-else @dragover.prevent @drop="onDrop($event)">
+                        <GridLayout ref="gridRef" :layout="layout" :col-num="12" :row-height="30" :is-draggable="true"
+                            :is-resizable="true" :vertical-compact="false" :margin="[10, 10]" :use-css-transforms="true"
+                            :style="{
+                                backgroundImage: `url(${livingRoomBg})`,
+                                width: '100%',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                height: '600px',
+                                overflow: 'hidden',
+                                borderRadius: '20px',
+                            }" :prevent-collision="true">
+                            <GridItem v-for="item in layout" :key="item.i" :x="item.x" :y="item.y" :w="item.w"
+                                :h="item.h" :i="item.i" :static="item.static">
+                                <img :src="getImageSrc(item.type)" alt="Image"
+                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; min-width: 50px; min-height: 50px;" />
+                            </GridItem>
+                        </GridLayout>
+                    </div>
+                </el-main>
+
             </el-container>
         </div>
         <el-dialog v-model="centerDialogVisible" title="Game Result" width="500" align-center>
@@ -69,6 +107,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { GridLayout, GridItem } from 'vue3-grid-layout'
+import livingRoomBg from '../assets/living-room.png';
 
 const coins = ref()
 const game = ref(true)
@@ -144,8 +183,18 @@ const getImageSrc = (type) => {
 
 <style scoped>
 .aside {
+    width: 200px;
     background-color: white;
     overflow: auto;
-    max-height: 500px;
+    max-height: 600px;
+}
+
+.grid-layout-bg {
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
 }
 </style>
