@@ -38,12 +38,12 @@
                 <el-button type="primary" class="find-out" tag="router-link" round  to="/local-heat-level">
                     Find Cooler Paths
                 </el-button>
-                <el-button class="learn-more" round  tag="router-link" to="">
+                <!-- <el-button class="learn-more" round  tag="router-link" to="">
                     Reduce Indoor Heat
                 </el-button>
                 <el-button class="learn-more" round  tag="router-link" to="/community-support">
                     Access Support Resources
-                </el-button>
+                </el-button> -->
             </div>
         </header>
 
