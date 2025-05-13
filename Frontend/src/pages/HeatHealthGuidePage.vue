@@ -15,32 +15,50 @@
             <div style="height: 10px;"></div>
         </div>
         <div>
-            <el-row :gutter="20" justify="space-evenly">
-                <el-col :span="10" style="background-color: white;">
+            <el-row :gutter="20" justify="start" align="top">
+                <el-col :span="11" style="background-color: #f5faff; padding: 20px; border-radius: 16px; margin: auto;">
                     <el-form :model="form">
-                        <el-form-item label="Age">
+                        <!-- Age -->
+                        <div style="margin-bottom: 16px;">
+                            <!-- <el-form-item label="Age"> -->
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Age</div>
                             <el-input v-model="form.age" type="number"
-                                placeholder="Enter your age as a number"></el-input>
-                        </el-form-item>
-                        <el-form-item label="Gender">
+                                    placeholder="Enter your age as a number"></el-input>
+                            <!-- </el-form-item> -->
+                        </div>
+
+                        <!-- Gender -->
+                        <div style="margin-bottom: 16px;">
+                        <!-- <el-form-item label="Gender"> -->
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Gender</div>
                             <el-select v-model="form.gender" placeholder="Select from the options">
                                 <el-option label="Male" value="male" />
                                 <el-option label="Female" value="female" />
                             </el-select>
-                        </el-form-item>
-                        <el-form-item label="Daily Water Intake">
+                        <!-- </el-form-item> -->
+                        </div>
+
+                        <!-- Daily Water Intake-->
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily Water Intake (1 Cup approximate 260ML)</div>
+                        <!-- <el-form-item label="Daily Water Intake"> -->
                             <el-select v-model="form.dailyWaterIntake" placeholder="Select from the options">
                                 <el-option label="0 Cup" value="0 Cup" />
                                 <el-option label="1 Cup" value="1 Cup" />
-                                <el-option label="2 Cups" value="2 Cup" />
-                                <el-option label="3 Cups" value="3 Cup" />
-                                <el-option label="4 Cups" value="4 Cup" />
-                                <el-option label="5 Cups" value="5 Cup" />
-                                <el-option label="6 Cups" value="6 Cup" />
+                                <el-option label="2 Cups" value="2 Cups" />
+                                <el-option label="3 Cups" value="3 Cups" />
+                                <el-option label="4 Cups" value="4 Cups" />
+                                <el-option label="5 Cups" value="5 Cups" />
+                                <el-option label="6 Cups" value="6 Cups" />
                                 <el-option label="7 and more Cups" value="6 Cup" />
                             </el-select>
-                        </el-form-item>
-                        <el-form-item label="Recent Symptom">
+                        <!-- </el-form-item> -->
+                        </div>
+
+                        <!-- Recent Symptom -->
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily Water Intake</div>
+                        <!-- <el-form-item label="Recent Symptom"> -->
                             <el-select v-model="form.recentSymptom" placeholder="Select from the options">
                                 <el-option label="Nothing" value="Nothing" />
                                 <el-option label="Headaches" value="headaches" />
@@ -59,23 +77,31 @@
                                 <el-option label="Delirious"
                                     value="delirious" />
                             </el-select>
-                        </el-form-item>
+                        </div>
+
+                        <!-- </el-form-item> -->
                         <el-form-item>
-                            <el-button type="primary" @click="getPersonalHeatHealthTip()">Get Your Heat Health
+                            <el-button type="primary" size="large" style="width: 100%; background-color: #175cd3" @click="getPersonalHeatHealthTip()">Get Your Heat Health
                                 Advice</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
-                <el-col :span="10" style="background-color: white;">
-                    <h3>Your Personal Heat Health Tips</h3>
-                    <span v-html="result"></span>
+
+                <!-- sec -->
+                <el-col :span="11" style="margin-right: 30px; background-color: #f5faff; border-radius: 16px; padding: 20px; font-family: 'Arial', sans-serif; box-sizing: border-box; background-color: #f5faff; height: 400px; overflow-y: auto;">
+                    <div style="color: #175cd3; margin-bottom: 16px; font-size: 16px; font-weight: 600;">Your Personal Heat Health Tips</div>
+                    <span v-html="result" style="font-size: 14px; color: #2c3e50; line-height: 1.5;"></span>
                 </el-col>
             </el-row>
-            <el-row>
-                <el-col :span="24">
+
+            <!-- table -->
+            <el-row :gutter="20" justify="space-evenly" align="top" >
+                <el-col :span="22" style=" background-color: white; border-radius: 16px; padding: 20px; margin-top: 20px; font-family: 'Arial', sans-serif;">
                     <food-water-percentage-chart></food-water-percentage-chart>
                 </el-col>
             </el-row>
+
+
         </div>
     </div>
 </template>
@@ -90,7 +116,7 @@ const form = reactive({
     dailyWaterIntake: '',
     recentSymptom: ''
 })
-const result = ref('')
+const result = ref('<em>The insights and tips will appear here after the user submits the form.</em>')
 
 const open = () => {
     ElMessage('Please input all information.')
