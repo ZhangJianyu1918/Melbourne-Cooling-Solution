@@ -32,62 +32,62 @@
                             <p>❄️ Dropped: {{ dropped }}°C</p>
                         </div>
                         <div v-if="aside" class="aside">
-                            <div>
-                                <el-button @click="aside = !aside">
-                                    <el-icon>
-                                        <ArrowLeftBold />
-                                    </el-icon>
-                                </el-button>
-                                <h5>🏠 Mode: Owner</h5>
-                                <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
-                                <h5>Buy Item</h5>
-                                <el-collapse>
-                                    <el-collapse-item title="How to play" name="1">
-                                        <ul>
-                                            <li>Access to Shop and your Bag from the right tabs.</li>
-                                            <li>Click on each item to see
-                                                its details and buy.</li>
-                                            <li>Drag and drop items from
-                                                your Bag into your desired
-                                                spot in the living room.</li>
-                                            <li>Watch your room
-                                                temperature drop!</li>
-                                            <li>Finished decorating? Hit
-                                                “Finish My Setup” on the
-                                                bottom right corner to get
-                                                your final score and
-                                                feedback on your strategy.</li>
-                                        </ul>
-                                        <h6>Notes:</h6>
-                                        <ul>
-                                            <li>Renter can't install Ceiling Fan and Air Conditioner.</li>
-                                            <li>Sunny places are good for plants.</li>
-                                            <li>Stay within your budget!</li>
-                                        </ul>
-                                    </el-collapse-item>
-                                    <el-collapse-item title="Description" name="2">
-                                        <p>
-                                            It’s a scorching 35°C day, and
-                                            your living room is baking.
-                                            You’re renting, so forget
-                                            drilling holes, installing fans,
-                                            or asking your landlord for
-                                            help. You’ve got to work with
-                                            what’s portable, affordable,
-                                            and approval-free.
-                                            You’ve got a limited budget
-                                            and a mission: cool this space
-                                            down using smart, renter-
-                                            friendly solutions.
-                                            Aim to bring the room
-                                            temperature down by at least
-                                            5°C to survive the heat.
-                                            Think strategically. Spend
-                                            wisely. And whatever you do…
-                                            don’t melt. 🫠
-                                        </p>
-                                    </el-collapse-item>
-                                </el-collapse>
+                            <el-button @click="aside = !aside">
+                                <el-icon>
+                                    <ArrowLeftBold />
+                                </el-icon>
+                            </el-button>
+                            <h5>🏠 Mode: Owner</h5>
+                            <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
+                            <h5>Buy Item</h5>
+                            <el-collapse>
+                                <el-collapse-item title="How to play" name="1">
+                                    <ul>
+                                        <li>Access to Shop and your Bag from the right tabs.</li>
+                                        <li>Click on each item to see
+                                            its details and buy.</li>
+                                        <li>Drag and drop items from
+                                            your Bag into your desired
+                                            spot in the living room.</li>
+                                        <li>Watch your room
+                                            temperature drop!</li>
+                                        <li>Finished decorating? Hit
+                                            “Finish My Setup” on the
+                                            bottom right corner to get
+                                            your final score and
+                                            feedback on your strategy.</li>
+                                    </ul>
+                                    <h6>Notes:</h6>
+                                    <ul>
+                                        <li>Renter can't install Ceiling Fan and Air Conditioner.</li>
+                                        <li>Sunny places are good for plants.</li>
+                                        <li>Stay within your budget!</li>
+                                    </ul>
+                                </el-collapse-item>
+                                <el-collapse-item title="Description" name="2">
+                                    <p>
+                                        It’s a scorching 35°C day, and
+                                        your living room is baking.
+                                        You’re renting, so forget
+                                        drilling holes, installing fans,
+                                        or asking your landlord for
+                                        help. You’ve got to work with
+                                        what’s portable, affordable,
+                                        and approval-free.
+                                        You’ve got a limited budget
+                                        and a mission: cool this space
+                                        down using smart, renter-
+                                        friendly solutions.
+                                        Aim to bring the room
+                                        temperature down by at least
+                                        5°C to survive the heat.
+                                        Think strategically. Spend
+                                        wisely. And whatever you do…
+                                        don’t melt. 🫠
+                                    </p>
+                                </el-collapse-item>
+                            </el-collapse>
+                            <div class="exit-button-group">
                                 <el-row>
                                     <el-col :span="12"><el-button v-show="!game"
                                             @click="game = !game; centerDialogVisible = true; coins = null">Setting</el-button></el-col>
@@ -118,7 +118,8 @@
                             <GridItem v-for="item in layout" :key="item.i" :x="item.x" :y="item.y" :w="item.w"
                                 :h="item.h" :i="item.i" :static="item.static">
                                 <img :src="getImageSrc(item.index)" alt="Image"
-                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; min-width: 50px; min-height: 50px;" />
+                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; min-width: 50px; min-height: 50px;" 
+                                    @click="remove(item.i)"/>
                             </GridItem>
                         </GridLayout>
                         <!-- <div v-if="shopAisde" class="shop">
@@ -163,7 +164,7 @@
                             <!-- shop 面板 -->
                             <div v-if="shopAisde" class="shop-button" @click="shopAisde = !shopAisde">
                                 <!-- <el-button > -->
-                                    🛒 Shop
+                                🛒 Shop
                                 <!-- </el-button> -->
                             </div>
                             <div v-else class="shop">
@@ -198,8 +199,14 @@
                             </div>
                             <!-- bag 面板 -->
                             <div v-if="bagAisde" class="bag">
-                                <el-button @click="bagAisde = !bagAisde">My Bag List</el-button>
-                                <div v-for="(item, index) in bag" :key="index" style="overflow: hidden;">
+                                <div @click="bagAisde = !bagAisde" style="height: 50px; align-content: center;">
+                                    <el-icon><DArrowRight /></el-icon>
+                                    👜 MyBag
+                                </div>
+                                <div v-if="bag.length == 0">
+                                    <span style="padding: 10px;">It feels lonely in here:(</span>
+                                </div>
+                                <div v-else v-for="(item, index) in bag" :key="index" style="overflow: hidden;">
                                     <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
                                         @dragstart="onDragStart($event, index)" style="cursor: pointer;">
                                         <el-row>
@@ -380,7 +387,7 @@ function onDrop(e) {
         i: String(Date.now()),
         index
     });
-    
+
     temperature.value -= item.cooling
     dropped.value += item.cooling
 }
@@ -419,7 +426,9 @@ const buyItem = () => {
     dialogVisible.value = false;
 }
 
-
+const remove = (id) => {
+    layout.value = layout.value.filter(item => item.i !== id)
+}
 </script>
 
 <style scoped>
@@ -430,6 +439,8 @@ const buyItem = () => {
 
 .aside {
     position: absolute;
+    flex-direction: column;
+    display: flex;
     top: 0;
     /* left: 10px; */
     z-index: 10;
@@ -438,6 +449,10 @@ const buyItem = () => {
     overflow: auto;
     height: 600px;
     border: 3px solid #787fbf;
+}
+
+.exit-button-group {
+    margin-top: auto;
 }
 
 .aside-button {
@@ -476,13 +491,16 @@ const buyItem = () => {
 .bag {
     position: relative;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 20px 0 0 20px;
+    border: 3px solid #787fbf;
+    cursor: pointer;
+    /* border-radius: 10px; */
 }
 
 .shop-button,
 .bag-button {
     position: relative;
-    width: 150px;
+    min-width: 150px;
     height: 50px;
     align-content: center;
     border-radius: 20px 0 0 20px;
@@ -501,7 +519,7 @@ const buyItem = () => {
 
 .endButton {
     position: absolute;
-    top: 450px;
+    bottom: 50px;
     right: 10px;
 }
 
