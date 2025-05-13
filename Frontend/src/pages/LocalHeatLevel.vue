@@ -23,7 +23,7 @@
       <img src="../assets/water-bottle.png" style="width: 50px; border-radius: 50px;" alt="">
     </el-drawer>
     <div style="height: 50px;"></div>
-    <h2>This is local heat level page</h2>
+    <h2>Find your Local Heat Level</h2>
     <div style="height: 20px;"></div>
     <p style="font-size: 22px;">
       Explore real-time heat in City of Melbourne local areas and find the nearest shaded, cooling spaces and public

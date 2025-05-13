@@ -8,5 +8,4 @@ Percentage,Food Items
 30-39,"Cheddar cheese, bagels, bread"
 20-29,"Pepperoni, cake, biscuits"
 10-19,"Butter, margarine, raisins"
-1-9,"Walnuts, dry-roasted peanuts, crackers, cereals, pretzels, peanut butter"
-0,"Oils, sugars"
+0-9,"Walnuts, dry-roasted peanuts, crackers, cereals, pretzels, peanut butter"

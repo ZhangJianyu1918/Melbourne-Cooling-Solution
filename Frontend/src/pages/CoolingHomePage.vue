@@ -27,6 +27,10 @@
                         </div>
                     </div>
                     <div style="overflow: hidden; position: relative;" v-else @dragover.prevent @drop="onDrop($event)">
+                        <div class="overview">
+                            <p>🌡️ Temperature: {{ temperature }}°C</p>
+                            <p>❄️ Dropped: {{ dropped }}°C</p>
+                        </div>
                         <div v-if="aside" class="aside">
                             <div>
                                 <el-button @click="aside = !aside">
@@ -35,7 +39,7 @@
                                     </el-icon>
                                 </el-button>
                                 <h5>🏠 Mode: Owner</h5>
-                                <h5>💰 Budget {{ coins }} AUD</h5>
+                                <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
                                 <h5>Buy Item</h5>
                                 <el-collapse>
                                     <el-collapse-item title="How to play" name="1">
@@ -95,7 +99,7 @@
                         <el-button class="aside-button" v-else @click="aside = !aside" style="height: fit-content;">
                             <div>
                                 <h5>🏠 Mode: Owner</h5>
-                                <h5>💰 Budget {{ coins }} AUD</h5>
+                                <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
                             </div>
                         </el-button>
                         <GridLayout ref="gridRef" :layout="layout" :col-num="12" :row-height="30" :is-draggable="true"
@@ -157,15 +161,10 @@
                         <el-button class="bag" v-else @click="bagAisde = !bagAisde">My Bag</el-button> -->
                         <div class="right-panel">
                             <!-- shop 面板 -->
-                            <div v-if="shopAisde" class="shop">
-                                <el-button @click="shopAisde = !shopAisde">
-                                    <el-icon>
-                                        <DArrowLeft />
-                                    </el-icon>
-                                    <el-icon>
-                                        <ShoppingCart />
-                                    </el-icon> Shop
-                                </el-button>
+                            <div v-if="shopAisde" class="shop-button" @click="shopAisde = !shopAisde">
+                                <!-- <el-button > -->
+                                    🛒 Shop
+                                <!-- </el-button> -->
                             </div>
                             <div v-else class="shop">
                                 <el-button @click="shopAisde = !shopAisde">
@@ -222,7 +221,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <el-button class="bag" v-else @click="bagAisde = !bagAisde">My Bag</el-button>
+                            <div class="bag-button" v-else @click="bagAisde = !bagAisde">
+                                👜 My bag ({{ bag.length }})
+                            </div>
                         </div>
                         <el-button class="endButton" @click="endGame()" round>Finish My Setup</el-button>
                     </div>
@@ -271,8 +272,8 @@
             <p>Well done! You’ve finished setting up your living room to beat the heat.</p>
             <p>Here’s your strategy feedback:</p>
             <ul>
-                <li>🌡️ Room temperature reduced by:</li>
-                <li>💰 Budget used:</li>
+                <li>🌡️ Room temperature reduced by: {{ dropped }}°C</li>
+                <li>💰 Budget used: {{ usedCoin }} by {{ coins }}</li>
                 <li>💪 Efficiency:</li>
             </ul>
             <template #footer>
@@ -295,6 +296,7 @@ import livingRoomBg from '../assets/living-room.png';
 import { ElMessageBox } from 'element-plus'
 
 const coins = ref()
+const usedCoin = ref(0)
 const game = ref(true)
 const aside = ref(true)
 const centerDialogVisible = ref(false)
@@ -335,11 +337,14 @@ const currentKey = ref(null)
 const itemNumber = ref(1)
 const temperature = ref(35)
 const endGameDialogVisible = ref(false)
+const dropped = ref(0)
+const budget = ref()
 
 const startGame = () => {
     if (coins.value <= 0) {
         return;
     }
+    budget.value = coins.value
     game.value = !game.value
 }
 
@@ -375,6 +380,9 @@ function onDrop(e) {
         i: String(Date.now()),
         index
     });
+    
+    temperature.value -= item.cooling
+    dropped.value += item.cooling
 }
 
 // 拖拽开始时保存被拖的内容标识
@@ -401,7 +409,8 @@ const showDetail = (key) => {
 }
 
 const buyItem = () => {
-    coins.value -= storeItems.value[currentKey.value].price * itemNumber.value;
+    usedCoin.value += storeItems.value[currentKey.value].price * itemNumber.value;
+    budget.value -= storeItems.value[currentKey.value].price * itemNumber.value;
     for (let i = 0; i < itemNumber.value; i++) {
         bag.value.push(storeItems.value[currentKey.value])
         // imageMap[storeItems.value[currentKey.value].name] = storeItems.value[currentKey.value].img
@@ -421,18 +430,21 @@ const buyItem = () => {
 
 .aside {
     position: absolute;
-    top: 100px;
+    top: 0;
     /* left: 10px; */
     z-index: 10;
     width: 200px;
     background-color: white;
     overflow: auto;
-    max-height: 600px;
+    height: 600px;
+    border: 3px solid #787fbf;
 }
 
 .aside-button {
     position: absolute;
+    border-radius: 0 40px 40px 0;
     top: 100px;
+    border: 3px solid #787fbf;
     z-index: 10;
 }
 
@@ -465,10 +477,27 @@ const buyItem = () => {
     position: relative;
     background-color: white;
     border-radius: 10px;
-
 }
 
-.list {}
+.shop-button,
+.bag-button {
+    position: relative;
+    width: 150px;
+    height: 50px;
+    align-content: center;
+    border-radius: 20px 0 0 20px;
+    border: 3px solid #787fbf;
+    cursor: pointer;
+    background-color: white;
+}
+
+.overview {
+    position: absolute;
+    background-color: white;
+    top: 0;
+    z-index: 10;
+    right: 0;
+}
 
 .endButton {
     position: absolute;
