@@ -36,7 +36,7 @@
                 </p>
                 <div style="height: 50px;"></div>
                 <el-button type="primary" class="find-out" tag="router-link" round  to="/local-heat-level">
-                    Find Cooler Paths
+                    Explore Cooling Routes
                 </el-button>
                 <!-- <el-button class="learn-more" round  tag="router-link" to="">
                     Reduce Indoor Heat
