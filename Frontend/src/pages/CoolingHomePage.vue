@@ -142,7 +142,7 @@
                                     left: item.y + 'px',
                                     width: item.w + 'px',
                                     height: item.h + 'px'
-                                }" @click="remove(item.i)" />
+                                }" @click="remove(item)" />
                             </div>
                         </div>
                         <!-- <div v-for="oval in ellipses" :key="oval.id" class="highlight-ellipse" :style="{
@@ -539,8 +539,9 @@ const submitWindow = () => {
 
 const submitTop = () => {
 
-
     mappingArea(topArea)
+    const index = bag.value.findIndex(e => e.i === targetItem.i);
+    if (index !== -1) bag.value.splice(index, 1);
     dialogTopVisible.value = false
 }
 
@@ -608,7 +609,7 @@ const buyItem = () => {
     dialogVisible.value = false;
 }
 
-const remove = (id) => {
+const remove = (item) => {
     ElMessageBox.confirm(
         'Remove item?',
         'Warning',
@@ -619,7 +620,8 @@ const remove = (id) => {
         }
     )
         .then(() => {
-            layout.value = layout.value.filter(item => item.i !== id)
+            layout.value = layout.value.filter(e => e.i !== item.i)
+            bag.value.push(item.item)
             ElMessage({
                 type: 'success',
                 message: 'Delete completed',
