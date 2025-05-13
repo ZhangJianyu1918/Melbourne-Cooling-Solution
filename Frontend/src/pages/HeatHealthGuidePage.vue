@@ -201,12 +201,8 @@ const getPersonalHeatHealthTip = () => {
         additionalAdvice65Plus = `
             Additional Advice For Age 65+:
             - Stay hydrated, emphasizing drinking water even without thirst.
-            - Use air conditioning or visit cooled public places.
-            - Limit outdoor activities during peak heat, wearing lightweight clothing.
-            - Monitor for dehydration signs like dizziness or confusion.
             - Consult healthcare providers about medications affecting heat tolerance.
-            - Stay connected with family for regular check-ins.
-            - Use cooling methods like cool showers and light meals.`;
+            - Stay connected with family for regular check-ins.`;
     }
 
     result.value = `${fluidMessage}\n${symptomMessage}\n${generalTips}\n${additionalAdvice65Plus}`.replace(/\n/g, '<br>');

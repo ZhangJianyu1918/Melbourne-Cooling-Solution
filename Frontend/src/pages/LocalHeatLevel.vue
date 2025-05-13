@@ -113,7 +113,7 @@
               </el-row>
             </el-col>
             <el-col :span="2">
-              <el-button type="primary" plain  @click="calculateRoute" style="height: 100px; border-radius: 10px;">
+              <el-button type="primary" plain @click="calculateRoute" style="height: 100px; border-radius: 10px;">
                 Navigate
               </el-button>
             </el-col>
@@ -361,6 +361,7 @@ const initMap = async () => {
       center: MelbourneCenter,
       zoom: 17,
       styles: customMapStyle,
+      streetViewControl: false,
       styles: [
         {
           featureType: "poi",
@@ -382,13 +383,16 @@ const initMap = async () => {
     map.mapTypes.get("route_map").name = "Route Map"; // 添加显示名称
     map.setMapTypeId("route_map");
     // map.data.loadGeoJson('/trees.geojson');
-    map.data.loadGeoJson('/trees-with-species-and-dimensions-urban-forest.geojson');
 
-    updateTreeIconStyle(map.getZoom());
-    map.addListener('zoom_changed', () => {
-      const newZoom = map.getZoom();
-      updateTreeIconStyle(newZoom);
+    map.data.loadGeoJson('/trees-with-species-and-dimensions-urban-forest.geojson');
+    map.data.setStyle({
+      visible: false  // 完全隐藏所有图层（图标、线、面）
     });
+    // updateTreeIconStyle(map.getZoom());
+    // map.addListener('zoom_changed', () => {
+    //   const newZoom = map.getZoom();
+    //   updateTreeIconStyle(newZoom);
+    // });
 
     infoWindow = new google.maps.InfoWindow();
     melbourneBounds = new google.maps.LatLngBounds(
