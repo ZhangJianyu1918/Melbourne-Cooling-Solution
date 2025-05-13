@@ -36,7 +36,7 @@
         <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
           <el-row class="searchInputArea">
             <el-col :span="18">
-              <el-input ref="searchInput" v-model="searchText" placeholder="Please Type In Your Area Name" type="text"
+              <el-input ref="searchInput" v-model="searchText" placeholder="Please Enter the Search Area" type="text"
                 @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
                 <template #suffix>
                   <el-icon>
@@ -57,89 +57,92 @@
             </el-col>
           </el-row>
         </div>
-        <div v-else class="searchArea">
-          <el-row type="flex" justify="space-between" align="middle" style="margin-bottom: 20px;">
-            <el-col :span="11">
-              <div style="display: flex; justify-content: center; width: 100%;">
-                <el-radio-group v-model="navigationForm.type" class=""
-                  style="display: flex; justify-content: space-evenly; flex: 1;">
-                  <el-radio value="WALKING" class="custom-radio" style="cursor: pointer;">
-                    <font-awesome-icon :icon="['fas', 'person-walking']" class="radio-icon" />
-                  </el-radio>
-                  <el-radio value="BICYCLING" class="custom-radio" style="cursor: pointer;">
-                    <font-awesome-icon :icon="['fas', 'person-biking']" class="radio-icon" />
-                  </el-radio>
-                </el-radio-group>
-              </div>
-            </el-col>
 
-            <!-- Radio 控件 -->
-            <el-col :span="11">
-              <div style="display: flex; justify-content: center; width: 100%;">
-                <el-radio-group v-model="navigationForm.path"
-                  style="display: flex; justify-content: space-evenly; flex: 1;">
-                  <el-radio value="Shortest">Shortest</el-radio>
-                  <el-radio value="Coolest">Coolest</el-radio>
-                </el-radio-group>
+        <div v-else class="searchArea">
+        <!-- Step 1 & 2 and Step 3 layout -->
+        <el-row type="flex" justify="space-between" align="top">
+          <!-- Left: Step 1 and 2 stacked -->
+          <el-col :span="10">
+            <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-left: 60px;">Step 1: Trip mode selection</div>
+            <el-radio-group v-model="navigationForm.type" style="display: flex; gap: 20px; margin-bottom: 20px; margin-left: 60px;">
+              <el-radio-button label="WALKING">
+                <font-awesome-icon :icon="['fas', 'person-walking']" /> Walking
+              </el-radio-button>
+              <el-radio-button label="BICYCLING">
+                <font-awesome-icon :icon="['fas', 'person-biking']" /> Biking
+              </el-radio-button>
+            </el-radio-group>
+
+            
+            <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-top: 70px; margin-left: 60px;">Step 2: Route selection</div>
+            <el-radio-group v-model="navigationForm.path" style="display: flex; gap: 20px; margin-left: 60px;">
+              <el-radio label="Coolest">Coolest</el-radio>
+              <el-radio label="Shortest">Shortest</el-radio>
+            </el-radio-group>
+          </el-col>
+
+      <!-- Right: Step 3 and Navigate Button -->
+      <el-col :span="14" >
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative;">
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Step 3: Enter Start point and Destination</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <!-- From row -->
+              <div style="display: flex; align-items: center;">
+                <div style="width: 24px; text-align: center;">
+                  <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff;" />
+                  <font-awesome-icon :icon="['fas', 'chevron-down']" style="color: #1e90ff; margin-top: 10px;" />
+                </div>
+                <el-input v-model="navigationForm.from" placeholder="Enter the Start Location" size="large" style="flex: 1; border-radius: 20px; margin-left: 8px; margin-bottom: 10px;" />
               </div>
-            </el-col>
-            <el-col :span="2">
-              <el-button type="click" @click="isExpand = false" style="cursor: pointer;">
+              <!-- To row -->
+              <div style="display: flex; align-items: center;">
+                <div style="width: 24px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                  <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500;" />
+                </div>
+                <el-input v-model="navigationForm.to" placeholder="Enter the Destination" size="large" style="flex: 1; border-radius: 20px; margin-left: 8px; margin-bottom: 10px" />
+              </div>
+            </div>
+          </div>
+
+          <el-button type="primary" plain @click="calculateRoute" style="height: 100px; width: 90px; border-radius: 12px; margin-left: 16px; margin-top: 35px;">
+            Navigate
+          </el-button>
+          <el-button type="text" @click="isExpand = false" style="font-size: 20px; padding: 0;">
                 <font-awesome-icon :icon="['fas', 'xmark']" />
               </el-button>
-            </el-col>
-          </el-row>
+        </div>
 
-          <el-row>
-            <el-col :span="12" style="display: flex; justify-content: space-evenly; flex-direction: column;">
-              <el-row>
-                <el-col style="display: flex; align-items: center;">
-                  <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff; margin-right: 8px;" />
-                  <el-input v-model="navigationForm.from" placeholder="From" size="large"
-                    style="flex: 1; --el-border-radius-base: 20px" />
-                </el-col>
-              </el-row>
-              <el-row style="height: 20px;">
-                <el-col>
-                  <font-awesome-icon :icon="['fas', 'chevron-down']" />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col style="display: flex; align-items: center;">
-                  <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500; margin-right: 8px;" />
-                  <el-input v-model="navigationForm.to" placeholder="To" size="large"
-                    style="flex: 1; --el-border-radius-base: 20px" />
-                </el-col>
-              </el-row>
-            </el-col>
-            <el-col :span="2">
-              <el-button type="primary" plain @click="calculateRoute" style="height: 100px; border-radius: 10px;">
-                Navigate
-              </el-button>
-            </el-col>
-            <el-col :span="10" style="padding-top: 20px">
-              <el-row style="display: flex; justify-content: center; align-items: center;">
-                <!-- <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Total" :value="maxTotalCoolingResources" />
-                </el-col> -->
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Trees" :value="maxTrees" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Cooling Places" :value="maxCoolingPlace" />
-                </el-col>
-                <el-col :span="6" style="text-align: center;">
-                  <el-statistic title="Drinking Foudtains" :value="maxDrinkingFountains" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Distance(M)" :value="routeDistance" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Duration(Mi)" :value="routeDuration" />
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
+
+            <!-- Summary stats row -->
+            <el-row type="flex" justify="space-between" align="middle" style="margin-top: 20px;">
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Cooling place" :value="maxCoolingPlace" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Water fountain" :value="maxDrinkingFountains" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Tree" :value="maxTrees" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Distance (m)" :value="routeDistance" />
+              </el-col>
+              <el-col :span="4" style="text-align: center;">
+                <el-statistic title="Duration (min)" :value="routeDuration" />
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+    
+         
+
+              
+          
+        
 
         </div>
       </transition>
