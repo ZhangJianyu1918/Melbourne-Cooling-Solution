@@ -54,10 +54,10 @@ import AsideNavigationBar from '@/components/AsideNavigationBar.vue';
 }
 
 .chart-title {
-  color: #19619E;
-  font-family: 'Abril Fatface', serif;
-  font-size: 28px;
-  margin-bottom: 8px;
+  color: #19619e;
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: 'Abril Fatface';
 }
 
 .chart-subtitle {
