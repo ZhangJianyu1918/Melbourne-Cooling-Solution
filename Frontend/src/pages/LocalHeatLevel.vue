@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <el-button type="success" @click="drawer = true" size="large"
+    <!-- <el-button type="success" @click="drawer = true" size="large"
       style="position: fixed; bottom: 120px; right:30px; z-index: 1000;">
       User GuideLine
-    </el-button>
+    </el-button> -->
     <el-drawer v-model="drawer" title="User GuideLine" :direction="direction" :before-close="handleClose">
       <h3>Close this drawer</h3>
       <p>Click anywhere outside of this drawer area.</p>
@@ -25,11 +25,39 @@
     <div style="height: 50px;"></div>
     <h2>Find your Local Heat Level</h2>
     <div style="height: 20px;"></div>
-    <p style="font-size: 22px;">
+    <!-- <p style="font-size: 22px;">
       Explore real-time heat in City of Melbourne local areas and find the nearest shaded, cooling spaces and public
       centres.
       Type your area name into the search bar and click on the icon on the map for more information.
+    </p> -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-radius: 12px;">
+
+  <!-- Left text block: 75% -->
+  <div style="flex: 3;">
+    <p style="font-size: 15px; font-style: italic; color: #5a6e7f; margin-bottom: 6px;">
+      Explore real-time heat in City of Melbourne local areas and find the nearest shaded, cooling spaces and water fountains.
     </p>
+    <p style="font-size: 15px; color: #5a6e7f; margin: 0;">
+      <strong style="font-weight: bold; color: #2c3e50;">How to use:</strong>
+      <span style="font-style: italic;"> Type your area name into the search bar and click on the icon on the map for more information.</span>
+    </p>
+  </div>
+
+  <!-- Right legend block: 25% -->
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; padding-left: 24px;">
+    <div style="display: flex; align-items: center;">
+      <img src="../assets/frost.png" alt="Cooling Place" style="width: 24px; height: 24px; margin-right: 10px;" />
+      <span style="color: #2c3e50;">Cooling Place</span>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <img src="../assets/water-bottle.png" alt="Water Fountain" style="width: 24px; height: 24px; margin-right: 10px;" />
+      <span style="color: #2c3e50;">Water Fountain</span>
+    </div>
+  </div>
+</div>
+
+
+
     <div>
       <!-- Search box -->
       <transition name="fade-zoom">
