@@ -21,73 +21,74 @@
                                         max="1000"></el-input-number></el-col>
                             </el-row>
                             <div style="height: 10px;"></div>
+
                             <el-button type="" @click="startGame()" style="width: 300px;">
                                 Start Game
                             </el-button>
                         </div>
                     </div>
-                    <div style="overflow: hidden; position: relative;" v-else @dragover.prevent @drop="onDrop($event)">
+                    <div style="overflow: hidden; position: relative;" v-else>
                         <div class="overview">
                             <p>🌡️ Temperature: {{ temperature }}°C</p>
                             <p>❄️ Dropped: {{ dropped }}°C</p>
                         </div>
                         <div v-if="aside" class="aside">
-                            <div>
-                                <el-button @click="aside = !aside">
-                                    <el-icon>
-                                        <ArrowLeftBold />
-                                    </el-icon>
-                                </el-button>
-                                <h5>🏠 Mode: Owner</h5>
-                                <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
-                                <h5>Buy Item</h5>
-                                <el-collapse>
-                                    <el-collapse-item title="How to play" name="1">
-                                        <ul>
-                                            <li>Access to Shop and your Bag from the right tabs.</li>
-                                            <li>Click on each item to see
-                                                its details and buy.</li>
-                                            <li>Drag and drop items from
-                                                your Bag into your desired
-                                                spot in the living room.</li>
-                                            <li>Watch your room
-                                                temperature drop!</li>
-                                            <li>Finished decorating? Hit
-                                                “Finish My Setup” on the
-                                                bottom right corner to get
-                                                your final score and
-                                                feedback on your strategy.</li>
-                                        </ul>
-                                        <h6>Notes:</h6>
-                                        <ul>
-                                            <li>Renter can't install Ceiling Fan and Air Conditioner.</li>
-                                            <li>Sunny places are good for plants.</li>
-                                            <li>Stay within your budget!</li>
-                                        </ul>
-                                    </el-collapse-item>
-                                    <el-collapse-item title="Description" name="2">
-                                        <p>
-                                            It’s a scorching 35°C day, and
-                                            your living room is baking.
-                                            You’re renting, so forget
-                                            drilling holes, installing fans,
-                                            or asking your landlord for
-                                            help. You’ve got to work with
-                                            what’s portable, affordable,
-                                            and approval-free.
-                                            You’ve got a limited budget
-                                            and a mission: cool this space
-                                            down using smart, renter-
-                                            friendly solutions.
-                                            Aim to bring the room
-                                            temperature down by at least
-                                            5°C to survive the heat.
-                                            Think strategically. Spend
-                                            wisely. And whatever you do…
-                                            don’t melt. 🫠
-                                        </p>
-                                    </el-collapse-item>
-                                </el-collapse>
+                            <el-button @click="aside = !aside">
+                                <el-icon>
+                                    <ArrowLeftBold />
+                                </el-icon>
+                            </el-button>
+                            <h5>🏠 Mode: Owner</h5>
+                            <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
+                            <h5>Buy Item</h5>
+                            <el-collapse>
+                                <el-collapse-item title="How to play" name="1">
+                                    <ul>
+                                        <li>Access to Shop and your Bag from the right tabs.</li>
+                                        <li>Click on each item to see
+                                            its details and buy.</li>
+                                        <li>Drag and drop items from
+                                            your Bag into your desired
+                                            spot in the living room.</li>
+                                        <li>Watch your room
+                                            temperature drop!</li>
+                                        <li>Finished decorating? Hit
+                                            “Finish My Setup” on the
+                                            bottom right corner to get
+                                            your final score and
+                                            feedback on your strategy.</li>
+                                    </ul>
+                                    <h6>Notes:</h6>
+                                    <ul>
+                                        <li>Renter can't install Ceiling Fan and Air Conditioner.</li>
+                                        <li>Sunny places are good for plants.</li>
+                                        <li>Stay within your budget!</li>
+                                    </ul>
+                                </el-collapse-item>
+                                <el-collapse-item title="Description" name="2">
+                                    <p>
+                                        It’s a scorching 35°C day, and
+                                        your living room is baking.
+                                        You’re renting, so forget
+                                        drilling holes, installing fans,
+                                        or asking your landlord for
+                                        help. You’ve got to work with
+                                        what’s portable, affordable,
+                                        and approval-free.
+                                        You’ve got a limited budget
+                                        and a mission: cool this space
+                                        down using smart, renter-
+                                        friendly solutions.
+                                        Aim to bring the room
+                                        temperature down by at least
+                                        5°C to survive the heat.
+                                        Think strategically. Spend
+                                        wisely. And whatever you do…
+                                        don’t melt. 🫠
+                                    </p>
+                                </el-collapse-item>
+                            </el-collapse>
+                            <div class="exit-button-group">
                                 <el-row>
                                     <el-col :span="12"><el-button v-show="!game"
                                             @click="game = !game; centerDialogVisible = true; coins = null">Setting</el-button></el-col>
@@ -102,7 +103,7 @@
                                 <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
                             </div>
                         </el-button>
-                        <GridLayout ref="gridRef" :layout="layout" :col-num="12" :row-height="30" :is-draggable="true"
+                        <!-- <GridLayout ref="gridRef" :layout="layout" :col-num="12" :row-height="30" :is-draggable="true"
                             :is-resizable="true" :vertical-compact="false" :margin="[10, 10]" :use-css-transforms="true"
                             class="game-class" :style="{
                                 backgroundImage: `url(${livingRoomBg})`,
@@ -118,9 +119,38 @@
                             <GridItem v-for="item in layout" :key="item.i" :x="item.x" :y="item.y" :w="item.w"
                                 :h="item.h" :i="item.i" :static="item.static">
                                 <img :src="getImageSrc(item.index)" alt="Image"
-                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; min-width: 50px; min-height: 50px;" />
+                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; min-width: 50px; min-height: 50px;"
+                                    @click="remove(item.i)" />
                             </GridItem>
-                        </GridLayout>
+                        </GridLayout> -->
+                        <div class="game-class" :style="{
+                            backgroundImage: `url(${livingRoomBg})`,
+                            width: '100%',
+                            backgroundSize: 'cover',
+                            backgroundSize: '100% 100%',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            height: '600px',
+                            overflow: 'hidden',
+                            borderRadius: '20px',
+                        }">
+                            <div v-for="(item, key) in layout" :key="key">
+                                <img :src="getImageSrc(item.item)" alt="Image" style="" :style="{
+                                    position: 'absolute',
+                                    zIndex: 9,
+                                    top: item.x + 'px',
+                                    left: item.y + 'px',
+                                    width: item.w + 'px',
+                                    height: item.h + 'px'
+                                }" @click="remove(item)" />
+                            </div>
+                        </div>
+                        <!-- <div v-for="oval in ellipses" :key="oval.id" class="highlight-ellipse" :style="{
+                            width: oval.width + 'px',
+                            height: oval.height + 'px',
+                            top: oval.top + 'px',
+                            left: oval.left + 'px',
+                        }"></div> -->
                         <!-- <div v-if="shopAisde" class="shop">
                             <el-button @click="shopAisde = !shopAisde">
                                 <el-icon>
@@ -163,7 +193,7 @@
                             <!-- shop 面板 -->
                             <div v-if="shopAisde" class="shop-button" @click="shopAisde = !shopAisde">
                                 <!-- <el-button > -->
-                                    🛒 Shop
+                                🛒 Shop
                                 <!-- </el-button> -->
                             </div>
                             <div v-else class="shop">
@@ -198,10 +228,37 @@
                             </div>
                             <!-- bag 面板 -->
                             <div v-if="bagAisde" class="bag">
-                                <el-button @click="bagAisde = !bagAisde">My Bag List</el-button>
-                                <div v-for="(item, index) in bag" :key="index" style="overflow: hidden;">
-                                    <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
+                                <div @click="bagAisde = !bagAisde" style="height: 50px; align-content: center;">
+                                    <el-icon>
+                                        <DArrowRight />
+                                    </el-icon>
+                                    👜 My Bag
+                                </div>
+                                <div v-if="bag.length == 0">
+                                    <span style="padding: 10px;">It feels lonely in here:(</span>
+                                </div>
+                                <div v-else v-for="(item, index) in bag" :key="index" style="overflow: hidden;">
+                                    <!-- <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
                                         @dragstart="onDragStart($event, index)" style="cursor: pointer;">
+                                        <el-row>
+                                            <el-col :span="8"><img :src="item.img" style="width: 60px;" /></el-col>
+                                            <el-col :span="16">
+                                                <div class="flex flex-col">
+                                                    <span class="font-medium">{{ item.name }}</span>
+                                                    <el-row>
+                                                        <el-col :span="12"><span class="text-sm"
+                                                                style="color: #ffab50;">${{ item.price
+                                                                }}</span></el-col>
+                                                        <el-col :span="12"><span class="text-sm"
+                                                                style="color: #26afff;">-{{ item.cooling
+                                                                }}°C</span></el-col>
+                                                    </el-row>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                    </div> -->
+                                    <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
+                                        @click="useItem(item)" style="cursor: pointer;">
                                         <el-row>
                                             <el-col :span="8"><img :src="item.img" style="width: 60px;" /></el-col>
                                             <el-col :span="16">
@@ -286,14 +343,64 @@
                 </div>
             </template>
         </el-dialog>
+
+        <el-dialog v-model="dialogPlantVisible" title="Shipping address" width="500">
+            <el-select v-model="plantArea" placeholder="Please select a zone">
+                <el-option label="Area 5.1" value="5.1" />
+                <el-option label="Area 5.2" value="5.2" />
+                <el-option label="Area 6.1" value="6.1" />
+                <el-option label="Area 6.2" value="6.2" />
+                <el-option label="Area 6.3" value="6.3" />
+                <el-option label="Area 6.4" value="6.4" />
+                <el-option label="Area 6.5" value="6.5" />
+                <el-option label="Area 7" value="7" />
+            </el-select>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="dialogPlantVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitPlant()">
+                        Confirm
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
+        <el-dialog v-model="dialogWindowVisible" title="Shipping address" width="500">
+            <el-select v-model="windowArea" placeholder="Please select a zone">
+                <el-option label="Area 3.1" value="3.1" />
+                <el-option label="Area 3.2" value="3.2" />
+            </el-select>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="dialogWindowVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitWindow()">
+                        Confirm
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
+        <el-dialog v-model="dialogTopVisible" title="Shipping address" width="500">
+            <el-select v-model="topArea" placeholder="Please select a zone">
+                <el-option label="Area 1" value="1" />
+                <el-option label="Area 2.1" value="2.1" />
+                <el-option label="Area 2.2" value="2.2" />
+            </el-select>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="dialogTopVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitTop()">
+                        Confirm
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { GridLayout, GridItem } from 'vue3-grid-layout'
-import livingRoomBg from '../assets/living-room.png';
-import { ElMessageBox } from 'element-plus'
+import livingRoomBg from '../assets/cooling my home.png';
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const coins = ref()
 const usedCoin = ref(0)
@@ -301,13 +408,13 @@ const game = ref(true)
 const aside = ref(true)
 const centerDialogVisible = ref(false)
 const storeItems = ref({
-    item1: { name: 'Aloe Vera', price: 20, cooling: 0.5, description: 'description1', img: new URL('../assets/aloe-vera.png', import.meta.url).href },
-    item2: { name: 'Snake Plant', price: 30, cooling: 0.4, description: 'description2', img: new URL('../assets/snake-plant.png', import.meta.url).href },
-    item3: { name: 'Electricity Fan', price: 50, cooling: 2.5, description: 'description3', img: new URL('../assets/electricity-fan.png', import.meta.url).href },
+    item1: { name: 'Aloe Vera', price: 20, cooling: 0.5, description: 'description1', img: new URL('../assets/aloe_vera.png', import.meta.url).href },
+    item2: { name: 'Snake Plant', price: 30, cooling: 0.4, description: 'description2', img: new URL('../assets/snake_plant.png', import.meta.url).href },
+    item3: { name: 'Electricity Fan', price: 50, cooling: 2.5, description: 'description3', img: new URL('../assets/electric_fan.png', import.meta.url).href },
     item4: { name: 'Blinds', price: 60, cooling: 1.5, description: 'description4', img: new URL('../assets/blinds.png', import.meta.url).href },
     item5: { name: 'Curtains', price: 100, cooling: 3, description: 'description5', img: new URL('../assets/curtains.png', import.meta.url).href },
-    item6: { name: 'Ceiling Fan', price: 170, cooling: 4, description: 'description6', img: new URL('../assets/celling-fan.png', import.meta.url).href },
-    item7: { name: 'Air Conditioner', price: 1000, cooling: 8, description: 'description7', img: new URL('../assets/air-conditioner.png', import.meta.url).href },
+    item6: { name: 'Ceiling Fan', price: 170, cooling: 4, description: 'description6', img: new URL('../assets/ceiling_fan.png', import.meta.url).href },
+    item7: { name: 'Air Conditioner', price: 1000, cooling: 8, description: 'description7', img: new URL('../assets/ac.png', import.meta.url).href },
 })
 
 // const imageMap = {
@@ -339,6 +446,30 @@ const temperature = ref(35)
 const endGameDialogVisible = ref(false)
 const dropped = ref(0)
 const budget = ref()
+const ellipses = ref([
+    { id: 1, width: 160, height: 40, top: 10, left: 500 },
+    { id: 2, width: 160, height: 40, top: 160, left: 270 },
+    { id: 3, width: 160, height: 40, top: 160, left: 690 },
+    { id: 4, width: 160, height: 40, top: 340, left: 280 },
+    { id: 5, width: 160, height: 40, top: 340, left: 690 },
+    { id: 6, width: 120, height: 40, top: 340, left: 990 },
+    { id: 7, width: 160, height: 40, top: 590, left: 550 },
+    { id: 8, width: 160, height: 40, top: 1090, left: 810 },
+    { id: 9, width: 160, height: 40, top: 1090, left: 1040 },
+    { id: 10, width: 160, height: 40, top: 1200, left: 380 },
+    { id: 11, width: 160, height: 40, top: 1200, left: 1440 },
+    { id: 12, width: 160, height: 40, top: 1250, left: 1640 },
+    { id: 13, width: 160, height: 40, top: 1250, left: 220 },
+    { id: 7, width: 160, height: 40, top: 1220, left: 30 },
+])
+const mode = ref()
+const dialogPlantVisible = ref(false)
+const dialogWindowVisible = ref(false)
+const dialogTopVisible = ref(false)
+const plantArea = ref()
+const windowArea = ref()
+const topArea = ref()
+let targetItem
 
 const startGame = () => {
     if (coins.value <= 0) {
@@ -380,7 +511,7 @@ function onDrop(e) {
         i: String(Date.now()),
         index
     });
-    
+
     temperature.value -= item.cooling
     dropped.value += item.cooling
 }
@@ -398,9 +529,68 @@ const onDragStop = (layout, oldItem, newItem) => {
     }
 }
 
+const submitPlant = () => {
+
+}
+
+const submitWindow = () => {
+
+}
+
+const submitTop = () => {
+
+    mappingArea(topArea)
+    const index = bag.value.findIndex(e => e.i === targetItem.i);
+    if (index !== -1) bag.value.splice(index, 1);
+    dialogTopVisible.value = false
+}
+
+const useItem = (item) => {
+    targetItem = item
+    if (item.name == 'Snake Plant' || item.name == 'Aloe Vera') {
+        dialogPlantVisible.value = true
+    }
+    else if (item.name == 'Electricity Fan') {
+        dialogPlantVisible.value = true
+    }
+    else if (item.name == 'Blinds' || item.name == 'Curtains') {
+        dialogWindowVisible.value = true
+    }
+    else if (item.name == 'Ceiling Fan') {
+        dialogTopVisible.value = true
+    }
+    else if (item.name == 'Air Conditioner') {
+        dialogTopVisible.value = true
+
+    }
+}
+
+const mappingArea = (area) => {
+    if (area.value == '1') {
+        layout.value.push({
+            x: 0,
+            y: 520,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '2') {
+        layout.value.push({
+            x: 1,
+            y: 1,
+            w: 2,
+            h: 4,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+}
+
 // 图片映射函数
-const getImageSrc = (type) => {
-    return imageMap[type].img
+const getImageSrc = (item) => {
+    return item.img
 }
 
 const showDetail = (key) => {
@@ -419,7 +609,32 @@ const buyItem = () => {
     dialogVisible.value = false;
 }
 
+const remove = (item) => {
+    ElMessageBox.confirm(
+        'Remove item?',
+        'Warning',
+        {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+        }
+    )
+        .then(() => {
+            layout.value = layout.value.filter(e => e.i !== item.i)
+            bag.value.push(item.item)
+            ElMessage({
+                type: 'success',
+                message: 'Delete completed',
+            })
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: 'Delete canceled',
+            })
+        })
 
+}
 </script>
 
 <style scoped>
@@ -430,6 +645,8 @@ const buyItem = () => {
 
 .aside {
     position: absolute;
+    flex-direction: column;
+    display: flex;
     top: 0;
     /* left: 10px; */
     z-index: 10;
@@ -438,6 +655,18 @@ const buyItem = () => {
     overflow: auto;
     height: 600px;
     border: 3px solid #787fbf;
+}
+
+.highlight-ellipse {
+    position: absolute;
+    border: 2px dashed black;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.exit-button-group {
+    margin-top: auto;
 }
 
 .aside-button {
@@ -476,13 +705,16 @@ const buyItem = () => {
 .bag {
     position: relative;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 20px 0 0 20px;
+    border: 3px solid #787fbf;
+    cursor: pointer;
+    /* border-radius: 10px; */
 }
 
 .shop-button,
 .bag-button {
     position: relative;
-    width: 150px;
+    min-width: 150px;
     height: 50px;
     align-content: center;
     border-radius: 20px 0 0 20px;
@@ -501,7 +733,7 @@ const buyItem = () => {
 
 .endButton {
     position: absolute;
-    top: 450px;
+    bottom: 50px;
     right: 10px;
 }
 
