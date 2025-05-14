@@ -138,8 +138,8 @@
                                 <img :src="getImageSrc(item.item)" alt="Image" style="" :style="{
                                     position: 'absolute',
                                     zIndex: 9,
-                                    top: item.x + 'px',
-                                    left: item.y + 'px',
+                                    top: item.top + 'px',
+                                    left: item.left + 'px',
                                     width: item.w + 'px',
                                     height: item.h + 'px'
                                 }" @click="remove(item)" />
@@ -530,15 +530,20 @@ const onDragStop = (layout, oldItem, newItem) => {
 }
 
 const submitPlant = () => {
-
+    mappingArea(plantArea)
+    const index = bag.value.findIndex(e => e.i === targetItem.i);
+    if (index !== -1) bag.value.splice(index, 1);
+    dialogPlantVisible.value = false 
 }
 
 const submitWindow = () => {
-
+    mappingArea(windowArea)
+    const index = bag.value.findIndex(e => e.i === targetItem.i);
+    if (index !== -1) bag.value.splice(index, 1);
+    dialogWindowVisible.value = false 
 }
 
 const submitTop = () => {
-
     mappingArea(topArea)
     const index = bag.value.findIndex(e => e.i === targetItem.i);
     if (index !== -1) bag.value.splice(index, 1);
@@ -568,20 +573,130 @@ const useItem = (item) => {
 const mappingArea = (area) => {
     if (area.value == '1') {
         layout.value.push({
-            x: 0,
-            y: 520,
+            top: 0,
+            left: 520,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
         });
     }
-    else if (area.value == '2') {
+    else if (area.value == '2.1') {
         layout.value.push({
-            x: 1,
-            y: 1,
-            w: 2,
-            h: 4,
+            top: 80,
+            left: 210,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '2.2') {
+        layout.value.push({
+            top: 80,
+            left: 820,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '3.1') {
+        layout.value.push({
+            top: 175,
+            left: 265,
+            w: 180,
+            h: 180,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '3.2') {
+        layout.value.push({
+            top: 175,
+            left: 670,
+            w: 180,
+            h: 180,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '5.1') {
+        layout.value.push({
+            top: 380,
+            left: 400,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '5.2') {
+        layout.value.push({
+            top: 380,
+            left: 520,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '6.1') {
+        layout.value.push({
+            top: 380,
+            left: 170,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '6.2') {
+        layout.value.push({
+            top: 450,
+            left: 215,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '6.3') {
+        layout.value.push({
+            top: 450,
+            left: 710,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '6.4') {
+        layout.value.push({
+            top: 380,
+            left: 790,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '6.5') {
+        layout.value.push({
+            top: 420,
+            left: 950,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '7') {
+        layout.value.push({
+            top: 420,
+            left: 35,
+            w: 100,
+            h: 100,
             i: String(Date.now()),
             item: targetItem
         });
