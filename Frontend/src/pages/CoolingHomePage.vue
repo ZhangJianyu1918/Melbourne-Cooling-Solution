@@ -20,8 +20,14 @@
                                         placeholder="Please Input Your Budget." style="width: 300px;"
                                         max="1000"></el-input-number></el-col>
                             </el-row>
-                            <div style="height: 10px;"></div>
 
+                            <div style="height: 10px;"></div>
+                            <el-select v-model="mode" placeholder="Please choose your role." style="width: 300px;">
+                              <el-option label="Owner" value="Owner"></el-option>
+                              <el-option label="Renter" value="Renter"></el-option>
+                            </el-select>
+                            <br>
+                            <div style="height: 10px;"></div>
                             <el-button type="" @click="startGame()" style="width: 300px;">
                                 Start Game
                             </el-button>
@@ -29,8 +35,9 @@
                     </div>
                     <div style="overflow: hidden; position: relative;" v-else>
                         <div class="overview">
-                            <p>🌡️ Temperature: {{ temperature }}°C</p>
-                            <p>❄️ Dropped: {{ dropped }}°C</p>
+                            <sapn>🌡️ Temperature: {{ temperature }}°C</sapn>
+                            <br>
+                            <sapn>❄️ Dropped: {{ dropped }}°C</sapn>
                         </div>
                         <div v-if="aside" class="aside">
                             <el-button @click="aside = !aside">
@@ -38,7 +45,7 @@
                                     <ArrowLeftBold />
                                 </el-icon>
                             </el-button>
-                            <h5>🏠 Mode: Owner</h5>
+                            <h5>🏠 Mode: {{ mode }}</h5>
                             <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
                             <h5>Buy Item</h5>
                             <el-collapse>
@@ -99,8 +106,8 @@
                         </div>
                         <el-button class="aside-button" v-else @click="aside = !aside" style="height: fit-content;">
                             <div>
-                                <h5>🏠 Mode: Owner</h5>
-                                <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
+                                <h6>🏠 Mode: {{ mode }}</h6>
+                                <h6>💰 Budget {{ coins - usedCoin }} AUD</h6>
                             </div>
                         </el-button>
                         <!-- <GridLayout ref="gridRef" :layout="layout" :col-num="12" :row-height="30" :is-draggable="true"
@@ -202,9 +209,7 @@
                                         <DArrowRight />
                                     </el-icon>
                                 </el-button>
-                                <el-icon>
-                                    <ShoppingCart />
-                                </el-icon> Shop
+                                🛒 Shop
                                 <div v-for="(item, key) in storeItems" :key="key" style="overflow: hidden;">
                                     <div @click="showDetail(key)" draggable="false" style="cursor: pointer;">
                                         <el-row class="list">
@@ -232,44 +237,25 @@
                                     <el-icon>
                                         <DArrowRight />
                                     </el-icon>
-                                    👜 My Bag
+                                    👜 My Bag ({{ totalNumber }})
                                 </div>
-                                <div v-if="bag.length == 0">
+                                <div v-if="totalNumber == 0">
                                     <span style="padding: 10px;">It feels lonely in here:(</span>
                                 </div>
-                                <div v-else v-for="(item, index) in bag" :key="index" style="overflow: hidden;">
-                                    <!-- <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
-                                        @dragstart="onDragStart($event, index)" style="cursor: pointer;">
-                                        <el-row>
-                                            <el-col :span="8"><img :src="item.img" style="width: 60px;" /></el-col>
-                                            <el-col :span="16">
-                                                <div class="flex flex-col">
-                                                    <span class="font-medium">{{ item.name }}</span>
-                                                    <el-row>
-                                                        <el-col :span="12"><span class="text-sm"
-                                                                style="color: #ffab50;">${{ item.price
-                                                                }}</span></el-col>
-                                                        <el-col :span="12"><span class="text-sm"
-                                                                style="color: #26afff;">-{{ item.cooling
-                                                                }}°C</span></el-col>
-                                                    </el-row>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-                                    </div> -->
-                                    <div class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
+                                <div v-else v-for="(item, index) in bag" :key="index">
+                                    <div v-if="item.length > 0" class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
                                         @click="useItem(item)" style="cursor: pointer;">
                                         <el-row>
-                                            <el-col :span="8"><img :src="item.img" style="width: 60px;" /></el-col>
+                                            <el-col :span="8"><img :src="item[0].img" style="width: 60px;" /></el-col>
                                             <el-col :span="16">
                                                 <div class="flex flex-col">
-                                                    <span class="font-medium">{{ item.name }}</span>
+                                                    <span class="font-medium">{{ item[0].name }} ({{ item.length }})</span>
                                                     <el-row>
-                                                        <el-col :span="12"><span class="text-sm"
-                                                                style="color: #ffab50;">${{ item.price
+                                                        <el-col :span="10"><span class="text-sm"
+                                                                style="color: #ffab50;">${{ item[0].price
                                                                 }}</span></el-col>
-                                                        <el-col :span="12"><span class="text-sm"
-                                                                style="color: #26afff;">-{{ item.cooling
+                                                        <el-col :span="10"><span class="text-sm"
+                                                                style="color: #26afff;">-{{ item[0].cooling
                                                                 }}°C</span></el-col>
                                                     </el-row>
                                                 </div>
@@ -279,7 +265,7 @@
                                 </div>
                             </div>
                             <div class="bag-button" v-else @click="bagAisde = !bagAisde">
-                                👜 My bag ({{ bag.length }})
+                                👜 My bag ({{ totalNumber }})
                             </div>
                         </div>
                         <el-button class="endButton" @click="endGame()" round>Finish My Setup</el-button>
@@ -303,7 +289,7 @@
         <el-dialog v-model="dialogVisible" :modal="false" width="300px">
             <div class="plant-card">
                 <div class="plant-icon">
-                    <img src="" alt="Aloe Vera" />
+                    <img :src="storeItems[currentKey].img" alt="Aloe Vera" />
                 </div>
                 <div class="plant-details">
                     <h3>{{ storeItems[currentKey].name }}</h3>
@@ -311,7 +297,7 @@
                         storeItems[currentKey].cooling
                             }}°C</span></p>
                     <p class="description">
-                        {{ storeItems[currentKey].description }}
+                        <!-- {{ storeItems[currentKey].description }} -->
                     </p>
                 </div>
             </div>
@@ -331,12 +317,12 @@
             <ul>
                 <li>🌡️ Room temperature reduced by: {{ dropped }}°C</li>
                 <li>💰 Budget used: {{ usedCoin }} by {{ coins }}</li>
-                <li>💪 Efficiency:</li>
+                <li>💪 Efficiency: {{ efficiency }}</li>
             </ul>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="endGameDialogVisible = false" round>Play Again</el-button>
-                    <el-button @click="endGameDialogVisible = false" round>Home</el-button>
+                    <el-button @click="endGameDialogVisible = false; exitGame()" round>Play Again</el-button>
+                    <!-- <el-button @click="endGameDialogVisible = false" round>Home</el-button> -->
                     <el-button type="primary" @click="endGameDialogVisible = false" round>
                         Confirm
                     </el-button>
@@ -344,8 +330,14 @@
             </template>
         </el-dialog>
 
-        <el-dialog v-model="dialogPlantVisible" title="Shipping address" width="500">
+        <el-dialog v-model="dialogPlantVisible" title="Choose one area to put item" width="500">
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
             <el-select v-model="plantArea" placeholder="Please select a zone">
+                <el-option label="Area 4.1" value="4.1" />
+                <el-option label="Area 4.2" value="4.2" />
+                <el-option label="Area 4.3" value="4.3" />
                 <el-option label="Area 5.1" value="5.1" />
                 <el-option label="Area 5.2" value="5.2" />
                 <el-option label="Area 6.1" value="6.1" />
@@ -357,37 +349,61 @@
             </el-select>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialogPlantVisible = false">Cancel</el-button>
+                    <el-button @click="dialogPlantVisible = false; alertVisible = false">Cancel</el-button>
                     <el-button type="primary" @click="submitPlant()">
                         Confirm
                     </el-button>
                 </div>
             </template>
         </el-dialog>
-        <el-dialog v-model="dialogWindowVisible" title="Shipping address" width="500">
+        <el-dialog v-model="dialogWindowVisible" title="Choose one area to put item" width="500">
+            <!-- <el-alert v-if="alertVisible" title="This area is used. Please chosse another area." style="margin: 10px;" type="error" effect="dark" /> -->
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
             <el-select v-model="windowArea" placeholder="Please select a zone">
                 <el-option label="Area 3.1" value="3.1" />
                 <el-option label="Area 3.2" value="3.2" />
             </el-select>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialogWindowVisible = false">Cancel</el-button>
+                    <el-button @click="dialogWindowVisible = false; alertVisible = false">Cancel</el-button>
                     <el-button type="primary" @click="submitWindow()">
                         Confirm
                     </el-button>
                 </div>
             </template>
         </el-dialog>
-        <el-dialog v-model="dialogTopVisible" title="Shipping address" width="500">
+        <el-dialog v-model="dialogTopVisible" title="Choose one area to put item" width="500">
+            <!-- <el-alert v-if="alertVisible" title="This area is used. Please chosse another area." style="margin: 10px;" type="error" effect="dark" /> -->
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
             <el-select v-model="topArea" placeholder="Please select a zone">
                 <el-option label="Area 1" value="1" />
+            </el-select>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="dialogTopVisible = false; alertVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitTop()">
+                        Confirm
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
+        <el-dialog v-model="dialogAcVisible" title="Choose one area to put item" width="500">
+            <!-- <el-alert v-if="alertVisible" title="This area is used. Please chosse another area." style="margin: 10px;" type="error" effect="dark" /> -->
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
+            <el-select v-model="acArea" placeholder="Please select a zone">
                 <el-option label="Area 2.1" value="2.1" />
                 <el-option label="Area 2.2" value="2.2" />
             </el-select>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialogTopVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submitTop()">
+                    <el-button @click="dialogAcVisible = false; alertVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitAC()">
                         Confirm
                     </el-button>
                 </div>
@@ -399,7 +415,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { GridLayout, GridItem } from 'vue3-grid-layout'
-import livingRoomBg from '../assets/cooling my home.png';
+import livingRoomBg from '../assets/evaluation of each position.png';
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const coins = ref()
@@ -416,7 +432,6 @@ const storeItems = ref({
     item6: { name: 'Ceiling Fan', price: 170, cooling: 4, description: 'description6', img: new URL('../assets/ceiling_fan.png', import.meta.url).href },
     item7: { name: 'Air Conditioner', price: 1000, cooling: 8, description: 'description7', img: new URL('../assets/ac.png', import.meta.url).href },
 })
-
 // const imageMap = {
 //     plant1: new URL('../assets/plant1.png', import.meta.url).href,
 //     plant2: new URL('../assets/plant2.png', import.meta.url).href,
@@ -438,7 +453,24 @@ const colWidth = computed(() => {
 const gameResult = ref('123123')
 const shopAisde = ref(true)
 const bagAisde = ref(true)
-const bag = ref([])
+// const bag = ref([
+//     {'Aloe Vera': []},
+//     {'Snake Plant': []},
+//     {'Electricity Fan': []},
+//     {'Blinds': []},
+//     {'Curtains': []},
+//     {'Ceiling Fan': []},
+//     {'Air Conditioner': []}
+// ])
+const bag = ref({
+    'Aloe Vera': [],
+    'Snake Plant': [],
+    'Electricity Fan': [],
+    'Blinds': [],
+    'Curtains': [],
+    'Ceiling Fan': [],
+    'Air Conditioner': []
+})
 const dialogVisible = ref(false)
 const currentKey = ref(null)
 const itemNumber = ref(1)
@@ -466,11 +498,21 @@ const mode = ref()
 const dialogPlantVisible = ref(false)
 const dialogWindowVisible = ref(false)
 const dialogTopVisible = ref(false)
+const dialogAcVisible = ref(false)
 const plantArea = ref()
 const windowArea = ref()
 const topArea = ref()
+const acArea = ref()
 let targetItem
-
+const areaSet = new Set([
+    // '1', '2.1', '2.2', '3.1', '3.2',
+    // '5.1', '5.2', '6.1', '6.2',
+    // '6.3', '6.4', '6.5', 
+]);
+const alertVisible = ref(false)
+const imageAreaMap = new Map()
+const totalNumber = ref(0)
+const efficiency = ref('')
 const startGame = () => {
     if (coins.value <= 0) {
         return;
@@ -482,99 +524,143 @@ const startGame = () => {
 const exitGame = () => {
     coins.value = 0
     layout.value = []
-    bag.value = []
+    bag.value = {
+        'Aloe Vera': [],
+        'Snake Plant': [],
+        'Electricity Fan': [],
+        'Blinds': [],
+        'Curtains': [],
+        'Ceiling Fan': [],
+        'Air Conditioner': []
+    }
     game.value = true
+    totalNumber.value = 0;
+    imageMap = []
+    imageAreaMap.clear()
+    targetItem = null
+    plantArea.value = null
+    windowArea.value = null
+    topArea.value = null
+    budget.value = null
+    acArea.value = null
+    dropped.value = 0
+    temperature.value = 35
+    usedCoin.value = 0
+    mode.value = ''
 }
 
 const endGame = () => {
-    endGameDialogVisible.value = true
-
-}
-
-// 拖拽结束时添加新的布局元素
-function onDrop(e) {
-    if (!gridRef.value || !e.clientX || !e.clientY) return;
-    const containerRect = gridRef.value.$el.getBoundingClientRect();
-    const index = e.dataTransfer.getData('index')
-    const item = bag.value[index];
-    // console.log(item)
-    const mouseX = e.clientX - containerRect.left;
-    const mouseY = e.clientY - containerRect.top;
-    const col = Math.floor(mouseX / (colWidth.value + 10)); // 10 是 marginX
-    const row = Math.floor(mouseY / (30 + 10));             // 30 是 rowHeight，10 是 marginY
-
-    layout.value.push({
-        x: col,
-        y: row,
-        w: 2,
-        h: 4,
-        i: String(Date.now()),
-        index
-    });
-
-    temperature.value -= item.cooling
-    dropped.value += item.cooling
-}
-
-// 拖拽开始时保存被拖的内容标识
-function onDragStart(event, index) {
-    event.dataTransfer.setData('index', index)
-    draggedItem.value = index
-}
-
-const onDragStop = (layout, oldItem, newItem) => {
-    const maxY = Math.floor(500 / 30); // 因为 height 是 500px，rowHeight 是 30 -> 最多 ~16 行
-    if (newItem.y + newItem.h > maxY) {
-        newItem.y = maxY - newItem.h;
+    efficiency.value = 'Good (Nice plant work!)'
+    if (imageAreaMap.has('7')) {
+        efficiency.value = 'Bad (The door is blocked.)'
     }
+    else if (dropped.value > 3) {
+        efficiency.value = 'Great (Drop a lot of temperature!)'
+    }
+    endGameDialogVisible.value = true
 }
+
+// // 拖拽结束时添加新的布局元素
+// function onDrop(e) {
+//     if (!gridRef.value || !e.clientX || !e.clientY) return;
+//     const containerRect = gridRef.value.$el.getBoundingClientRect();
+//     const index = e.dataTransfer.getData('index')
+//     const item = bag.value[index];
+//     // console.log(item)
+//     const mouseX = e.clientX - containerRect.left;
+//     const mouseY = e.clientY - containerRect.top;
+//     const col = Math.floor(mouseX / (colWidth.value + 10)); // 10 是 marginX
+//     const row = Math.floor(mouseY / (30 + 10));             // 30 是 rowHeight，10 是 marginY
+
+//     layout.value.push({
+//         x: col,
+//         y: row,
+//         w: 2,
+//         h: 4,
+//         i: String(Date.now()),
+//         index
+//     });
+
+//     temperature.value -= item.cooling
+//     dropped.value += item.cooling
+// }
+
+// // 拖拽开始时保存被拖的内容标识
+// function onDragStart(event, index) {
+//     event.dataTransfer.setData('index', index)
+//     draggedItem.value = index
+// }
+
+// const onDragStop = (layout, oldItem, newItem) => {
+//     const maxY = Math.floor(500 / 30); // 因为 height 是 500px，rowHeight 是 30 -> 最多 ~16 行
+//     if (newItem.y + newItem.h > maxY) {
+//         newItem.y = maxY - newItem.h;
+//     }
+// }
 
 const submitPlant = () => {
-    mappingArea(plantArea)
-    const index = bag.value.findIndex(e => e.i === targetItem.i);
-    if (index !== -1) bag.value.splice(index, 1);
-    dialogPlantVisible.value = false 
+    if (mappingArea(plantArea)) {
+        const index = bag.value[targetItem.name].findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value[targetItem.name].splice(index, 1);
+        plantArea.value = null
+        dialogPlantVisible.value = false
+    }
 }
 
 const submitWindow = () => {
-    mappingArea(windowArea)
-    const index = bag.value.findIndex(e => e.i === targetItem.i);
-    if (index !== -1) bag.value.splice(index, 1);
-    dialogWindowVisible.value = false 
+    if (mappingArea(windowArea)) {
+        const index = bag.value[targetItem.name].findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value[targetItem.name].splice(index, 1);
+        windowArea.value = null
+        dialogWindowVisible.value = false
+    }
 }
 
 const submitTop = () => {
-    mappingArea(topArea)
-    const index = bag.value.findIndex(e => e.i === targetItem.i);
-    if (index !== -1) bag.value.splice(index, 1);
-    dialogTopVisible.value = false
+    if (mappingArea(topArea)) {
+        const index = bag.value[targetItem.name].findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value[targetItem.name].splice(index, 1);
+        topArea.value = null
+        dialogTopVisible.value = false
+    }
+}
+
+const submitAC = () => {
+    if (mappingArea(acArea)) {
+        const index = bag.value[targetItem.name].findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value[targetItem.name].splice(index, 1);
+        acArea.value = null
+        dialogAcVisible.value = false
+    }
 }
 
 const useItem = (item) => {
-    targetItem = item
-    if (item.name == 'Snake Plant' || item.name == 'Aloe Vera') {
+    targetItem = item[0]
+    if (targetItem.name == 'Snake Plant' || targetItem.name == 'Aloe Vera' || targetItem.name == 'Electricity Fan') {
         dialogPlantVisible.value = true
     }
-    else if (item.name == 'Electricity Fan') {
-        dialogPlantVisible.value = true
-    }
-    else if (item.name == 'Blinds' || item.name == 'Curtains') {
+    else if (targetItem.name == 'Blinds' || targetItem.name == 'Curtains') {
         dialogWindowVisible.value = true
     }
-    else if (item.name == 'Ceiling Fan') {
+    else if (targetItem.name == 'Ceiling Fan' ) {
         dialogTopVisible.value = true
     }
-    else if (item.name == 'Air Conditioner') {
-        dialogTopVisible.value = true
-
+    else if (targetItem.name == 'Air Conditioner') {
+        dialogAcVisible.value = true
     }
 }
 
 const mappingArea = (area) => {
+    if (imageAreaMap.has(String(area.value))) {
+        alert("This area is already used. Please choose another area.")
+        return false
+    }
+    imageAreaMap.set(String(area.value), targetItem);
+    totalNumber.value -= 1;
     if (area.value == '1') {
         layout.value.push({
-            top: 0,
-            left: 520,
+            top: 40,
+            left: 415,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -583,20 +669,20 @@ const mappingArea = (area) => {
     }
     else if (area.value == '2.1') {
         layout.value.push({
-            top: 80,
-            left: 210,
-            w: 100,
-            h: 100,
+            top: 100,
+            left: 170,
+            w: 80,
+            h: 80,
             i: String(Date.now()),
             item: targetItem
         });
     }
     else if (area.value == '2.2') {
         layout.value.push({
-            top: 80,
-            left: 820,
-            w: 100,
-            h: 100,
+            top: 100,
+            left: 670,
+            w: 80,
+            h: 80,
             i: String(Date.now()),
             item: targetItem
         });
@@ -604,8 +690,8 @@ const mappingArea = (area) => {
     else if (area.value == '3.1') {
         layout.value.push({
             top: 175,
-            left: 265,
-            w: 180,
+            left: 210,
+            w: 160,
             h: 180,
             i: String(Date.now()),
             item: targetItem
@@ -614,9 +700,29 @@ const mappingArea = (area) => {
     else if (area.value == '3.2') {
         layout.value.push({
             top: 175,
-            left: 670,
-            w: 180,
+            left: 545,
+            w: 160,
             h: 180,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '4.1') {
+        layout.value.push({
+            top: 275,
+            left: 245,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        });
+    }
+    else if (area.value == '4.2') {
+        layout.value.push({
+            top: 270,
+            left: 580,
+            w: 100,
+            h: 100,
             i: String(Date.now()),
             item: targetItem
         });
@@ -624,7 +730,7 @@ const mappingArea = (area) => {
     else if (area.value == '5.1') {
         layout.value.push({
             top: 380,
-            left: 400,
+            left: 325,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -634,7 +740,7 @@ const mappingArea = (area) => {
     else if (area.value == '5.2') {
         layout.value.push({
             top: 380,
-            left: 520,
+            left: 420,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -644,7 +750,7 @@ const mappingArea = (area) => {
     else if (area.value == '6.1') {
         layout.value.push({
             top: 380,
-            left: 170,
+            left: 130,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -654,7 +760,7 @@ const mappingArea = (area) => {
     else if (area.value == '6.2') {
         layout.value.push({
             top: 450,
-            left: 215,
+            left: 170,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -664,7 +770,7 @@ const mappingArea = (area) => {
     else if (area.value == '6.3') {
         layout.value.push({
             top: 450,
-            left: 710,
+            left: 575,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -674,7 +780,7 @@ const mappingArea = (area) => {
     else if (area.value == '6.4') {
         layout.value.push({
             top: 380,
-            left: 790,
+            left: 642,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -684,7 +790,7 @@ const mappingArea = (area) => {
     else if (area.value == '6.5') {
         layout.value.push({
             top: 420,
-            left: 950,
+            left: 775,
             w: 100,
             h: 100,
             i: String(Date.now()),
@@ -694,13 +800,16 @@ const mappingArea = (area) => {
     else if (area.value == '7') {
         layout.value.push({
             top: 420,
-            left: 35,
+            left: 25,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
         });
     }
+    temperature.value -= targetItem.cooling
+    dropped.value += targetItem.cooling
+    return true
 }
 
 // 图片映射函数
@@ -714,13 +823,26 @@ const showDetail = (key) => {
 }
 
 const buyItem = () => {
+    if (budget.value < storeItems.value[currentKey.value].price * itemNumber.value) {
+        alert("Your cost will be over budget. Please take care of it.")
+        return
+    }
+    if (mode.value == 'Renter' && 
+        (storeItems.value[currentKey.value].name == 'Air Conditioner' || 
+        storeItems.value[currentKey.value].name == 'Ceiling Fan')) {
+            alert("You are a renter, you can't buy this and use it.")
+            return
+    }
     usedCoin.value += storeItems.value[currentKey.value].price * itemNumber.value;
     budget.value -= storeItems.value[currentKey.value].price * itemNumber.value;
+    totalNumber.value += itemNumber.value
     for (let i = 0; i < itemNumber.value; i++) {
-        bag.value.push(storeItems.value[currentKey.value])
+        // bag.value.push(storeItems.value[currentKey.value])
+        bag.value[storeItems.value[currentKey.value].name].push(storeItems.value[currentKey.value])
         // imageMap[storeItems.value[currentKey.value].name] = storeItems.value[currentKey.value].img
         imageMap.push(storeItems.value[currentKey.value])
     }
+    itemNumber.value = 1
     dialogVisible.value = false;
 }
 
@@ -736,7 +858,17 @@ const remove = (item) => {
     )
         .then(() => {
             layout.value = layout.value.filter(e => e.i !== item.i)
-            bag.value.push(item.item)
+            bag.value[item.item.name].push(item.item)
+            let targetArea
+            imageAreaMap.forEach((value, key) => {
+                if (value === item.item) {
+                    targetArea = String(key);
+                }
+            });
+            totalNumber.value += 1;
+            console.log("Before delete:", imageAreaMap);
+            imageAreaMap.delete(targetArea);
+            console.log("After delete:", imageAreaMap);
             ElMessage({
                 type: 'success',
                 message: 'Delete completed',
@@ -754,8 +886,8 @@ const remove = (item) => {
 
 <style scoped>
 .container {
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 200px;
+    padding-right: 200px;
 }
 
 .aside {
@@ -785,6 +917,7 @@ const remove = (item) => {
 }
 
 .aside-button {
+    width: fit-content;
     position: absolute;
     border-radius: 0 40px 40px 0;
     top: 100px;
@@ -823,6 +956,8 @@ const remove = (item) => {
     border-radius: 20px 0 0 20px;
     border: 3px solid #787fbf;
     cursor: pointer;
+    max-height: 350px;
+    overflow-y: auto;
     /* border-radius: 10px; */
 }
 
