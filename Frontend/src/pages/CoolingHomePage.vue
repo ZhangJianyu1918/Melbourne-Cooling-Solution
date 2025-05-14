@@ -20,8 +20,14 @@
                                         placeholder="Please Input Your Budget." style="width: 300px;"
                                         max="1000"></el-input-number></el-col>
                             </el-row>
-                            <div style="height: 10px;"></div>
 
+                            <div style="height: 10px;"></div>
+                            <el-select v-model="mode" placeholder="Please choose your role." style="width: 300px;">
+                              <el-option label="Owner" value="Owner"></el-option>
+                              <el-option label="Renter" value="Renter"></el-option>
+                            </el-select>
+                            <br>
+                            <div style="height: 10px;"></div>
                             <el-button type="" @click="startGame()" style="width: 300px;">
                                 Start Game
                             </el-button>
@@ -39,7 +45,7 @@
                                     <ArrowLeftBold />
                                 </el-icon>
                             </el-button>
-                            <h5>🏠 Mode: Owner</h5>
+                            <h5>🏠 Mode: {{ mode }}</h5>
                             <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
                             <h5>Buy Item</h5>
                             <el-collapse>
@@ -100,7 +106,7 @@
                         </div>
                         <el-button class="aside-button" v-else @click="aside = !aside" style="height: fit-content;">
                             <div>
-                                <h6>🏠 Mode: Owner</h6>
+                                <h6>🏠 Mode: {{ mode }}</h6>
                                 <h6>💰 Budget {{ coins - usedCoin }} AUD</h6>
                             </div>
                         </el-button>
@@ -311,12 +317,12 @@
             <ul>
                 <li>🌡️ Room temperature reduced by: {{ dropped }}°C</li>
                 <li>💰 Budget used: {{ usedCoin }} by {{ coins }}</li>
-                <li>💪 Efficiency:</li>
+                <li>💪 Efficiency: {{ efficiency }}</li>
             </ul>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="endGameDialogVisible = false" round>Play Again</el-button>
-                    <el-button @click="endGameDialogVisible = false" round>Home</el-button>
+                    <el-button @click="endGameDialogVisible = false; exitGame()" round>Play Again</el-button>
+                    <!-- <el-button @click="endGameDialogVisible = false" round>Home</el-button> -->
                     <el-button type="primary" @click="endGameDialogVisible = false" round>
                         Confirm
                     </el-button>
@@ -506,7 +512,7 @@ const areaSet = new Set([
 const alertVisible = ref(false)
 const imageAreaMap = new Map()
 const totalNumber = ref(0)
-
+const efficiency = ref('')
 const startGame = () => {
     if (coins.value <= 0) {
         return;
@@ -540,11 +546,18 @@ const exitGame = () => {
     dropped.value = 0
     temperature.value = 35
     usedCoin.value = 0
+    mode.value = ''
 }
 
 const endGame = () => {
+    efficiency.value = 'Good (Nice plant work!)'
+    if (imageAreaMap.has('7')) {
+        efficiency.value = 'Bad (The door is blocked.)'
+    }
+    else if (dropped.value > 3) {
+        efficiency.value = 'Great (Drop a lot of temperature!)'
+    }
     endGameDialogVisible.value = true
-    
 }
 
 // // 拖拽结束时添加新的布局元素
@@ -814,6 +827,12 @@ const buyItem = () => {
         alert("Your cost will be over budget. Please take care of it.")
         return
     }
+    if (mode.value == 'Renter' && 
+        (storeItems.value[currentKey.value].name == 'Air Conditioner' || 
+        storeItems.value[currentKey.value].name == 'Ceiling Fan')) {
+            alert("You are a renter, you can't buy this and use it.")
+            return
+    }
     usedCoin.value += storeItems.value[currentKey.value].price * itemNumber.value;
     budget.value -= storeItems.value[currentKey.value].price * itemNumber.value;
     totalNumber.value += itemNumber.value
@@ -823,6 +842,7 @@ const buyItem = () => {
         // imageMap[storeItems.value[currentKey.value].name] = storeItems.value[currentKey.value].img
         imageMap.push(storeItems.value[currentKey.value])
     }
+    itemNumber.value = 1
     dialogVisible.value = false;
 }
 
