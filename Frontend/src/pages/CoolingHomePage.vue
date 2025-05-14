@@ -345,6 +345,9 @@
         </el-dialog>
 
         <el-dialog v-model="dialogPlantVisible" title="Shipping address" width="500">
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
             <el-select v-model="plantArea" placeholder="Please select a zone">
                 <el-option label="Area 5.1" value="5.1" />
                 <el-option label="Area 5.2" value="5.2" />
@@ -357,7 +360,7 @@
             </el-select>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialogPlantVisible = false">Cancel</el-button>
+                    <el-button @click="dialogPlantVisible = false; alertVisible = false">Cancel</el-button>
                     <el-button type="primary" @click="submitPlant()">
                         Confirm
                     </el-button>
@@ -365,13 +368,17 @@
             </template>
         </el-dialog>
         <el-dialog v-model="dialogWindowVisible" title="Shipping address" width="500">
+            <!-- <el-alert v-if="alertVisible" title="This area is used. Please chosse another area." style="margin: 10px;" type="error" effect="dark" /> -->
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
             <el-select v-model="windowArea" placeholder="Please select a zone">
                 <el-option label="Area 3.1" value="3.1" />
                 <el-option label="Area 3.2" value="3.2" />
             </el-select>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialogWindowVisible = false">Cancel</el-button>
+                    <el-button @click="dialogWindowVisible = false; alertVisible = false">Cancel</el-button>
                     <el-button type="primary" @click="submitWindow()">
                         Confirm
                     </el-button>
@@ -379,6 +386,10 @@
             </template>
         </el-dialog>
         <el-dialog v-model="dialogTopVisible" title="Shipping address" width="500">
+            <!-- <el-alert v-if="alertVisible" title="This area is used. Please chosse another area." style="margin: 10px;" type="error" effect="dark" /> -->
+            <el-alert v-if="alertVisible" title="Error Alert"
+                description="This area is used. Please chosse another area." style="margin-bottom: 10px;" type="error"
+                effect="dark" show-icon />
             <el-select v-model="topArea" placeholder="Please select a zone">
                 <el-option label="Area 1" value="1" />
                 <el-option label="Area 2.1" value="2.1" />
@@ -386,7 +397,7 @@
             </el-select>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialogTopVisible = false">Cancel</el-button>
+                    <el-button @click="dialogTopVisible = false; alertVisible = false">Cancel</el-button>
                     <el-button type="primary" @click="submitTop()">
                         Confirm
                     </el-button>
@@ -416,7 +427,6 @@ const storeItems = ref({
     item6: { name: 'Ceiling Fan', price: 170, cooling: 4, description: 'description6', img: new URL('../assets/ceiling_fan.png', import.meta.url).href },
     item7: { name: 'Air Conditioner', price: 1000, cooling: 8, description: 'description7', img: new URL('../assets/ac.png', import.meta.url).href },
 })
-
 // const imageMap = {
 //     plant1: new URL('../assets/plant1.png', import.meta.url).href,
 //     plant2: new URL('../assets/plant2.png', import.meta.url).href,
@@ -470,6 +480,14 @@ const plantArea = ref()
 const windowArea = ref()
 const topArea = ref()
 let targetItem
+const areaSet = new Set([
+    // '1', '2.1', '2.2', '3.1', '3.2',
+    // '5.1', '5.2', '6.1', '6.2',
+    // '6.3', '6.4', '6.5', 
+]);
+const alertVisible = ref(false)
+const imageAreaMap = new Map()
+
 
 const startGame = () => {
     if (coins.value <= 0) {
@@ -530,47 +548,51 @@ const onDragStop = (layout, oldItem, newItem) => {
 }
 
 const submitPlant = () => {
-    mappingArea(plantArea)
-    const index = bag.value.findIndex(e => e.i === targetItem.i);
-    if (index !== -1) bag.value.splice(index, 1);
-    dialogPlantVisible.value = false 
+    if (mappingArea(plantArea)) {
+        const index = bag.value.findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value.splice(index, 1);
+        plantArea.value = null
+        dialogPlantVisible.value = false
+    }
 }
 
 const submitWindow = () => {
-    mappingArea(windowArea)
-    const index = bag.value.findIndex(e => e.i === targetItem.i);
-    if (index !== -1) bag.value.splice(index, 1);
-    dialogWindowVisible.value = false 
+    if (mappingArea(windowArea)) {
+        const index = bag.value.findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value.splice(index, 1);
+        windowArea.value = null
+        dialogWindowVisible.value = false
+    }
 }
 
 const submitTop = () => {
-    mappingArea(topArea)
-    const index = bag.value.findIndex(e => e.i === targetItem.i);
-    if (index !== -1) bag.value.splice(index, 1);
-    dialogTopVisible.value = false
+    if (mappingArea(topArea)) {
+        const index = bag.value.findIndex(e => e.i === targetItem.i);
+        if (index !== -1) bag.value.splice(index, 1);
+        topArea.value = null
+        dialogTopVisible.value = false
+    }
 }
 
 const useItem = (item) => {
     targetItem = item
-    if (item.name == 'Snake Plant' || item.name == 'Aloe Vera') {
-        dialogPlantVisible.value = true
-    }
-    else if (item.name == 'Electricity Fan') {
+    if (item.name == 'Snake Plant' || item.name == 'Aloe Vera' || item.name == 'Electricity Fan') {
         dialogPlantVisible.value = true
     }
     else if (item.name == 'Blinds' || item.name == 'Curtains') {
         dialogWindowVisible.value = true
     }
-    else if (item.name == 'Ceiling Fan') {
+    else if (item.name == 'Ceiling Fan' || item.name == 'Air Conditioner') {
         dialogTopVisible.value = true
-    }
-    else if (item.name == 'Air Conditioner') {
-        dialogTopVisible.value = true
-
     }
 }
 
 const mappingArea = (area) => {
+    if (imageAreaMap.has(String(area.value))) {
+        alertVisible.value = true
+        return false
+    }
+    imageAreaMap.set(String(area.value), targetItem);
     if (area.value == '1') {
         layout.value.push({
             top: 0,
@@ -701,6 +723,9 @@ const mappingArea = (area) => {
             item: targetItem
         });
     }
+    temperature.value -= targetItem.cooling
+    dropped.value += targetItem.cooling
+    return true
 }
 
 // 图片映射函数
@@ -737,6 +762,15 @@ const remove = (item) => {
         .then(() => {
             layout.value = layout.value.filter(e => e.i !== item.i)
             bag.value.push(item.item)
+            let targetArea
+            imageAreaMap.forEach((value, key) => {
+                if (value === item.item) {
+                    targetArea = String(key);
+                }
+            });
+            console.log("Before delete:", imageAreaMap);
+            imageAreaMap.delete(targetArea);
+            console.log("After delete:", imageAreaMap);
             ElMessage({
                 type: 'success',
                 message: 'Delete completed',
@@ -754,8 +788,8 @@ const remove = (item) => {
 
 <style scoped>
 .container {
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 200px;
+    padding-right: 200px;
 }
 
 .aside {
