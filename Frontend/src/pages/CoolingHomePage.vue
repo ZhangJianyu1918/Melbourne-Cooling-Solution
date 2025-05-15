@@ -14,45 +14,33 @@
             <div style="height: 80vh; margin: 0; padding: 0;">
                 <div style="padding: 0; overflow: hidden;">
                     <div v-if="game">
-                        <div
-                            style="background: #f0f0f0; width: 100%; height: 500px; overflow: hidden; border-radius: 20px; justify-items: center; align-content: center;">
-                            <p></p>
-                            <el-form>
-                              <el-form-item label="Maximum budget is 1000 AUD.">
-                                <el-input-number v-model="coins"
-                                        placeholder="Please Input Your Budget." style="width: 300px;"
-                                        max="1000"></el-input-number>
-                              </el-form-item>
-                              <el-form-item label="Choose Role">
-                                <el-select v-model="mode" placeholder="Please choose your role." style="width: 300px;">
-                              <el-option label="Owner" value="Owner"></el-option>
-                              <el-option label="Renter" value="Renter"></el-option>
-                            </el-select>
-                              </el-form-item>
-                              <el-form-item label="">
-                                <el-button type="" @click="startGame()" style="width: 300px;">
-                                Start Game
-                            </el-button>
-                              </el-form-item>
-                            </el-form>
-                            <!-- <el-row>
-                                <el-col :span="24"><el-input-number v-model="coins"
-                                        placeholder="Please Input Your Budget." style="width: 300px;"
-                                        max="1000"></el-input-number></el-col>
-                            </el-row>
+                        <div style="background-color: white; 
+                            width: 100%; height: 500px; overflow: hidden; border-radius: 20px;
+                            display: flex; justify-content: center; align-items: center;">
+                            <el-form label-position="top">
+                                <el-form-item label="Please Input Your Budget:">
+                                    <el-input-number v-model="coins" placeholder="Maximum budget is 1000 AUD." :max="1000"
+                                        style="width: 300px;">
+                                    </el-input-number>
+                                </el-form-item>
 
-                            <div style="height: 10px;"></div>
-                            <el-select v-model="mode" placeholder="Please choose your role." style="width: 300px;">
-                              <el-option label="Owner" value="Owner"></el-option>
-                              <el-option label="Renter" value="Renter"></el-option>
-                            </el-select>
-                            <br>
-                            <div style="height: 10px;"></div>
-                            <el-button type="" @click="startGame()" style="width: 300px;">
-                                Start Game
-                            </el-button> -->
+                                <el-form-item label="Choose Role">
+                                    <el-select v-model="mode" placeholder="Please choose your role:"
+                                        style="width: 300px;">
+                                        <el-option label="Owner" value="Owner"></el-option>
+                                        <el-option label="Renter" value="Renter"></el-option>
+                                    </el-select>
+                                </el-form-item>
+
+                                <el-form-item>
+                                    <el-button type="primary" @click="startGame" style="width: 300px;">
+                                        Start Game
+                                    </el-button>
+                                </el-form-item>
+                            </el-form>
                         </div>
                     </div>
+
                     <div style="overflow: hidden; position: relative;" v-else>
                         <div class="overview">
                             <sapn>🌡️ Temperature: {{ temperature }}°C</sapn>
@@ -66,10 +54,10 @@
                                 </el-icon>
                             </el-button>
                             <div style="color: #787fbf; padding: 20px 0;">
-                            <h6>🏠 Mode: {{ mode }}</h6>
-                            <h6>💰 Budget {{ coins - usedCoin }} AUD</h6>
+                                <h6>🏠 Mode: {{ mode }}</h6>
+                                <h6>💰 Budget {{ coins - usedCoin }} AUD</h6>
                             </div>
-                            
+
                             <el-collapse style="border: none">
                                 <el-collapse-item title="How to play" name="1" style="border: none">
                                     <ul>
@@ -256,13 +244,14 @@
                                     <span style="padding: 10px;">It feels lonely in here:(</span>
                                 </div>
                                 <div v-else v-for="(item, index) in bag" :key="index">
-                                    <div v-if="item.length > 0" class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
-                                        @click="useItem(item)" style="cursor: pointer;">
+                                    <div v-if="item.length > 0" class="cursor-move p-2 border rounded bg-white shadow"
+                                        draggable="true" @click="useItem(item)" style="cursor: pointer;">
                                         <el-row>
                                             <el-col :span="8"><img :src="item[0].img" style="width: 50px;" /></el-col>
                                             <el-col :span="16">
                                                 <div class="flex flex-col">
-                                                    <span class="font-medium">{{ item[0].name }} ({{ item.length }})</span>
+                                                    <span class="font-medium">{{ item[0].name }} ({{ item.length
+                                                    }})</span>
                                                     <el-row>
                                                         <el-col :span="10"><span class="text-sm"
                                                                 style="color: #ffab50;">${{ item[0].price
@@ -675,7 +664,7 @@ const useItem = (item) => {
     else if (targetItem.name == 'Blinds' || targetItem.name == 'Curtains') {
         dialogWindowVisible.value = true
     }
-    else if (targetItem.name == 'Ceiling Fan' ) {
+    else if (targetItem.name == 'Ceiling Fan') {
         dialogTopVisible.value = true
     }
     else if (targetItem.name == 'Air Conditioner') {
@@ -860,11 +849,11 @@ const buyItem = () => {
         alert("Your cost will be over budget. Please take care of it.")
         return
     }
-    if (mode.value == 'Renter' && 
-        (storeItems.value[currentKey.value].name == 'Air Conditioner' || 
-        storeItems.value[currentKey.value].name == 'Ceiling Fan')) {
-            alert("You are a renter, you can't buy this and use it.")
-            return
+    if (mode.value == 'Renter' &&
+        (storeItems.value[currentKey.value].name == 'Air Conditioner' ||
+            storeItems.value[currentKey.value].name == 'Ceiling Fan')) {
+        alert("You are a renter, you can't buy this and use it.")
+        return
     }
     usedCoin.value += storeItems.value[currentKey.value].price * itemNumber.value;
     budget.value -= storeItems.value[currentKey.value].price * itemNumber.value;
@@ -961,6 +950,7 @@ const remove = (item) => {
     border: 3px solid #787fbf;
     z-index: 10;
 }
+
 /* .shop {
     position: absolute;
     top: 100px;
@@ -1027,6 +1017,7 @@ const remove = (item) => {
     bottom: 50px;
     right: 10px;
 }
+
 .endButton:hover {
     background-color: #5766ed;
     color: white;
@@ -1061,6 +1052,7 @@ const remove = (item) => {
     margin-left: 10px;
     font-weight: normal;
 }
+
 .description {
     font-size: 0.9em;
     color: #666;

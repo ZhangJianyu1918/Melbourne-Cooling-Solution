@@ -22,7 +22,12 @@
     <div style="text-align: end;">
       <el-button type="text" @click="chartSwitch()" style="font: 1.2em sans-serif; padding-top: 30px;">
         <el-icon class="mr-1"><arrow-right /></el-icon>
-        {{ message }}
+        <span v-if="router.currentRoute.value.path == '/heat-insights/age-sex'">
+          Go to Help & Support Page
+        </span>
+        <span v-else>
+          Go to Next Chart
+        </span>
       </el-button>
     </div>
   </div>
@@ -35,6 +40,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const message = ref('Go to Next Chart')
+
 const chartSwitch = () => {
   if (router.currentRoute.value.path == '/heat-insights/heatmap') {
     router.push('/heat-insights/heatwave-duration-peak')
@@ -49,7 +55,6 @@ const chartSwitch = () => {
     router.push('/heat-insights/age-sex')
   }
   else if (router.currentRoute.value.path == '/heat-insights/age-sex') {
-    message.value = 'Go to Help & Support Page'
     router.push('/community-support')
   }
 }
