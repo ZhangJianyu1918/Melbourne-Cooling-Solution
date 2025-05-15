@@ -179,7 +179,13 @@
       <div class="google-map" ref="mapElement"></div>
       <WeatherCard :temp="weather.temp" :placeName="marker?.title" :icon="weather.icon" @find-shade="findShadedArea" />
     </div>
-
+    <div style="text-align: end;">
+      <el-button type="text" @click="$router.push('/personal-cooling-guide')"
+        style="font: 1.2em sans-serif; padding-top: 30px;">
+        <el-icon class="mr-1"><arrow-right /></el-icon>
+        Go to Personal Guide Page
+      </el-button>
+    </div>
     <el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
       <span>The temperature is {{ weather.temp }}°C!</span>
       <template #footer>

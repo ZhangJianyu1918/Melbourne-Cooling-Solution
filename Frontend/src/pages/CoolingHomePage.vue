@@ -5,7 +5,9 @@
             <el-icon class="mr-1"><arrow-left /></el-icon>
             Go back to Personal Guide Page
         </el-button>
-        <h1>Game: Cooling My Home</h1>
+        <div style="height: 30px;"></div>
+        <h1 style="font-family: Abril Fatface; font-weight: 1000; color: #19619E; ">Game: Cooling My Home</h1>
+        <div style="height: 10px;"></div>
         <p>Discover practical ways to keep your home cool during heatwaves. This game gives you inspiring ideas of
             cooling strategies, decoration, and smart energy-saving tips. </p>
         <div style="border-radius: 20px;">
@@ -282,8 +284,14 @@
                         <el-button class="endButton" @click="endGame()" round>Finish My Setup</el-button>
                     </div>
                 </div>
-
             </div>
+        </div>
+        <div style="text-align: end;">
+            <el-button type="text" @click="$router.push('/heat-insights')"
+                style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-right /></el-icon>
+                Go to Heat Insights Page
+            </el-button>
         </div>
         <el-dialog v-model="centerDialogVisible" title="Game Result" width="500" align-center>
             <span>{{ gameResult }}</span>

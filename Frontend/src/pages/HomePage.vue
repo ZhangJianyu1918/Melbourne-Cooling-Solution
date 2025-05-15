@@ -85,41 +85,6 @@
                 </el-col>
             </el-row>
             <div style="height: 50px;"></div>
-            <el-row>
-                <el-col :span="21">
-                    <h2 class="service-title">Need Immediate Support(Next Iteration)</h2>
-                </el-col>
-            </el-row>
-            <el-row class="support">
-                <el-col :span="16" class="support-content">
-                    <p>This is the body
-                        text for this section description,
-                        which stands here as a placeholder for
-                        later real ideas and contents:
-                    </p>
-                    <ul>
-                        <li>
-                            Bullet point 1 aka call-for-action
-                            sentence 1: this is the description
-                            for the first immediate action necessary link
-                        </li>
-                        <li>
-                            Bullet point 2 aka call-for-action
-                            sentence 2: this is the description
-                            for the second immediate action necessary link
-                        </li>
-                        <li>
-                            Bullet point 3 aka call-for-action
-                            sentence 3: this is the description
-                            for the third immediate action necessary link
-                        </li>
-                    </ul>
-                </el-col>
-                <el-col :span="8" class="support-image">
-                    <img src="../assets/immediate-support.png" alt="">
-                </el-col>
-
-            </el-row>
         </div>
     </div>
 </template>
@@ -245,6 +210,8 @@ const scrollDown = () => {
 }
 
 .home-nav li {
+    height: 50px;
+    align-content: center;
     margin: 0; /* 因为我们用了 gap，不需要单独设置 margin */
 }
 
@@ -258,10 +225,11 @@ const scrollDown = () => {
     transition: color 0.2s;
 }
 
-.home-nav a:hover {
-    color: #60a5fa;
+.home-nav li:hover {
+    background-color: #409EFF;
     /* 悬停时变色 */
 }
+
 
 h1 {
     font-size: 5rem;

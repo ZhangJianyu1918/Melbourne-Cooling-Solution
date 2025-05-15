@@ -7,7 +7,7 @@
         </el-button>
         <div class="title">
             <div style="height: 30px;"></div>
-            <h1>My Heat Health</h1>
+            <h1 style="font-family: Abril Fatface; font-weight: 1000; color: #19619E;">My Heat Health</h1>
             <div style="height: 10px;"></div>
             <p>Stay ahead of the heat with personalised health tips. This tool helps you track hydration, spot early
                 signs
@@ -21,27 +21,30 @@
                         <!-- Age -->
                         <div style="margin-bottom: 16px;">
                             <!-- <el-form-item label="Age"> -->
-                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Age</div>
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Age
+                            </div>
                             <el-input v-model="form.age" type="number"
-                                    placeholder="Enter your age as a number"></el-input>
+                                placeholder="Enter your age as a number"></el-input>
                             <!-- </el-form-item> -->
                         </div>
 
                         <!-- Gender -->
                         <div style="margin-bottom: 16px;">
-                        <!-- <el-form-item label="Gender"> -->
-                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Gender</div>
+                            <!-- <el-form-item label="Gender"> -->
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Gender
+                            </div>
                             <el-select v-model="form.gender" placeholder="Select from the options">
                                 <el-option label="Male" value="male" />
                                 <el-option label="Female" value="female" />
                             </el-select>
-                        <!-- </el-form-item> -->
+                            <!-- </el-form-item> -->
                         </div>
 
                         <!-- Daily Water Intake-->
                         <div style="margin-bottom: 16px;">
-                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily Water Intake (1 Cup approximate 260ML)</div>
-                        <!-- <el-form-item label="Daily Water Intake"> -->
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily
+                                Water Intake (1 Cup approximate 260ML)</div>
+                            <!-- <el-form-item label="Daily Water Intake"> -->
                             <el-select v-model="form.dailyWaterIntake" placeholder="Select from the options">
                                 <el-option label="0 Cup" value="0 Cup" />
                                 <el-option label="1 Cup" value="1 Cup" />
@@ -52,13 +55,14 @@
                                 <el-option label="6 Cups" value="6 Cups" />
                                 <el-option label="7 and more Cups" value="6 Cup" />
                             </el-select>
-                        <!-- </el-form-item> -->
+                            <!-- </el-form-item> -->
                         </div>
 
                         <!-- Recent Symptom -->
                         <div style="margin-bottom: 16px;">
-                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily Water Intake</div>
-                        <!-- <el-form-item label="Recent Symptom"> -->
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily
+                                Water Intake</div>
+                            <!-- <el-form-item label="Recent Symptom"> -->
                             <el-select v-model="form.recentSymptom" placeholder="Select from the options">
                                 <el-option label="Nothing" value="Nothing" />
                                 <el-option label="Headaches" value="headaches" />
@@ -72,36 +76,45 @@
                                 <el-option label="Weak, Rapid Pulse" value="weak, rapid pulse" />
                                 <el-option label="Poor Coordination" value="poor coordination" />
                                 <el-option label="Anxiety" value="anxiety" /> -->
-                                <el-option label="Having Flushed, Hot and Unusually Dry Skin" value="having flushed, hot and unusually dry skin" />
+                                <el-option label="Having Flushed, Hot and Unusually Dry Skin"
+                                    value="having flushed, hot and unusually dry skin" />
                                 <el-option label="Being Extremely Thirsty" value="being extremely thirsty" />
-                                <el-option label="Delirious"
-                                    value="delirious" />
+                                <el-option label="Delirious" value="delirious" />
                             </el-select>
                         </div>
 
                         <!-- </el-form-item> -->
                         <el-form-item>
-                            <el-button type="primary" size="large" style="width: 100%; background-color: #175cd3" @click="getPersonalHeatHealthTip()">Get Your Heat Health
+                            <el-button type="primary" size="large" style="width: 100%; background-color: #175cd3"
+                                @click="getPersonalHeatHealthTip()">Get Your Heat Health
                                 Advice</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
 
                 <!-- sec -->
-                <el-col :span="11" style="margin-right: 30px; background-color: #f5faff; border-radius: 16px; padding: 20px; font-family: 'Arial', sans-serif; box-sizing: border-box; background-color: #f5faff; height: 400px; overflow-y: auto;">
-                    <div style="color: #175cd3; margin-bottom: 16px; font-size: 16px; font-weight: 600;">Your Personal Heat Health Tips</div>
+                <el-col :span="11"
+                    style="margin-right: 30px; background-color: #f5faff; border-radius: 16px; padding: 20px; font-family: 'Arial', sans-serif; box-sizing: border-box; background-color: #f5faff; height: 400px; overflow-y: auto;">
+                    <div style="color: #175cd3; margin-bottom: 16px; font-size: 16px; font-weight: 600;">Your Personal
+                        Heat Health Tips</div>
                     <span v-html="result" style="font-size: 14px; color: #2c3e50; line-height: 1.5;"></span>
                 </el-col>
             </el-row>
 
             <!-- table -->
-            <el-row :gutter="20" justify="space-evenly" align="top" >
-                <el-col :span="22" style=" background-color: white; border-radius: 16px; padding: 20px; margin-top: 20px; font-family: 'Arial', sans-serif;">
+            <el-row :gutter="20" justify="space-evenly" align="top">
+                <el-col :span="22"
+                    style=" background-color: white; border-radius: 16px; padding: 20px; margin-top: 20px; font-family: 'Arial', sans-serif;">
                     <food-water-percentage-chart></food-water-percentage-chart>
                 </el-col>
             </el-row>
-
-
+        </div>
+        <div style="text-align: end;">
+            <el-button type="text" @click="$router.push('/personal-cooling-guide/cooling-home')"
+                style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-right /></el-icon>
+                Go to Cooling Game Page
+            </el-button>
         </div>
     </div>
 </template>
@@ -220,7 +233,7 @@ const getPersonalHeatHealthTip = () => {
         - loosen clothes, sprinkle with cool water, or wrap in a damp sheet.
         - Place cool, damp cloths in armpits, on the back of neck and on forehead to cool down as quickly as possible.`;
     }
-    
+
     // Combine all parts into the final result
     let additionalAdvice65Plus = '';
     if (age >= 65) {
