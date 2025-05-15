@@ -182,6 +182,13 @@
             </template>
             <search-video :keywords="['Heatstroke First Aid', 'Emergency Cooling Techniques', 'Heat Exhaustion Symptoms And Care']"></search-video>
         </el-card>
+
+        <div style="text-align: end;">
+            <el-button type="text" @click="$router.push('/community-support/recovery-and-aftercare')" style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-right /></el-icon>
+                Go to next Page
+            </el-button>
+        </div>
     </div>
 </template>
 

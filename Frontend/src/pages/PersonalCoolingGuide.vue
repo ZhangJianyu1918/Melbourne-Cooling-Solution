@@ -10,10 +10,10 @@
 
     <div style="height: 30px;"></div>
     <div>
-      <el-row :gutter="50" class="row-bg" justify="space-between">
-        <el-col v-for="(service, index) in services" :key="index" :span="8" :xs="24" :sm="12" :md="12" class="card-col">
+      <el-row :gutter="50" class="row-bg" justify="space-evenly">
+        <el-col v-for="(service, index) in services" :key="index" :span="8" :xs="24" :sm="10" :md="10" >
           <Card :title="service.title" :image="service.image" :description="service.description" :to="service.to"
-            :variant="service.variant" style="width: 500px;" />
+            :variant="service.variant" style="width: 500px;" class="card-col"/>
         </el-col>
       </el-row>
     </div>

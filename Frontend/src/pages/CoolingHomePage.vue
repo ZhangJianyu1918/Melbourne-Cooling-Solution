@@ -5,7 +5,9 @@
             <el-icon class="mr-1"><arrow-left /></el-icon>
             Go back to Personal Guide Page
         </el-button>
-        <h1>Game: Cooling My Home</h1>
+        <div style="height: 30px;"></div>
+        <h1 style="font-family: Abril Fatface; font-weight: 1000; color: #19619E; ">Game: Cooling My Home</h1>
+        <div style="height: 10px;"></div>
         <p>Discover practical ways to keep your home cool during heatwaves. This game gives you inspiring ideas of
             cooling strategies, decoration, and smart energy-saving tips. </p>
         <div style="border-radius: 20px;">
@@ -15,7 +17,25 @@
                         <div
                             style="background: #f0f0f0; width: 100%; height: 500px; overflow: hidden; border-radius: 20px; justify-items: center; align-content: center;">
                             <p></p>
-                            <el-row>
+                            <el-form>
+                              <el-form-item label="Maximum budget is 1000 AUD.">
+                                <el-input-number v-model="coins"
+                                        placeholder="Please Input Your Budget." style="width: 300px;"
+                                        max="1000"></el-input-number>
+                              </el-form-item>
+                              <el-form-item label="Choose Role">
+                                <el-select v-model="mode" placeholder="Please choose your role." style="width: 300px;">
+                              <el-option label="Owner" value="Owner"></el-option>
+                              <el-option label="Renter" value="Renter"></el-option>
+                            </el-select>
+                              </el-form-item>
+                              <el-form-item label="">
+                                <el-button type="" @click="startGame()" style="width: 300px;">
+                                Start Game
+                            </el-button>
+                              </el-form-item>
+                            </el-form>
+                            <!-- <el-row>
                                 <el-col :span="24"><el-input-number v-model="coins"
                                         placeholder="Please Input Your Budget." style="width: 300px;"
                                         max="1000"></el-input-number></el-col>
@@ -30,7 +50,7 @@
                             <div style="height: 10px;"></div>
                             <el-button type="" @click="startGame()" style="width: 300px;">
                                 Start Game
-                            </el-button>
+                            </el-button> -->
                         </div>
                     </div>
                     <div style="overflow: hidden; position: relative;" v-else>
@@ -45,11 +65,13 @@
                                     <ArrowLeftBold />
                                 </el-icon>
                             </el-button>
-                            <h5>🏠 Mode: {{ mode }}</h5>
-                            <h5>💰 Budget {{ coins - usedCoin }} AUD</h5>
-                            <h5>Buy Item</h5>
-                            <el-collapse>
-                                <el-collapse-item title="How to play" name="1">
+                            <div style="color: #787fbf; padding: 20px 0;">
+                            <h6>🏠 Mode: {{ mode }}</h6>
+                            <h6>💰 Budget {{ coins - usedCoin }} AUD</h6>
+                            </div>
+                            
+                            <el-collapse style="border: none">
+                                <el-collapse-item title="How to play" name="1" style="border: none">
                                     <ul>
                                         <li>Access to Shop and your Bag from the right tabs.</li>
                                         <li>Click on each item to see
@@ -72,7 +94,7 @@
                                         <li>Stay within your budget!</li>
                                     </ul>
                                 </el-collapse-item>
-                                <el-collapse-item title="Description" name="2">
+                                <el-collapse-item title="Description" name="2" style="border: none">
                                     <p>
                                         It’s a scorching 35°C day, and
                                         your living room is baking.
@@ -96,16 +118,11 @@
                                 </el-collapse-item>
                             </el-collapse>
                             <div class="exit-button-group">
-                                <el-row>
-                                    <el-col :span="12"><el-button v-show="!game"
-                                            @click="game = !game; centerDialogVisible = true; coins = null">Setting</el-button></el-col>
-                                    <el-col :span="12"><el-button v-show="!game" @click="exitGame()">Exit
-                                            Game</el-button></el-col>
-                                </el-row>
+                                <el-button v-show="!game" @click="exitGame()">Exit Game</el-button>
                             </div>
                         </div>
                         <el-button class="aside-button" v-else @click="aside = !aside" style="height: fit-content;">
-                            <div>
+                            <div style="color: #787fbf;">
                                 <h6>🏠 Mode: {{ mode }}</h6>
                                 <h6>💰 Budget {{ coins - usedCoin }} AUD</h6>
                             </div>
@@ -199,17 +216,13 @@
                         <div class="right-panel">
                             <!-- shop 面板 -->
                             <div v-if="shopAisde" class="shop-button" @click="shopAisde = !shopAisde">
-                                <!-- <el-button > -->
                                 🛒 Shop
-                                <!-- </el-button> -->
                             </div>
-                            <div v-else class="shop">
-                                <el-button @click="shopAisde = !shopAisde">
-                                    <el-icon>
-                                        <DArrowRight />
-                                    </el-icon>
-                                </el-button>
-                                🛒 Shop
+                            <div v-else class="shop" @click="shopAisde = !shopAisde">
+                                <el-icon style="padding-top: 20px;">
+                                    <DArrowRight />
+                                </el-icon>
+                                <span>🛒 Shop</span>
                                 <div v-for="(item, key) in storeItems" :key="key" style="overflow: hidden;">
                                     <div @click="showDetail(key)" draggable="false" style="cursor: pointer;">
                                         <el-row class="list">
@@ -246,7 +259,7 @@
                                     <div v-if="item.length > 0" class="cursor-move p-2 border rounded bg-white shadow" draggable="true"
                                         @click="useItem(item)" style="cursor: pointer;">
                                         <el-row>
-                                            <el-col :span="8"><img :src="item[0].img" style="width: 60px;" /></el-col>
+                                            <el-col :span="8"><img :src="item[0].img" style="width: 50px;" /></el-col>
                                             <el-col :span="16">
                                                 <div class="flex flex-col">
                                                     <span class="font-medium">{{ item[0].name }} ({{ item.length }})</span>
@@ -271,8 +284,14 @@
                         <el-button class="endButton" @click="endGame()" round>Finish My Setup</el-button>
                     </div>
                 </div>
-
             </div>
+        </div>
+        <div style="text-align: end;">
+            <el-button type="text" @click="$router.push('/heat-insights')"
+                style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-right /></el-icon>
+                Go to Heat Insights Page
+            </el-button>
         </div>
         <el-dialog v-model="centerDialogVisible" title="Game Result" width="500" align-center>
             <span>{{ gameResult }}</span>
@@ -515,9 +534,15 @@ const totalNumber = ref(0)
 const efficiency = ref('')
 const startGame = () => {
     if (coins.value <= 0) {
+        alert("You have to input number between 1 and 1000.")
         return;
     }
+    if (coins.value == null || mode.value == null) {
+        alert("Please input both data here.")
+        return
+    }
     budget.value = coins.value
+    usedCoin.value = 0
     game.value = !game.value
 }
 
@@ -545,17 +570,25 @@ const exitGame = () => {
     acArea.value = null
     dropped.value = 0
     temperature.value = 35
-    usedCoin.value = 0
-    mode.value = ''
+    usedCoin.value = null
+    mode.value = null
+    efficiency.value = ''
 }
 
 const endGame = () => {
-    efficiency.value = 'Good (Nice plant work!)'
-    if (imageAreaMap.has('7')) {
-        efficiency.value = 'Bad (The door is blocked.)'
+    if (imageAreaMap.size == 0) {
+        efficiency.value = "You didn't put anything."
     }
-    else if (dropped.value > 3) {
-        efficiency.value = 'Great (Drop a lot of temperature!)'
+    else if (imageAreaMap.has('7') && dropped.value < 3) {
+        efficiency.value = "The 'item' blocked the door :( temperature can be dropped more";
+    }
+    else if (imageAreaMap.has('7') && dropped.value >= 3) {
+        efficiency.value = "Your home is cooled excellently! Improve the decoration by not letting 'item' blocks the door next time.";
+    }
+    else if (!imageAreaMap.has('7') && dropped.value < 3) {
+        efficiency.value = 'Good decoration! Try to drop more temperature (over 3°C) next time.'
+    } else {
+        efficiency.value = 'Your home is cooled excellently! Amazing decoration!'
     }
     endGameDialogVisible.value = true
 }
@@ -896,6 +929,7 @@ const remove = (item) => {
     display: flex;
     top: 0;
     /* left: 10px; */
+    padding: 0 10px;
     z-index: 10;
     width: 200px;
     background-color: white;
@@ -914,6 +948,9 @@ const remove = (item) => {
 
 .exit-button-group {
     margin-top: auto;
+    align-self: center;
+    padding-bottom: 10px;
+    justify-content: center;
 }
 
 .aside-button {
@@ -924,7 +961,6 @@ const remove = (item) => {
     border: 3px solid #787fbf;
     z-index: 10;
 }
-
 /* .shop {
     position: absolute;
     top: 100px;
@@ -954,6 +990,7 @@ const remove = (item) => {
     position: relative;
     background-color: white;
     border-radius: 20px 0 0 20px;
+    padding-left: 10px;
     border: 3px solid #787fbf;
     cursor: pointer;
     max-height: 350px;
@@ -983,8 +1020,16 @@ const remove = (item) => {
 
 .endButton {
     position: absolute;
+    background-color: #787fbf;
+    border: solid;
+    border-color: white;
+    color: white;
     bottom: 50px;
     right: 10px;
+}
+.endButton:hover {
+    background-color: #5766ed;
+    color: white;
 }
 
 .plant-card {
@@ -1016,7 +1061,6 @@ const remove = (item) => {
     margin-left: 10px;
     font-weight: normal;
 }
-
 .description {
     font-size: 0.9em;
     color: #666;

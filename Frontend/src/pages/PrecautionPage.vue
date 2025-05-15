@@ -153,8 +153,16 @@
                     <span class="text-xl font-semibold text-gray-800">Video Resources</span>
                 </div>
             </template>
-            <search-video :keywords="['Heat Wave Prevention Tips', 'Urban Heat Island Solutions', 'Stay Safe During Heatwave']"></search-video>
+            <search-video
+                :keywords="['Heat Wave Prevention Tips', 'Urban Heat Island Solutions', 'Stay Safe During Heatwave']"></search-video>
         </el-card>
+
+        <div style="text-align: end;">
+            <el-button type="text" @click="$router.push('/community-support/uhi-first-aid')" style="font: 1.2em sans-serif; padding-top: 30px;">
+                <el-icon class="mr-1"><arrow-right /></el-icon>
+                Go to next Page
+            </el-button>
+        </div>
     </div>
 </template>
 
@@ -203,41 +211,42 @@ import SearchVideo from '@/components/SearchVideo.vue';
     padding: 0 12px;
     margin-right: 8px;
 }
+
 .section-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .nested-collapse-wrapper {
-  margin-top: 1rem;
-  padding-left: 1rem;
-  border-left: 4px solid #dcdfe6;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    border-left: 4px solid #dcdfe6;
 }
 
 .nested-collapse {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
 }
 
 .sub-collapse-item {
-  margin-bottom: 12px;
-  border: 1px solid #e4e7ed;
-  border-radius: 6px;
-  background-color: #ffffff;
-  padding: 0.5rem;
+    margin-bottom: 12px;
+    border: 1px solid #e4e7ed;
+    border-radius: 6px;
+    background-color: #ffffff;
+    padding: 0.5rem;
 }
 
 .reminder-style {
-  background-color: #fef6e0;
-  border-color: #f3d19e;
+    background-color: #fef6e0;
+    border-color: #f3d19e;
 }
 
 .collapse-tip,
 .reminder-tip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 </style>

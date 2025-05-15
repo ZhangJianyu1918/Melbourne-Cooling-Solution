@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div style="height: 50px;"></div>
-    <h2>Community Support</h2>
+    <h2 style="padding: 0 50px;">Community Support</h2>
     <div style="height: 20px;"></div>
-    <p style="font-size: 22px;">
+    <p style="font-size: 22px; padding: 0 50px;">
       Learn how to help yourself and others to deal with UHI
-      by accessing quick-response guides and local support service.<br/>
+      by accessing quick-response guides and local support service.
       Click on each card to read more about our support.
     </p>
     <div style="height: 20px;"></div>
