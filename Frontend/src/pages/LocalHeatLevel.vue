@@ -134,7 +134,11 @@
                         <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff;" />
                         <font-awesome-icon :icon="['fas', 'chevron-down']" style="color: #1e90ff; margin-top: 10px;" />
                       </div>
-                      <el-input v-model="navigationForm.from" placeholder="Enter the Start Location" size="large"
+                      <el-input 
+                        v-model="navigationForm.from" 
+                        ref="fromInput"
+                        placeholder="Enter the Start Location" 
+                        size="large"
                         style="flex: 1; border-radius: 20px; margin-left: 8px; margin-bottom: 10px;" />
                     </div>
                     <!-- To row -->
@@ -143,7 +147,11 @@
                         style="width: 24px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                         <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500;" />
                       </div>
-                      <el-input v-model="navigationForm.to" placeholder="Enter the Destination" size="large"
+                      <el-input 
+                        v-model="navigationForm.to" 
+                        ref="toInput"
+                        placeholder="Enter the Destination" 
+                        size="large"
                         style="flex: 1; border-radius: 20px; margin-left: 8px; margin-bottom: 10px" />
                     </div>
                   </div>
@@ -387,6 +395,8 @@ const routeDuration = ref(0)
 const routeDistance = ref(0)
 const drawer = ref(false)
 const direction = ref('rtl')
+const fromInput = ref(null); // 新增
+const toInput = ref(null);   // 新增
 
 
 // Initialize map on component mount
@@ -395,6 +405,34 @@ onMounted(async () => {
   await getDrinkingFoundtains();
   await initMap();
 });
+
+// 初始化 Autocomplete for "from" input
+  const fromAutocomplete = new google.maps.places.Autocomplete(fromInput.value.input, {
+    bounds: melbourneBounds,
+    strictBounds: true,
+    componentRestrictions: { country: 'au' },
+    types: ['geocode', 'establishment']
+  });
+  fromAutocomplete.addListener('place_changed', () => {
+    const place = fromAutocomplete.getPlace();
+    if (place.geometry) {
+      navigationForm.value.from = place.formatted_address;
+    }
+  });
+
+  // 初始化 Autocomplete for "to" input
+  const toAutocomplete = new google.maps.places.Autocomplete(toInput.value.input, {
+    bounds: melbourneBounds,
+    strictBounds: true,
+    componentRestrictions: { country: 'au' },
+    types: ['geocode', 'establishment']
+  });
+  toAutocomplete.addListener('place_changed', () => {
+    const place = toAutocomplete.getPlace();
+    if (place.geometry) {
+      navigationForm.value.to = place.formatted_address;
+    }
+  });
 
 const initMap = async () => {
   const loader = new Loader({
@@ -793,7 +831,7 @@ const loadCoolingPlaces = async (latitude, longitude) => {
 };
 
 const searchPlace = () => {
-  const input = searchInput.value?.value;
+  const input = searchInput.value?.input?.value; // 修复这里，确保获取的是输入框的实际值。
   if (!input) {
     alert('Please enter a search term');
     return;
