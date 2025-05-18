@@ -288,7 +288,7 @@
                         storeItems[currentKey].cooling
                             }}°C</span></p>
                     <p class="description">
-                        <!-- {{ storeItems[currentKey].description }} -->
+                        {{ storeItems[currentKey].description }}
                     </p>
                 </div>
             </div>
@@ -412,13 +412,55 @@ const game = ref(true)
 const aside = ref(true)
 const centerDialogVisible = ref(false)
 const storeItems = ref({
-    item1: { name: 'Aloe Vera', price: 20, cooling: 0.5, description: 'description1', img: new URL('../assets/aloe_vera.png', import.meta.url).href },
-    item2: { name: 'Snake Plant', price: 30, cooling: 0.4, description: 'description2', img: new URL('../assets/snake_plant.png', import.meta.url).href },
-    item3: { name: 'Electricity Fan', price: 50, cooling: 2.5, description: 'description3', img: new URL('../assets/electric_fan.png', import.meta.url).href },
-    item4: { name: 'Blinds', price: 60, cooling: 1.5, description: 'description4', img: new URL('../assets/blinds.png', import.meta.url).href },
-    item5: { name: 'Curtains', price: 100, cooling: 3, description: 'description5', img: new URL('../assets/curtains.png', import.meta.url).href },
-    item6: { name: 'Ceiling Fan', price: 170, cooling: 4, description: 'description6', img: new URL('../assets/ceiling_fan.png', import.meta.url).href },
-    item7: { name: 'Air Conditioner', price: 1000, cooling: 8, description: 'description7', img: new URL('../assets/ac.png', import.meta.url).href },
+    item1: { 
+        name: 'Aloe Vera', 
+        price: 20, 
+        cooling: 0.5, 
+        description: 'A hardy, upright indoor plant known for its air-purifying qualities and sleek look. Extremely low-maintenance. Water lightly every 2–3 weeks. Tolerates low light and neglect.', 
+        img: new URL('../assets/aloe_vera.png', import.meta.url).href 
+    },
+    item2: { 
+        name: 'Snake Plant', 
+        price: 30, 
+        cooling: 0.4, 
+        description: 'A succulent plant with thick, fleshy leaves. Provides a natural cooling effect through evaporation. Likes bright light and dry soil. Water every 2–4 weeks depending on climate.', 
+        img: new URL('../assets/snake_plant.png', import.meta.url).href 
+    },
+    item3: { 
+        name: 'Electricity Fan', 
+        price: 50, 
+        cooling: 2.5, 
+        description: 'A small electric fan that improves airflow and helps cool you down through sweat evaporation. Wipe clean every few weeks. Use in short bursts to save energy.', 
+        img: new URL('../assets/electric_fan.png', import.meta.url).href 
+    },
+    item4: { 
+        name: 'Blinds', 
+        price: 60, 
+        cooling: 1.5, 
+        description: 'Adjustable slatted window coverings that block direct sunlight and reduce radiant heat. Dust occasionally; tilt to control light. Easy to manage.', 
+        img: new URL('../assets/blinds.png', import.meta.url).href 
+    },
+    item5: { 
+        name: 'Curtains', 
+        price: 100, 
+        cooling: 3, 
+        description: 'Thick, insulated curtains designed to block heat and keep cool air inside. Great for east/west-facing windows. Dust and wash occasionally. Install once and adjust during the day.', 
+        img: new URL('../assets/curtains.png', import.meta.url).href 
+    },
+    item6: { 
+        name: 'Ceiling Fan', 
+        price: 170, 
+        cooling: 4, 
+        description: 'A fixed fan mounted on the ceiling that circulates air in the entire room. Great for continuous cooling. Dust blades monthly. Needs wiring and installation.', 
+        img: new URL('../assets/ceiling_fan.png', import.meta.url).href 
+    },
+    item7: { 
+        name: 'Air Conditioner', 
+        price: 1000, 
+        cooling: 8, 
+        description: 'An electric cooling unit that removes heat and humidity from the room. Fastest way to reduce temperature. Clean filters monthly. Needs installations and professional servicing occasionally.', 
+        img: new URL('../assets/ac.png', import.meta.url).href 
+    },
 })
 // const imageMap = {
 //     plant1: new URL('../assets/plant1.png', import.meta.url).href,
