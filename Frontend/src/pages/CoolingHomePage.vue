@@ -84,7 +84,7 @@
                                 </el-collapse-item>
                                 <el-collapse-item title="Description" name="2" style="border: none">
                                     <p>
-                                        {{ description }}
+                                        {{ descriptionContent }}
                                     </p>
                                 </el-collapse-item>
                             </el-collapse>
@@ -234,7 +234,7 @@
                                             <el-col :span="16">
                                                 <div class="flex flex-col">
                                                     <span class="font-medium">{{ item[0].name }} ({{ item.length
-                                                        }})</span>
+                                                    }})</span>
                                                     <el-row>
                                                         <el-col :span="10"><span class="text-sm"
                                                                 style="color: #ffab50;">${{ item[0].price
@@ -338,9 +338,9 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="dialogPlantVisible = false; alertVisible = false">Cancel</el-button>
-                    <!-- <el-button type="primary" @click="submitPlant()">
+                    <el-button type="primary" @click="submitPlant()">
                         Confirm
-                    </el-button> -->
+                    </el-button>
                 </div>
             </template>
         </el-dialog>
@@ -512,10 +512,19 @@ const switchBackgroundImage = computed(() => ({
 }))
 
 const descriptionContent = computed(() => {
-    if (mode.value == 'Owner') {
-        description.value = "It’s a scorching 35°C day, and your living room is baking.You own this place, and you’ve got options. Curtains, ceiling fans, AC units... you can install what you need to win the heat war.With a budget and full control of your space, your challenge is to optimise comfort and cool your home smartly.Aim to bring the room temperature down by at least 3°C to survive the heat.Think strategically. Spend wisely. And whatever you do… don’t melt. 🫠"
+    if (mode.value === 'Owner') {
+        return `It’s a scorching 35°C day, and your living room is baking.
+You own this place, and you’ve got options. Curtains, ceiling fans, AC units... you can install what you need to win the heat war.
+With a budget and full control of your space, your challenge is to optimise comfort and cool your home smartly.
+Aim to bring the room temperature down by at least 3°C to survive the heat.
+Think strategically. Spend wisely. And whatever you do… don’t melt. 🫠`
     } else {
-        description.value = "It’s a scorching 35°C day, and your living room is baking.You’re renting, so forget drilling holes, installing fans, or asking your landlord for help. You’ve got to work with what’s portable, affordable, and approval-free.You’ve got a limited budget and a mission: cool this space down using smart, renter-friendly solutions.Aim to bring the room temperature down by at least 3°C to survive the heat.Think strategically. Spend wisely. And whatever you do… don’t melt. 🫠"
+        return `It’s a scorching 35°C day, and your living room is baking.
+You’re renting, so forget drilling holes, installing fans, or asking your landlord for help.
+You’ve got to work with what’s portable, affordable, and approval-free.
+You’ve got a limited budget and a mission: cool this space down using smart, renter-friendly solutions.
+Aim to bring the room temperature down by at least 3°C to survive the heat.
+Think strategically. Spend wisely. And whatever you do… don’t melt. 🫠`
     }
 })
 
@@ -673,6 +682,183 @@ const useItem = (item) => {
     }
 }
 
+// const mappingArea = (area) => {
+//     if (imageAreaMap.has(String(area.value))) {
+//         alert("This area is already used. Please choose another area.")
+//         return false
+//     }
+//     imageAreaMap.set(String(area.value), targetItem);
+//     totalNumber.value -= 1;
+//     let newImageArea = null
+//     if (area.value == '1') {
+//         newImageArea = {
+//             top: 40,
+//             left: 415,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         }
+//     }
+//     else if (area.value == '2.1') {
+//         layout.value.push({
+//             top: 100,
+//             left: 170,
+//             w: 80,
+//             h: 80,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '2.2') {
+//         layout.value.push({
+//             top: 100,
+//             left: 670,
+//             w: 80,
+//             h: 80,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '3.1') {
+//         layout.value.push({
+//             top: 175,
+//             left: 210,
+//             w: 160,
+//             h: 180,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '3.2') {
+//         layout.value.push({
+//             top: 175,
+//             left: 545,
+//             w: 160,
+//             h: 180,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '4.1') {
+//         layout.value.push({
+//             top: 275,
+//             left: 245,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '4.2') {
+//         layout.value.push({
+//             top: 270,
+//             left: 580,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '4.3') {
+//         layout.value.push({
+//             top: 270,
+//             left: 830,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '5.1') {
+//         layout.value.push({
+//             top: 380,
+//             left: 325,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '5.2') {
+//         layout.value.push({
+//             top: 380,
+//             left: 420,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '6.1') {
+//         layout.value.push({
+//             top: 380,
+//             left: 130,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '6.2') {
+//         layout.value.push({
+//             top: 450,
+//             left: 170,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '6.3') {
+//         layout.value.push({
+//             top: 450,
+//             left: 575,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '6.4') {
+//         layout.value.push({
+//             top: 380,
+//             left: 642,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '6.5') {
+//         layout.value.push({
+//             top: 420,
+//             left: 775,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     else if (area.value == '7') {
+//         layout.value.push({
+//             top: 420,
+//             left: 25,
+//             w: 100,
+//             h: 100,
+//             i: String(Date.now()),
+//             item: targetItem
+//         });
+//     }
+//     imageAreaMap.set(String(area.value), newImageArea);
+//     layout.value.push(newImageArea);
+//     temperature.value -= targetItem.cooling
+//     dropped.value += targetItem.cooling
+//     return true
+// }
+
+// 图片映射函数
+
 const mappingArea = (area) => {
     if (imageAreaMap.has(String(area.value))) {
         alert("This area is already used. Please choose another area.")
@@ -680,162 +866,177 @@ const mappingArea = (area) => {
     }
     imageAreaMap.set(String(area.value), targetItem);
     totalNumber.value -= 1;
+    let newImageArea = null;
+
     if (area.value == '1') {
-        layout.value.push({
+        newImageArea = {
             top: 40,
             left: 415,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '2.1') {
-        layout.value.push({
+        newImageArea = {
             top: 100,
             left: 170,
             w: 80,
             h: 80,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '2.2') {
-        layout.value.push({
+        newImageArea = {
             top: 100,
             left: 670,
             w: 80,
             h: 80,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '3.1') {
-        layout.value.push({
+        newImageArea = {
             top: 175,
             left: 210,
             w: 160,
             h: 180,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '3.2') {
-        layout.value.push({
+        newImageArea = {
             top: 175,
             left: 545,
             w: 160,
             h: 180,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '4.1') {
-        layout.value.push({
+        newImageArea = {
             top: 275,
             left: 245,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '4.2') {
-        layout.value.push({
+        newImageArea = {
             top: 270,
             left: 580,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
+    }
+    else if (area.value == '4.3') {
+        newImageArea = {
+            top: 270,
+            left: 830,
+            w: 100,
+            h: 100,
+            i: String(Date.now()),
+            item: targetItem
+        };
     }
     else if (area.value == '5.1') {
-        layout.value.push({
+        newImageArea = {
             top: 380,
             left: 325,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '5.2') {
-        layout.value.push({
+        newImageArea = {
             top: 380,
             left: 420,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '6.1') {
-        layout.value.push({
+        newImageArea = {
             top: 380,
             left: 130,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '6.2') {
-        layout.value.push({
+        newImageArea = {
             top: 450,
             left: 170,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '6.3') {
-        layout.value.push({
+        newImageArea = {
             top: 450,
             left: 575,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '6.4') {
-        layout.value.push({
+        newImageArea = {
             top: 380,
             left: 642,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '6.5') {
-        layout.value.push({
+        newImageArea = {
             top: 420,
             left: 775,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
     else if (area.value == '7') {
-        layout.value.push({
+        newImageArea = {
             top: 420,
             left: 25,
             w: 100,
             h: 100,
             i: String(Date.now()),
             item: targetItem
-        });
+        };
     }
-    temperature.value -= targetItem.cooling
-    dropped.value += targetItem.cooling
-    return true
+
+    imageAreaMap.set(String(area.value), newImageArea);
+    layout.value.push(newImageArea);
+    temperature.value -= targetItem.cooling;
+    dropped.value += targetItem.cooling;
+    return true;
 }
 
-// 图片映射函数
+
 const getImageSrc = (item) => {
     return item.img
 }
@@ -865,6 +1066,7 @@ const buyItem = () => {
         // imageMap[storeItems.value[currentKey.value].name] = storeItems.value[currentKey.value].img
         imageMap.push(storeItems.value[currentKey.value])
     }
+    alert(`✅ You have bought ${storeItems.value[currentKey.value].name} successfully! The number of it is ${itemNumber.value}. Check your bag to see new item. ` )
     itemNumber.value = 1
     dialogVisible.value = false;
 }
@@ -884,11 +1086,22 @@ const remove = (item) => {
             bag.value[item.item.name].push(item.item)
             let targetArea
             imageAreaMap.forEach((value, key) => {
-                if (value === item.item) {
+                // if (value === item.item) {
+                //     console.log(key)
+                //     targetArea = String(key);
+                // }
+                // if (_.isEqual(value, item.item)) {
+                //     console.log(key)
+                //     targetArea = String(key);
+                // }
+                if (value.i == item.i) {
+                    console.log(key)
                     targetArea = String(key);
                 }
             });
             totalNumber.value += 1;
+            dropped.value -= item.item.cooling
+            temperature.value += item.item.cooling
             console.log("Before delete:", imageAreaMap);
             imageAreaMap.delete(targetArea);
             console.log("After delete:", imageAreaMap);
