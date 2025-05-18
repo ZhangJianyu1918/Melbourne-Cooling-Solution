@@ -19,6 +19,11 @@ const errorMessage = ref('');  // 错误信息
 
 // 校验密码
 const checkPassword = async () => {
+  // 只允许数字
+    if (!/^\d+$/.test(password.value)) {
+        alert('Password must be numbers only!');
+        return;
+    }
     const response = await axios.post('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies', {'password': password.value}, { withCredentials: true });
     console.log(response)
     if (response.data.statusCode === 200) {
