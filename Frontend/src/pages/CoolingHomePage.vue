@@ -311,7 +311,7 @@
                 <li>💪 Efficiency: {{ efficiency }}</li>
             </ul>
             <template #footer>
-                <div class="dialog-footer">
+                <div class="dialog-footer" style="display: flex; justify-content: center; align-items: center;">
                     <el-button @click="endGameDialogVisible = false; exitGame()" round>Play Again</el-button>
                     <!-- <el-button @click="endGameDialogVisible = false" round>Home</el-button> -->
                 </div>
@@ -338,9 +338,9 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="dialogPlantVisible = false; alertVisible = false">Cancel</el-button>
-                    <!-- <el-button type="primary" @click="submitPlant()">
+                    <el-button type="primary" @click="submitPlant()">
                         Confirm
-                    </el-button> -->
+                    </el-button>
                 </div>
             </template>
         </el-dialog>
@@ -830,8 +830,10 @@ const mappingArea = (area) => {
             item: targetItem
         });
     }
-    temperature.value -= targetItem.cooling
-    dropped.value += targetItem.cooling
+    // temperature.value -= targetItem.cooling
+    // dropped.value += targetItem.cooling
+    temperature.value = Number((temperature.value - targetItem.cooling).toFixed(1))
+    dropped.value = Number((dropped.value + targetItem.cooling).toFixed(1))
     return true
 }
 
@@ -891,6 +893,9 @@ const remove = (item) => {
             totalNumber.value += 1;
             console.log("Before delete:", imageAreaMap);
             imageAreaMap.delete(targetArea);
+            // 重新计算 temperature 和 dropped
+            dropped.value = Number((dropped.value - item.item.cooling).toFixed(1))
+            temperature.value = Number((temperature.value + item.item.cooling).toFixed(1))
             console.log("After delete:", imageAreaMap);
             ElMessage({
                 type: 'success',
