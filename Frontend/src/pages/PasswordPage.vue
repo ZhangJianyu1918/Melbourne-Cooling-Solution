@@ -19,6 +19,11 @@ const errorMessage = ref('');  // 错误信息
 
 // 校验密码
 const checkPassword = async () => {
+  // 只允许数字
+    if (!/^\d+$/.test(password.value)) {
+        alert('Password must be numbers only!');
+        return;
+    }
     const response = await axios.post('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies', {'password': password.value}, { withCredentials: true });
     console.log(response)
     if (response.data.statusCode === 200) {
@@ -36,26 +41,6 @@ const checkPassword = async () => {
         errorMessage.value = 'Password is incorrect!'; // 错误提示
     }
 }
-
-// const checkPassword = async () => {
-//   try {
-//     const response = await axios.post(
-//       'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies',
-//       { password: password.value },
-//       { withCredentials: true } // 允许浏览器接收 Set-Cookie（包含 HttpOnly）
-//     );
-
-//     if (response.data.statusCode === 200) {
-//       router.push('/home'); // 成功后跳转
-//     } else {
-//       errorMessage.value = 'Password is incorrect!';
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     errorMessage.value = 'Network or server error!';
-//   }
-// };
-
 </script>
 
 <style scoped>

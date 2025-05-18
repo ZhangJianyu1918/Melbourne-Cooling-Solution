@@ -19,8 +19,8 @@
                             display: flex; justify-content: center; align-items: center;">
                             <el-form label-position="top">
                                 <el-form-item label="Please Input Your Budget:">
-                                    <el-input-number v-model="coins" placeholder="Maximum budget is 1000 AUD." :max="1000"
-                                        style="width: 300px;">
+                                    <el-input-number v-model="coins" placeholder="Maximum budget is 2000 AUD."
+                                        :max="2000" style="width: 300px;">
                                     </el-input-number>
                                 </el-form-item>
 
@@ -84,24 +84,7 @@
                                 </el-collapse-item>
                                 <el-collapse-item title="Description" name="2" style="border: none">
                                     <p>
-                                        It’s a scorching 35°C day, and
-                                        your living room is baking.
-                                        You’re renting, so forget
-                                        drilling holes, installing fans,
-                                        or asking your landlord for
-                                        help. You’ve got to work with
-                                        what’s portable, affordable,
-                                        and approval-free.
-                                        You’ve got a limited budget
-                                        and a mission: cool this space
-                                        down using smart, renter-
-                                        friendly solutions.
-                                        Aim to bring the room
-                                        temperature down by at least
-                                        5°C to survive the heat.
-                                        Think strategically. Spend
-                                        wisely. And whatever you do…
-                                        don’t melt. 🫠
+                                        {{ description }}
                                     </p>
                                 </el-collapse-item>
                             </el-collapse>
@@ -136,7 +119,7 @@
                             </GridItem>
                         </GridLayout> -->
                         <div class="game-class" :style="{
-                            backgroundImage: `url(${livingRoomBg})`,
+                            ...switchBackgroundImage,
                             width: '100%',
                             backgroundSize: 'cover',
                             backgroundSize: '100% 100%',
@@ -251,7 +234,7 @@
                                             <el-col :span="16">
                                                 <div class="flex flex-col">
                                                     <span class="font-medium">{{ item[0].name }} ({{ item.length
-                                                    }})</span>
+                                                        }})</span>
                                                     <el-row>
                                                         <el-col :span="10"><span class="text-sm"
                                                                 style="color: #ffab50;">${{ item[0].price
@@ -331,9 +314,6 @@
                 <div class="dialog-footer">
                     <el-button @click="endGameDialogVisible = false; exitGame()" round>Play Again</el-button>
                     <!-- <el-button @click="endGameDialogVisible = false" round>Home</el-button> -->
-                    <el-button type="primary" @click="endGameDialogVisible = false" round>
-                        Confirm
-                    </el-button>
                 </div>
             </template>
         </el-dialog>
@@ -358,9 +338,9 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="dialogPlantVisible = false; alertVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submitPlant()">
+                    <!-- <el-button type="primary" @click="submitPlant()">
                         Confirm
-                    </el-button>
+                    </el-button> -->
                 </div>
             </template>
         </el-dialog>
@@ -421,7 +401,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { GridLayout, GridItem } from 'vue3-grid-layout'
 import livingRoomBg from '../assets/evaluation of each position.png';
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -448,7 +428,7 @@ const storeItems = ref({
 //     windowCovering2: new URL('../assets/window-covering2.png', import.meta.url).href,
 //     windowCovering3: new URL('../assets/window-covering3.png', import.meta.url).href,
 // }
-const imageMap = []
+let imageMap = []
 const layout = ref([])
 const draggedItem = ref('')
 const gridRef = ref(null);
@@ -521,9 +501,27 @@ const alertVisible = ref(false)
 const imageAreaMap = new Map()
 const totalNumber = ref(0)
 const efficiency = ref('')
+const description = ref('')
+const baImages = [
+    new URL('../assets/evaluation of each position.png', import.meta.url).href,
+    new URL('../assets/renter-bg.png', import.meta.url).href
+]
+
+const switchBackgroundImage = computed(() => ({
+    backgroundImage: `url(${mode.value === 'Renter' ? baImages[1] : baImages[0]})`
+}))
+
+const descriptionContent = computed(() => {
+    if (mode.value == 'Owner') {
+        description.value = "It’s a scorching 35°C day, and your living room is baking.You own this place, and you’ve got options. Curtains, ceiling fans, AC units... you can install what you need to win the heat war.With a budget and full control of your space, your challenge is to optimise comfort and cool your home smartly.Aim to bring the room temperature down by at least 3°C to survive the heat.Think strategically. Spend wisely. And whatever you do… don’t melt. 🫠"
+    } else {
+        description.value = "It’s a scorching 35°C day, and your living room is baking.You’re renting, so forget drilling holes, installing fans, or asking your landlord for help. You’ve got to work with what’s portable, affordable, and approval-free.You’ve got a limited budget and a mission: cool this space down using smart, renter-friendly solutions.Aim to bring the room temperature down by at least 3°C to survive the heat.Think strategically. Spend wisely. And whatever you do… don’t melt. 🫠"
+    }
+})
+
 const startGame = () => {
     if (coins.value <= 0) {
-        alert("You have to input number between 1 and 1000.")
+        alert("You have to input number between 1 and 2000.")
         return;
     }
     if (coins.value == null || mode.value == null) {
@@ -533,7 +531,10 @@ const startGame = () => {
     budget.value = coins.value
     usedCoin.value = 0
     game.value = !game.value
+    descriptionContent()
 }
+
+
 
 const exitGame = () => {
     coins.value = 0
