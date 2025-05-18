@@ -71,7 +71,7 @@
             <el-row class="searchInputArea">
               <el-col :span="18">
                 <el-input ref="searchInput" v-model="searchText" placeholder="Please Enter the Search Area" type="text"
-                  @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
+                  @keyup.enter="searchPlace()" size="large" style="--el-border-radius-base: 20px">
                   <template #suffix>
                     <el-icon>
                       <Search />
@@ -80,7 +80,7 @@
                 </el-input>
               </el-col>
               <el-col :span="2" style="margin-left: 30px;">
-                <el-button type="primary" size="large" @click="searchPlace">
+                <el-button type="primary" size="large" @click="searchPlace()">
                   Search Place
                 </el-button>
               </el-col>
@@ -665,7 +665,7 @@ const getDrinkingFoundtains = async () => {
     return;
   }
   let decrypt_data = decryptData(data);
-  console.log(decrypt_data)
+  // console.log(decrypt_data)
   drinkingFountainList.value = decrypt_data;
   // console.log(drinkingFountainList.value);
 }
@@ -839,7 +839,7 @@ const loadCoolingPlaces = async (latitude, longitude) => {
 };
 
 const searchPlace = () => {
-  const input = searchInput.value?.input?.value; // 修复这里，确保获取的是输入框的实际值。
+  const input = searchText.value;
   if (!input) {
     alert('Please enter a search term');
     return;
@@ -855,28 +855,20 @@ const searchPlace = () => {
     {
       query: input + " Melbourne", // 添加"Melbourne"作为关键词
       bounds: melbourneBounds,
-      location: new google.maps.LatLng(-37.8136, 144.9631), // 墨尔本中心位置
-      radius: 10000, // 搜索半径（米）
-      region: 'au' // 澳大利亚区域
+      location: new google.maps.LatLng(-37.8136, 144.9631),
+      radius: 10000,
+      region: 'au'
     },
     (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
-        // 过滤结果，只保留墨尔本市区内的位置
-        const melbourneResults = results.filter(place =>
-          melbourneBounds.contains(place.geometry.location) &&
-          place.formatted_address.toLowerCase().includes('melbourne')
-        );
-        if (melbourneResults.length > 0) {
-          updateMap(melbourneResults[0]);
-        } else {
-          alert('No results found');
-        }
+        updateMap(results[0]); // 不再过滤，直接使用第一个结果
       } else {
         alert('No results found in Melbourne area');
       }
     }
   );
 };
+
 
 const updateMap = (place) => {
   const location = place.geometry.location;
