@@ -25,14 +25,14 @@ import Card from '@/components/Card.vue';
 
 const services = [
   {
-    image: "cooling-my-home.png",
+    image: "my-heat-health-guide.png",
     title: "💪 My Heat Health Guide",
     description: "Stay ahead of the heat with personalised health tips. This tool helps you track hydration, spot early signs of heat stress, and get advice to stay safe during hot weather.",
     to: "/personal-cooling-guide/heat-health-guide",
     variant: 'home'
   },
   {
-    image: "my-heat-health-guide.png",
+    image: "cooling-my-home.png",
     title: "🏠 Game: Cooling My Home",
     description: "Discover practical ways to keep your home cool during heatwaves. This game gives you inspiring ideas of cooling strategies, decoration, and smart energy-saving tips. ",
     to: "/personal-cooling-guide/cooling-home",

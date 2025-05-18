@@ -17,44 +17,44 @@ import { ref } from 'vue'
 const password = ref('');  // 用户输入的密码
 const errorMessage = ref('');  // 错误信息
 
-// // 校验密码
-// const checkPassword = async () => {
-//     const response = await axios.post('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies', {'password': password.value}, { withCredentials: true });
-//     console.log(response)
-//     if (response.data.statusCode === 200) {
-//         // 如果密码正确，将认证标记保存到 Cookie
-//         Cookies.set('authenticated', 'true', { 
-//             path: '/', // 设置 Cookie 的路径为根目录
-//             expires: 0.417, // 设置 Cookie 的过期时间为 1 天
-//             secure: true, // 仅在 HTTPS 下发送 Cookie
-//             sameSite: 'Strict' // 设置 SameSite 属性为 Strict，防止 CSRF 攻击
-//         })
-//         // Cookies.set('Origin', 'http://localhost:5173', { path: '/' })
-//         // Cookies.set('withCredentials', 'true', { path: '/' })
-//         router.push('/home') // 跳转到受保护的页面
-//     } else {
-//         errorMessage.value = 'Password is incorrect!'; // 错误提示
-//     }
-// }
-
+// 校验密码
 const checkPassword = async () => {
-  try {
-    const response = await axios.post(
-      'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies',
-      { password: password.value },
-      { withCredentials: true } // 允许浏览器接收 Set-Cookie（包含 HttpOnly）
-    );
-
+    const response = await axios.post('https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies', {'password': password.value}, { withCredentials: true });
+    console.log(response)
     if (response.data.statusCode === 200) {
-      router.push('/home'); // 成功后跳转
+        // 如果密码正确，将认证标记保存到 Cookie
+        Cookies.set('authenticated', 'true', { 
+            path: '/', // 设置 Cookie 的路径为根目录
+            expires: 0.417, // 设置 Cookie 的过期时间为 1 天
+            secure: true, // 仅在 HTTPS 下发送 Cookie
+            sameSite: 'Strict' // 设置 SameSite 属性为 Strict，防止 CSRF 攻击
+        })
+        // Cookies.set('Origin', 'http://localhost:5173', { path: '/' })
+        // Cookies.set('withCredentials', 'true', { path: '/' })
+        router.push('/home') // 跳转到受保护的页面
     } else {
-      errorMessage.value = 'Password is incorrect!';
+        errorMessage.value = 'Password is incorrect!'; // 错误提示
     }
-  } catch (err) {
-    console.error(err);
-    errorMessage.value = 'Network or server error!';
-  }
-};
+}
+
+// const checkPassword = async () => {
+//   try {
+//     const response = await axios.post(
+//       'https://fuvetj5be6.execute-api.us-east-1.amazonaws.com/melbourne-cooling-solution/post_cookies',
+//       { password: password.value },
+//       { withCredentials: true } // 允许浏览器接收 Set-Cookie（包含 HttpOnly）
+//     );
+
+//     if (response.data.statusCode === 200) {
+//       router.push('/home'); // 成功后跳转
+//     } else {
+//       errorMessage.value = 'Password is incorrect!';
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     errorMessage.value = 'Network or server error!';
+//   }
+// };
 
 </script>
 
