@@ -19,7 +19,7 @@
                             display: flex; justify-content: center; align-items: center;">
                             <el-form label-position="top">
                                 <el-form-item label="Please Input Your Budget:">
-                                    <el-input-number v-model="coins" placeholder="Maximum budget is 1000 AUD." :max="1000"
+                                    <el-input-number v-model="coins" placeholder="Maximum budget is 2000 AUD." :max="2000"
                                         style="width: 300px;">
                                     </el-input-number>
                                 </el-form-item>
@@ -136,7 +136,7 @@
                             </GridItem>
                         </GridLayout> -->
                         <div class="game-class" :style="{
-                            backgroundImage: `url(${livingRoomBg})`,
+                            ...switchBackgroundImage,
                             width: '100%',
                             backgroundSize: 'cover',
                             backgroundSize: '100% 100%',
@@ -421,7 +421,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { GridLayout, GridItem } from 'vue3-grid-layout'
 import livingRoomBg from '../assets/evaluation of each position.png';
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -521,9 +521,18 @@ const alertVisible = ref(false)
 const imageAreaMap = new Map()
 const totalNumber = ref(0)
 const efficiency = ref('')
+const baImages = [
+    new URL('../assets/evaluation of each position.png', import.meta.url).href,
+    new URL('../assets/renter-bg.png', import.meta.url).href
+]
+ 
+const switchBackgroundImage = computed(() => ({
+  backgroundImage: `url(${mode.value === 'Renter' ? baImages[1] : baImages[0]})`
+}))
+
 const startGame = () => {
     if (coins.value <= 0) {
-        alert("You have to input number between 1 and 1000.")
+        alert("You have to input number between 1 and 2000.")
         return;
     }
     if (coins.value == null || mode.value == null) {
@@ -534,6 +543,8 @@ const startGame = () => {
     usedCoin.value = 0
     game.value = !game.value
 }
+
+
 
 const exitGame = () => {
     coins.value = 0
