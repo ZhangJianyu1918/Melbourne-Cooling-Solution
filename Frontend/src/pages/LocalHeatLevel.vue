@@ -66,135 +66,125 @@
     <div>
       <!-- Search box -->
       <transition name="fade-zoom">
-        <div v-if="!isExpand" style="margin-bottom: 10px; text-align: center;">
-          <el-row class="searchInputArea">
-            <el-col :span="18">
-              <el-input ref="searchInput" v-model="searchText" placeholder="Please Enter the Search Area" type="text"
-                @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
-                <template #suffix>
-                  <el-icon>
-                    <Search />
-                  </el-icon>
-                </template>
-              </el-input>
-            </el-col>
-            <el-col :span="2" style="margin-left: 30px;">
-              <el-button type="primary" size="large" @click="searchPlace">
-                Search Place
-              </el-button>
-            </el-col>
-            <el-col :span="2" style="margin-left: 30px;">
-              <el-button type="primary" size="large" @click="expandInputArea">
-                Navigate Route
-              </el-button>
-            </el-col>
-          </el-row>
-        </div>
+        <div>
+          <div v-show="!isExpand" style="margin-bottom: 10px; text-align: center;">
+            <el-row class="searchInputArea">
+              <el-col :span="18">
+                <el-input ref="searchInput" v-model="searchText" placeholder="Please Enter the Search Area" type="text"
+                  @keyup.enter="searchPlace" size="large" style="--el-border-radius-base: 20px">
+                  <template #suffix>
+                    <el-icon>
+                      <Search />
+                    </el-icon>
+                  </template>
+                </el-input>
+              </el-col>
+              <el-col :span="2" style="margin-left: 30px;">
+                <el-button type="primary" size="large" @click="searchPlace">
+                  Search Place
+                </el-button>
+              </el-col>
+              <el-col :span="2" style="margin-left: 30px;">
+                <el-button type="primary" size="large" @click="expandInputArea">
+                  Navigate Route
+                </el-button>
+              </el-col>
+            </el-row>
+          </div>
 
-        <div v-else class="searchArea">
-          <!-- Step 1 & 2 and Step 3 layout -->
-          <el-row type="flex" justify="space-between" align="top">
-            <!-- Left: Step 1 and 2 stacked -->
-            <el-col :span="10">
-              <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-left: 60px;">Step 1: Trip mode
-                selection</div>
-              <el-radio-group v-model="navigationForm.type"
-                style="display: flex; gap: 20px; margin-bottom: 20px; margin-left: 60px;">
-                <el-radio-button label="WALKING">
-                  <font-awesome-icon :icon="['fas', 'person-walking']" /> Walking
-                </el-radio-button>
-                <el-radio-button label="BICYCLING">
-                  <font-awesome-icon :icon="['fas', 'person-biking']" /> Biking
-                </el-radio-button>
-              </el-radio-group>
+          <div v-show="isExpand" class="searchArea">
+            <!-- Step 1 & 2 and Step 3 layout -->
+            <el-row type="flex" justify="space-between" align="top">
+              <!-- Left: Step 1 and 2 stacked -->
+              <el-col :span="10">
+                <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-left: 60px;">Step 1: Trip
+                  mode
+                  selection</div>
+                <el-radio-group v-model="navigationForm.type"
+                  style="display: flex; gap: 20px; margin-bottom: 20px; margin-left: 60px;">
+                  <el-radio-button label="WALKING">
+                    <font-awesome-icon :icon="['fas', 'person-walking']" /> Walking
+                  </el-radio-button>
+                  <el-radio-button label="BICYCLING">
+                    <font-awesome-icon :icon="['fas', 'person-biking']" /> Biking
+                  </el-radio-button>
+                </el-radio-group>
 
 
-              <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-top: 70px; margin-left: 60px;">
-                Step 2:
-                Route selection</div>
-              <el-radio-group v-model="navigationForm.path" style="display: flex; gap: 20px; margin-left: 60px;">
-                <el-radio label="Coolest">Coolest</el-radio>
-                <el-radio label="Shortest">Shortest</el-radio>
-              </el-radio-group>
-            </el-col>
+                <div
+                  style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-top: 70px; margin-left: 60px;">
+                  Step 2:
+                  Route selection</div>
+                <el-radio-group v-model="navigationForm.path" style="display: flex; gap: 20px; margin-left: 60px;">
+                  <el-radio label="Coolest">Coolest</el-radio>
+                  <el-radio label="Shortest">Shortest</el-radio>
+                </el-radio-group>
+              </el-col>
 
-            <!-- Right: Step 3 and Navigate Button -->
-            <el-col :span="14">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative;">
-                <div style="flex: 1;">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Step 3: Enter Start point and
-                      Destination</div>
-                  </div>
-
-                  <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <!-- From row -->
-                    <div style="display: flex; align-items: center;">
-                      <div style="width: 24px; text-align: center;">
-                        <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff;" />
-                        <font-awesome-icon :icon="['fas', 'chevron-down']" style="color: #1e90ff; margin-top: 10px;" />
-                      </div>
-                      <el-input 
-                        v-model="navigationForm.from" 
-                        ref="fromInput"
-                        placeholder="Enter the Start Location" 
-                        size="large"
-                        style="flex: 1; border-radius: 20px; margin-left: 8px; margin-bottom: 10px;" />
+              <!-- Right: Step 3 and Navigate Button -->
+              <el-col :span="14">
+                <div
+                  style="display: flex; justify-content: space-between; align-items: flex-start; position: relative;">
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Step 3: Enter Start point and
+                        Destination</div>
                     </div>
-                    <!-- To row -->
-                    <div style="display: flex; align-items: center;">
-                      <div
-                        style="width: 24px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500;" />
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                      <!-- From row -->
+                      <div style="display: flex; align-items: center;">
+                        <div style="width: 24px; text-align: center;">
+                          <font-awesome-icon :icon="['fas', 'circle']" style="color: #1e90ff;" />
+                          <font-awesome-icon :icon="['fas', 'chevron-down']"
+                            style="color: #1e90ff; margin-top: 10px;" />
+                        </div>
+                        <input ref="fromInput" v-model="navigationForm.from" placeholder="Enter the Start Location"
+                          size="large" class="newInputCSS" @focus="handleFocus"
+                        @blur="handleBlur"/>
                       </div>
-                      <el-input 
-                        v-model="navigationForm.to" 
-                        ref="toInput"
-                        placeholder="Enter the Destination" 
-                        size="large"
-                        style="flex: 1; border-radius: 20px; margin-left: 8px; margin-bottom: 10px" />
+                      <!-- To row -->
+                      <div style="display: flex; align-items: center;">
+                        <div
+                          style="width: 24px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                          <font-awesome-icon :icon="['fas', 'location-dot']" style="color: #ff4500;" />
+                        </div>
+                        <input ref="toInput" v-model="navigationForm.to" placeholder="Enter the Destination"
+                          size="large" class="newInputCSS" @focus="handleFocus"
+                        @blur="handleBlur"/>
+                      </div>
                     </div>
                   </div>
+                  <el-button type="primary" plain @click="calculateRoute"
+                    style="height: 100px; width: 90px; border-radius: 12px; margin-left: 16px; margin-top: 35px;">
+                    Navigate
+                  </el-button>
+                  <el-button type="text" @click="isExpand = false" style="font-size: 20px; padding: 0;">
+                    <font-awesome-icon :icon="['fas', 'xmark']" />
+                  </el-button>
                 </div>
-
-                <el-button type="primary" plain @click="calculateRoute"
-                  style="height: 100px; width: 90px; border-radius: 12px; margin-left: 16px; margin-top: 35px;">
-                  Navigate
-                </el-button>
-                <el-button type="text" @click="isExpand = false" style="font-size: 20px; padding: 0;">
-                  <font-awesome-icon :icon="['fas', 'xmark']" />
-                </el-button>
-              </div>
-
-
-              <!-- Summary stats row -->
-              <el-row type="flex" justify="space-between" align="middle" style="margin-top: 20px;">
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Cooling place" :value="maxCoolingPlace" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Water fountain" :value="maxDrinkingFountains" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Tree" :value="maxTrees" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Distance (m)" :value="routeDistance" />
-                </el-col>
-                <el-col :span="4" style="text-align: center;">
-                  <el-statistic title="Duration (min)" :value="routeDuration" />
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-
-
-
-
-
-
-
+                <!-- Summary stats row -->
+                <el-row type="flex" justify="space-between" align="middle" style="margin-top: 20px;">
+                  <el-col :span="4" style="text-align: center;">
+                    <el-statistic title="Cooling place" :value="maxCoolingPlace" />
+                  </el-col>
+                  <el-col :span="4" style="text-align: center;">
+                    <el-statistic title="Water fountain" :value="maxDrinkingFountains" />
+                  </el-col>
+                  <el-col :span="4" style="text-align: center;">
+                    <el-statistic title="Tree" :value="maxTrees" />
+                  </el-col>
+                  <el-col :span="4" style="text-align: center;">
+                    <el-statistic title="Distance (m)" :value="routeDistance" />
+                  </el-col>
+                  <el-col :span="4" style="text-align: center;">
+                    <el-statistic title="Duration (min)" :value="routeDuration" />
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </div>
         </div>
+
       </transition>
 
       <div style="height: 20px;"></div>
@@ -224,7 +214,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, nextTick } from 'vue';
 import { Loader } from '@googlemaps/js-api-loader';
 import waterBottleIcon from '@/assets/water-bottle.png';
 import frostIcon from '@/assets/frost.png';
@@ -242,10 +232,14 @@ import { ElMessageBox } from 'element-plus'
 const searchText = ref('');
 const mapElement = ref(null);
 const searchInput = ref(null);
+const fromInput = ref(null); // 新增
+const toInput = ref(null);   // 新增
 let map = null;
 let google = null;
 let marker = ref(null);
 let autocomplete = null;
+let fromAutocomplete = null
+let toAutocomplete = null
 let directionsService = ref(null);
 const directionsRenderer = ref(null);
 const weather = reactive({
@@ -381,8 +375,9 @@ const navigationForm = ref({
   to: '',
   type: '',
   path: ''
-
 })
+const from = ref('')
+const to = ref('')
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const drinkingFountainList = ref([])
@@ -395,44 +390,15 @@ const routeDuration = ref(0)
 const routeDistance = ref(0)
 const drawer = ref(false)
 const direction = ref('rtl')
-const fromInput = ref(null); // 新增
-const toInput = ref(null);   // 新增
-
 
 // Initialize map on component mount
 onMounted(async () => {
+  await nextTick();
+  // initAutocomplete();
   await getCoolingPlace();
   await getDrinkingFoundtains();
   await initMap();
 });
-
-// 初始化 Autocomplete for "from" input
-  const fromAutocomplete = new google.maps.places.Autocomplete(fromInput.value.input, {
-    bounds: melbourneBounds,
-    strictBounds: true,
-    componentRestrictions: { country: 'au' },
-    types: ['geocode', 'establishment']
-  });
-  fromAutocomplete.addListener('place_changed', () => {
-    const place = fromAutocomplete.getPlace();
-    if (place.geometry) {
-      navigationForm.value.from = place.formatted_address;
-    }
-  });
-
-  // 初始化 Autocomplete for "to" input
-  const toAutocomplete = new google.maps.places.Autocomplete(toInput.value.input, {
-    bounds: melbourneBounds,
-    strictBounds: true,
-    componentRestrictions: { country: 'au' },
-    types: ['geocode', 'establishment']
-  });
-  toAutocomplete.addListener('place_changed', () => {
-    const place = toAutocomplete.getPlace();
-    if (place.geometry) {
-      navigationForm.value.to = place.formatted_address;
-    }
-  });
 
 const initMap = async () => {
   const loader = new Loader({
@@ -468,6 +434,8 @@ const initMap = async () => {
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
       },
     });
+
+
     map.mapTypes.set("route_map", styledMapType);
     map.mapTypes.get("route_map").name = "Route Map"; // 添加显示名称
     map.setMapTypeId("route_map");
@@ -502,9 +470,38 @@ const initMap = async () => {
       const place = autocomplete.getPlace();
       if (place.geometry) {
         searchText.value = place.name
-        updateMap(place);
+
       } else {
         console.log('No details available for input: ' + place.name);
+      }
+    });
+
+    fromAutocomplete = new google.maps.places.Autocomplete(fromInput.value, {
+      // bounds: melbourneBounds,
+      strictBounds: true,
+      componentRestrictions: { country: 'au' },
+      types: ['geocode', 'establishment']
+    });
+    console.log(fromInput.value)
+    fromAutocomplete.addListener('place_changed', () => {
+      const place = fromAutocomplete.getPlace();
+      if (place.geometry) {
+        navigationForm.value.from = place.name;
+
+      }
+    });
+    toAutocomplete = new google.maps.places.Autocomplete(toInput.value, {
+      // bounds: melbourneBounds,
+      strictBounds: true,
+      componentRestrictions: { country: 'au' },
+      types: ['geocode', 'establishment']
+    });
+    console.log(toInput.value)
+    toAutocomplete.addListener('place_changed', () => {
+      const place = toAutocomplete.getPlace();
+      if (place.geometry) {
+        navigationForm.value.to = place.name;
+        updateMap(place);
       }
     });
     directionsService.value = new google.maps.DirectionsService();
@@ -526,6 +523,17 @@ const updateTreeIconStyle = (zoomLevel) => {
     };
   });
 };
+
+// function initAutocomplete() {
+//   // if (!google || !fromInput.value?.input || !toInput.value?.input) {
+//   //   console.error('Autocomplete initialization failed: DOM not ready');
+//   //   return;
+//   // }
+
+//   fromAutocomplete = new google.maps.places.Autocomplete(fromInput.value.input);
+//   toAutocomplete = new google.maps.places.Autocomplete(toInput.value.input);
+// }
+
 
 const expandInputArea = () => {
   isExpand.value = true;
@@ -1106,7 +1114,23 @@ h2 {
   left: 20px;
   z-index: 10;
 }
-
+.newInputCSS {
+    flex: 1;
+    border-radius: 5px;
+    margin-left: 8px;
+    margin-bottom: 10px;
+    z-index: 15;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid #dcdfe6;
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.newInputCSS:hover {
+  border-color: #409EFF; /* Element Plus primary color */
+  box-shadow: 0 0 2px rgba(64, 158, 255, 0.5);
+}
 .temp {
   font-size: 36px;
   font-weight: bold;
