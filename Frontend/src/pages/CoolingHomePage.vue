@@ -397,6 +397,20 @@
                 </div>
             </template>
         </el-dialog>
+        <el-dialog
+            v-model="showCenterTip"
+            width="350px"
+            align-center
+            :show-close="false"
+            :close-on-click-modal="true"
+            :close-on-press-escape="true"
+            style="text-align: center;"
+            >
+            <span style="font-size: 1.2em;">{{ centerTipMsg }}</span>
+            <template #footer>
+                <el-button type="primary" @click="showCenterTip = false">OK</el-button>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -406,6 +420,8 @@ import { GridLayout, GridItem } from 'vue3-grid-layout'
 import livingRoomBg from '../assets/evaluation of each position.png';
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+const showCenterTip = ref(false)
+const centerTipMsg = ref('')
 const coins = ref()
 const usedCoin = ref(0)
 const game = ref(true)
@@ -876,6 +892,11 @@ const mappingArea = (area) => {
     // dropped.value += targetItem.cooling
     temperature.value = Number((temperature.value - targetItem.cooling).toFixed(1))
     dropped.value = Number((dropped.value + targetItem.cooling).toFixed(1))
+
+    // 用弹窗提示
+    centerTipMsg.value = `Hooray! You just cool your home down by ${targetItem.cooling}°C 😎`
+    showCenterTip.value = true
+
     return true
 }
 
