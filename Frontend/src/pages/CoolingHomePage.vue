@@ -448,7 +448,7 @@ const storeItems = ref({
 //     windowCovering2: new URL('../assets/window-covering2.png', import.meta.url).href,
 //     windowCovering3: new URL('../assets/window-covering3.png', import.meta.url).href,
 // }
-const imageMap = []
+let imageMap = []
 const layout = ref([])
 const draggedItem = ref('')
 const gridRef = ref(null);

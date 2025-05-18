@@ -20,12 +20,14 @@
                     <el-form :model="form">
                         <!-- Age -->
                         <div style="margin-bottom: 16px;">
-                            <!-- <el-form-item label="Age"> -->
-                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Age
-                            </div>
-                            <el-input v-model="form.age" type="number"
-                                placeholder="Enter your age as a number"></el-input>
-                            <!-- </el-form-item> -->
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Age</div>
+                            <el-select v-model="form.age" placeholder="Select your age group">
+                                <el-option label="1-3" value="2" />
+                                <el-option label="4-8" value="6" />
+                                <el-option label="9-13" value="11" />
+                                <el-option label="14-18" value="16" />
+                                <el-option label="19+" value="30" />
+                            </el-select>
                         </div>
 
                         <!-- Gender -->
@@ -60,8 +62,7 @@
 
                         <!-- Recent Symptom -->
                         <div style="margin-bottom: 16px;">
-                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Daily
-                                Water Intake</div>
+                            <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #175cd3;">Recent Heat Symptom</div>
                             <!-- <el-form-item label="Recent Symptom"> -->
                             <el-select v-model="form.recentSymptom" placeholder="Select from the options">
                                 <el-option label="Nothing" value="Nothing" />

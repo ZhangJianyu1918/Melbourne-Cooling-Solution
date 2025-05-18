@@ -98,14 +98,14 @@
             <el-col :span="10">
               <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; margin-left: 60px;">Step 1: Trip mode
                 selection</div>
-              <el-radio-group v-model="navigationForm.type"
-                style="display: flex; gap: 20px; margin-bottom: 20px; margin-left: 60px;">
-                <el-radio-button label="WALKING">
-                  <font-awesome-icon :icon="['fas', 'person-walking']" /> Walking
-                </el-radio-button>
-                <el-radio-button label="BICYCLING">
-                  <font-awesome-icon :icon="['fas', 'person-biking']" /> Biking
-                </el-radio-button>
+              <el-radio-group v-model="navigationForm.type" 
+              style="display: flex; gap: 20px; margin-bottom: 20px; margin-left: 50px;" class="custom-radio-group">
+                <el-radio label="WALKING" border>
+                  <font-awesome-icon :icon="['fas', 'person-walking']" />  Walking
+                </el-radio>
+                <el-radio label="BICYCLING" border>
+                  <font-awesome-icon :icon="['fas', 'person-biking']" />  Biking
+                </el-radio>
               </el-radio-group>
 
 
@@ -371,8 +371,8 @@ const centerDialogVisible = ref(false)
 const navigationForm = ref({
   from: '',
   to: '',
-  type: '',
-  path: ''
+  type: 'WALKING',
+  path: 'Coolest'
 
 })
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -1157,5 +1157,11 @@ h2 {
 .fade-zoom-leave-from {
   opacity: 1;
   transform: scale(1);
+}
+
+:deep(.custom-radio-group .el-radio) {
+  margin-top: 16px;
+  margin-right: 16px;
+  border-radius: 20px;
 }
 </style>

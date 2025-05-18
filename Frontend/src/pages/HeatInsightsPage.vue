@@ -23,7 +23,7 @@
       <el-button type="text" @click="chartSwitch()" style="font: 1.2em sans-serif; padding-top: 30px;">
         <el-icon class="mr-1"><arrow-right /></el-icon>
         <span v-if="router.currentRoute.value.path == '/heat-insights/age-sex'">
-          Go to Help & Support Page
+          Go to Community Support Page
         </span>
         <span v-else>
           Go to Next Chart

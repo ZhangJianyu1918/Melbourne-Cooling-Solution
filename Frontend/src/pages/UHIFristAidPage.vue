@@ -101,28 +101,19 @@
                 </template>
                 <el-card class="info-card" shadow="never">
                     <el-descriptions border>
+                        <el-descriptions-item label="Emergency Contect">
+                            <el-button type="primary" size="small" plain icon="el-icon-phone"
+                                @click="callNumber('000')">
+                                <a href="https://www.triplezero.gov.au/">000</a>
+                                </el-button>
+                        </el-descriptions-item>
                         <el-descriptions-item label="VicEmergency Hotline">
                             <el-button type="primary" size="small" plain icon="el-icon-phone">
                                 <a href="https://www.cfa.vic.gov.au/contact/vicemergency-hotline">1800 226 226</a>
                             </el-button>
                         </el-descriptions-item>
-                        <el-descriptions-item label="Royal Melbourne Hospital">
-                            <el-button type="success" size="small" plain icon="el-icon-phone"
-                                @click="callNumber('13 11 14')">
-                                <a href="https://www.thermh.org.au/">+61 (3) 9342 7000</a>
-                            </el-button>
-                        </el-descriptions-item>
                     </el-descriptions>
-                </el-card>
-            </el-collapse-item>
-            <el-collapse-item name="5" title="">
-                <template #title>
-                    <div class="section-title">
-                        <i class="el-icon-phone"></i>
-                        <span class="text-xl font-semibold">Emergencies Contacts</span>
-                    </div>
-                </template>
-                <el-card class="mb-4 info-card" shadow="never">
+                    <br>
                     <el-descriptions border>
                         <el-descriptions-item label="Royal Melbourne Hospital">
                             <el-button type="primary" size="small" plain icon="el-icon-phone"
@@ -165,7 +156,6 @@
                                 @click="callNumber('+61 (3) 9929 8666')">
                                 <a href="https://eyeandear.org.au/">+61 (3) 9929 8666</a>
                                 </el-button>
-                            
                             <span class="ml-2 text-gray-600"><br>32 Gisborne St., East Melbourne</span>
                         </el-descriptions-item>
                     </el-descriptions>

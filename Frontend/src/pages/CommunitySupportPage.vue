@@ -38,16 +38,14 @@ const communities = [
   {
     image: "uhi-first-aid.png",
     title: "⛑️ UHI First Aid",
-    description: "This is the body text for this section description, " +
-      "which stands here as a placeholder for later real ideas and contents",
+    description: "Recognise heat-illness signs, cool someone safely, and find nearby help. Tips and emergency contacts when every minute counts.",
     to: "/community-support/uhi-first-aid",
     variant: 'community-support'
   },
   {
     image: "recovery-and-aftercare.png",
     title: "🤕 Recovery and Aftercare",
-    description: "This is the body text for this section description, " +
-      "which stands here as a placeholder for later real ideas and contents",
+    description: "Access information on recovery and aftercare for individuals in Melbourne, including managing long-term effects and support.",
     to: "/community-support/recovery-and-aftercare",
     variant: 'community-support'
   }
