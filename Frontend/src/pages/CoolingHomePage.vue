@@ -43,9 +43,9 @@
 
                     <div style="overflow: hidden; position: relative;" v-else>
                         <div class="overview">
-                            <sapn>🌡️ Temperature: {{ temperature }}°C</sapn>
+                            <sapn>🌡️ Temperature: {{ temperature.toFixed(1) }}°C</sapn>
                             <br>
-                            <sapn>❄️ Dropped: {{ dropped }}°C</sapn>
+                            <sapn>❄️ Dropped: {{ dropped.toFixed(1) }}°C</sapn>
                         </div>
                         <div v-if="aside" class="aside">
                             <el-button @click="aside = !aside">
@@ -1086,9 +1086,10 @@ const mappingArea = (area) => {
             item: targetItem
         };
     }
-    temperature.value = Number((temperature.value - targetItem.cooling).toFixed(1));
-    dropped.value = Number((dropped.value + targetItem.cooling).toFixed(1));
-
+    // temperature.value = Number((temperature.value - targetItem.cooling).toFixed(1));
+    // dropped.value = Number((dropped.value + targetItem.cooling).toFixed(1));
+    // temperature.value = temperature.value - targetItem.cooling
+    // dropped.value = dropped.value + targetItem.cooling
     // 用弹窗提示
     centerTipMsg.value = `Hooray! You just cool your home down by ${targetItem.cooling}°C 😎`;
     showCenterTip.value = true;
@@ -1163,13 +1164,15 @@ const remove = (item) => {
                 }
             });
             totalNumber.value += 1;
-            dropped.value -= item.item.cooling
-            temperature.value += item.item.cooling
+            // dropped.value -= item.item.cooling
+            // temperature.value += item.item.cooling
             console.log("Before delete:", imageAreaMap);
             imageAreaMap.delete(targetArea);
             // 重新计算 temperature 和 dropped
-            dropped.value = Number((dropped.value - item.item.cooling).toFixed(1))
-            temperature.value = Number((temperature.value + item.item.cooling).toFixed(1))
+            // dropped.value = Number((dropped.value - item.item.cooling).toFixed(1))
+            // temperature.value = Number((temperature.value + item.item.cooling).toFixed(1))
+            dropped.value = dropped.value - item.item.cooling
+            temperature.value = temperature.value + item.item.cooling
             console.log("After delete:", imageAreaMap);
             ElMessage({
                 type: 'success',
